@@ -65,7 +65,13 @@ QwenVL 的可维护正文保存在 `articles/qwenvl-series/body.html`，图像�
 python3 scripts/render_article.py articles/qwenvl-series/body.html --entry-id qwenvl-series --subtitle 'Qwen-VL → Qwen3.5 · 四篇原始报告与固定版本官方资料' -o work/qwenvl-preview.html
 ```
 
-该命令只生成候选文件。随后用 `publish_entry.py --replace` 做完整修订验证。正文变动若新增事实，先同步 ledger；改变样式不会自动改写其他已发表文章。OPLD 保留既有版本，未来指定修订时才重渲染。
+OPLD 的对应命令：
+
+```sh
+python3 scripts/render_article.py articles/opld-2607.28154/body.html --entry-id opld-2607.28154 --subtitle '先沿一道形状题走通方法，再分清向量反馈、教师参照与学生路径评分 · arXiv:2607.28154v1' -o work/opld-preview.html
+```
+
+这些命令只生成候选文件。随后用 `publish_entry.py --replace` 做完整修订验证。正文变动若新增事实，先同步 ledger；改变样式不会自动改写其他已发表文章。OPLD 的可维护正文保存在 `articles/opld-2607.28154/body.html`；同样通过 catalog/evidence 重渲染。已有文章只在明确修订时迁移。
 
 ## 本地预览与验收
 

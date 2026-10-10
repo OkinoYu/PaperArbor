@@ -1,36 +1,5 @@
 [
   {
-    "id": "opld-2607.28154",
-    "title": "OPLD 精读：把多模态 CoT 蒸馏到学生的潜在推理轨迹",
-    "summary": "同底座特权教师如何沿学生当前路径提供 token 反馈，并以 Enc–Dec 接口和 latent cosine 校准内部轨迹；逐项解读三阶段训练、张量流、消融与功能性证据的边界。",
-    "category": "VLM",
-    "type": "Single",
-    "published": "2026-07-30",
-    "added": "2026-10-10",
-    "path": "examples/VLM/opld-2607.28154.html",
-    "tags": [
-      "OPLD",
-      "潜在推理",
-      "On-policy 蒸馏",
-      "多模态 CoT",
-      "Qwen2.5-VL"
-    ],
-    "sources": [
-      {
-        "id": "2607.28154v1",
-        "title": "OPLD: On-Policy Latent Distillation for Multimodal Reasoning",
-        "authors": "Shoutai Zhu, Tianyang Xu, Bin Sun, Mingyuan Xu, Yu Liu, Qinzhen Guo",
-        "url": "https://arxiv.org/abs/2607.28154v1",
-        "pdf_url": "https://arxiv.org/pdf/2607.28154v1",
-        "version": "v1",
-        "published": "2026-07-30",
-        "sha256": "969774c6fcdfb554d297ce80ff14ac11a642aa9663989b4336be17c95a93aba0",
-        "version_date": "2026-07-30"
-      }
-    ],
-    "evidence": "data/evidence/opld-2607.28154.json"
-  },
-  {
     "id": "qwenvl-series",
     "title": "Qwen-VL 系列：从视觉摘要到 Qwen3.5 原生多模态",
     "summary": "从报表问题走通 Qwen-VL 到 Qwen3.5：按计算步骤解释视觉预算、位置、跨层融合与混合注意力；包含跨代对照、训练与推理边界，以及可离线搜索的逐项证据。",
@@ -146,5 +115,38 @@
     "evidence": "data/evidence/qwenvl-series.json",
     "updated": "2026-10-10",
     "body": "articles/qwenvl-series/body.html"
+  },
+  {
+    "id": "opld-2607.28154",
+    "title": "OPLD 精读：把教师的图解指导变成学生的内部计算",
+    "summary": "从一道形状变换题走通 OPLD：连续向量怎样反馈，教师如何分别提供轨迹参照与学生路径评分；用消融和干预区分收益、实际作用与可解释性边界。",
+    "category": "VLM",
+    "type": "Single",
+    "published": "2026-07-30",
+    "added": "2026-10-10",
+    "path": "examples/VLM/opld-2607.28154.html",
+    "tags": [
+      "OPLD",
+      "潜在推理",
+      "On-policy 蒸馏",
+      "多模态 CoT",
+      "Qwen2.5-VL"
+    ],
+    "sources": [
+      {
+        "id": "2607.28154v1",
+        "title": "OPLD: On-Policy Latent Distillation for Multimodal Reasoning",
+        "authors": "Shoutai Zhu, Tianyang Xu, Bin Sun, Mingyuan Xu, Yu Liu, Qinzhen Guo",
+        "url": "https://arxiv.org/abs/2607.28154v1",
+        "pdf_url": "https://arxiv.org/pdf/2607.28154v1",
+        "version": "v1",
+        "published": "2026-07-30",
+        "sha256": "969774c6fcdfb554d297ce80ff14ac11a642aa9663989b4336be17c95a93aba0",
+        "version_date": "2026-07-30"
+      }
+    ],
+    "evidence": "data/evidence/opld-2607.28154.json",
+    "updated": "2026-10-10",
+    "body": "articles/opld-2607.28154/body.html"
   }
 ]
