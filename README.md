@@ -47,7 +47,7 @@ $paper-arbor Radar 查找指定日期范围内的多模态推理论文
 ## 📖 内容示例
 
 - [OPLD：把多模态 CoT 蒸馏到潜在推理轨迹](https://okinoyu.github.io/PaperArbor/examples/VLM/opld-2607.28154.html)
-- [Qwen-VL 系列：从视觉摘要到多模态推理](https://okinoyu.github.io/PaperArbor/examples/VLM/QwenVL-series.html)
+- [Qwen-VL 系列：从视觉摘要到 Qwen3.5 原生多模态](https://okinoyu.github.io/PaperArbor/examples/VLM/QwenVL-series.html)
 
 ## 🛠️ 本地维护
 

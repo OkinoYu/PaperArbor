@@ -1,6 +1,6 @@
 {
   "reviewed": "2026-10-10",
-  "coverage": "Four full versioned PDFs; identity verified from versioned arXiv metadata. All formulas are labeled explanatory derivations. No reproduction of full training or independent benchmark reruns.",
+  "coverage": "Four complete versioned original PDFs unchanged (Qwen-VL, Qwen2-VL, Qwen2.5-VL, Qwen3-VL). Qwen3.5 supplement: full pinned official flagship model card and config/processor files, full official release article, official repository release-history entries, and relevant pinned Transformers model implementation (vision interface, hybrid attention, recurrent/chunk kernels, router/shared experts, cache, positional IDs). No independent standalone Qwen3.5 technical report verified; release article still says upcoming technical report. No training or benchmark reruns; exact training recipe, ablations and complete per-task decoding/tool protocols remain unknown. Repository redirect to Qwen3.8 does not expand this series scope. Catalog published date remains latest actual included paper first submission; Qwen3.5 model release date is recorded separately.",
   "claims": [
     {
       "anchor": "intro",
@@ -358,6 +358,314 @@
       "locator": "Sections 5.12.2–5.12.3, p24–25",
       "statement": "Limitations matrix distinguishes reproducibility and evaluation-scope judgments from original experimental facts.",
       "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "intro",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "Model API createdAt; Model Overview; fixed-revision README.md and config.json",
+      "statement": "Qwen3.5-397B-A17B model repository created 2026-02-16; native vision-language checkpoint; source coverage is model card/configuration, not a fifth versioned paper PDF.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "intro",
+      "source": "qwen3.5-release-20260217-51008f41f22f456a",
+      "locator": "Official release article, before Pretraining",
+      "statement": "发布文仍称technical report upcoming；本次未核实到独立Qwen3.5技术报告，不用Qwen3.5-Omni报告替代。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "intro",
+      "source": "qwen3.5-release-history-2ea10dc725823bf7c3e21ce8557cbe15245132ae",
+      "locator": "README.md, News entries dated 2026-02-16 / 2026-02-24 / 2026-03-02",
+      "statement": "首发397B-A17B于2026-02-16；122B-A10B/35B-A3B/27B于2026-02-24；9B/4B/2B/0.8B于2026-03-02。仓库现名Qwen3.8，本页只取固定commit的Qwen3.5历史。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "series-timeline",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "Model Overview; Model API createdAt",
+      "statement": "时间线第五点为2026-02-16模型首发而非论文首发，早期多模态融合与GatedDeltaNet/MoE混合结构。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "overview",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Model Overview / Highlights; config.json text_config / vision_config; Processing Ultra-Long Texts",
+      "statement": "研究定位：统一原生视觉语言基础模型与 Agent 能力；本节以旗舰为配置样本",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Model Overview / Highlights; config.json text_config / vision_config; Processing Ultra-Long Texts",
+      "statement": "语言主干：旗舰 397B-A17B；60 层，每组 3 个 Gated DeltaNet + 1 个 Gated Attention；稀疏 MoE",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Model Overview / Highlights; config.json text_config / vision_config; Processing Ultra-Long Texts",
+      "statement": "视觉连接器：空间 2×2 merger；旗舰 deepstack_visual_indexes=[]，不沿用前三层 DeepStack 注入",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Model Overview / Highlights; config.json text_config / vision_config; Processing Ultra-Long Texts",
+      "statement": "图像处理：旗舰 ViT 27 层；patch=16、temporal patch=2；动态网格",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Model Overview / Highlights; config.json text_config / vision_config; Processing Ultra-Long Texts",
+      "statement": "位置表示：交错 M-RoPE；全注意力层 partial rotary factor=0.25；视频文本时间戳",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Model Overview / Highlights; config.json text_config / vision_config; Processing Ultra-Long Texts",
+      "statement": "训练计量：官方描述规模扩大与早期图文融合；本次来源没有逐阶段精确 token 总量",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Model Overview / Highlights; config.json text_config / vision_config; Processing Ultra-Long Texts",
+      "statement": "后训练：规模化文本/多模态/多轮 RL；同 checkpoint 支持 thinking 开关；精确 loss / 课程未公开",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Model Overview / Highlights; config.json text_config / vision_config; Processing Ultra-Long Texts",
+      "statement": "长序列证据：旗舰原生 262144 tokens；YaRN 扩至 1010000 属外推配置，另于托管 Plus",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Model Overview",
+      "statement": "旗舰post-trained checkpoint，模型卡397B total/17B activated；未单列ViT参数量；H4096,60 layers；该配置不代表所有dense/MoE子型号。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "config.json vision_config.deepstack_visual_indexes / patch_size / spatial_merge_size / text_config.layer_types",
+      "statement": "旗舰patch16 temporal2 spatialmerge2，DeepStack indexes空；语言混合attention。不要把Qwen2/2.5的28px per token公式复用于Qwen3.5。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "transformers-qwen3.5-moe-812a950d7037ba93bb624b154030e9068afdce4d",
+      "locator": "modeling_qwen3_5_moe.py Qwen3_5MoeVisionModel L1205–1291; get_rope_index L1474–1490",
+      "statement": "参考实现视觉最终merger输出进入多模态序列；使用时间戳分割视频；不复制Qwen3-VL三路DeepStack路径。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "config.json vision_config.{depth,hidden_size,patch_size,temporal_patch_size,spatial_merge_size,out_hidden_size}; preprocessor_config.json.processor_class",
+      "statement": "旗舰ViT27层H1152，patch16/time2，2x2 spatial merge，out_hidden_size4096；processor_class Qwen3VLProcessor但参数需逐配置核实。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35-token-equation",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "config.json vision_config.patch_size=16, spatial_merge_size=2; preprocessor_config.json",
+      "statement": "解释性静态图像网格式N≈(Hprime/32)(Wprime/32)，16×2=32；省略特殊tokens，不直接用于任意视频。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen35-flow",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "Model Overview Hidden Layout; config.json layer_types / vision_config",
+      "statement": "示意图使用旗舰60层=15组(3 GatedDeltaNet+1 GatedAttention)，每层后MoE，final merger序列输入而非DeepStack支路。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "transformers-qwen3.5-moe-812a950d7037ba93bb624b154030e9068afdce4d",
+      "locator": "modeling_qwen3_5_moe.py L425–485, L492–650, L737–810, L933–990",
+      "statement": "GatedDeltaNet缓存递归state和卷积state，incremental sequence1使用recurrent kernel，prefill用chunk kernel；Full Attention更新KV并sigmoid(output gate)；每层后MoE。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35-delta-equation",
+      "source": "transformers-qwen3.5-moe-812a950d7037ba93bb624b154030e9068afdce4d",
+      "locator": "torch_recurrent_gated_delta_rule L425–485; GatedDeltaNet L605–650",
+      "statement": "解释性公式Stilde=alpha*Sprev；delta=beta*(v-Stilde^T k)；S=Stilde+k delta^T；o=S^T q；alpha=exp(g), beta=sigmoid(b)，省略norm/causal conv/output gating但明确q/k normalized q scaled。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "config.json text_config.rope_parameters",
+      "statement": "mrope_interleaved=true，mrope_section=[11,11,10]，partial_rotary_factor=.25；Full Attention参考实现apply_rotary_pos_emb，不可自动写成所有DeltaNet层同样q/k RoPE。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "Model Overview Mixture Of Experts; config.json num_experts / num_experts_per_tok / shared_expert_intermediate_size",
+      "statement": "旗舰512 routed experts，10 routed+1shared per token，expert intermediate1024；总量397B active17B是型号报告，非全部可驻留于17B权重显存。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "transformers-qwen3.5-moe-812a950d7037ba93bb624b154030e9068afdce4d",
+      "locator": "TopKRouter L871–887; SparseMoeBlock L890–909",
+      "statement": "softmax→topk→selected-score renormalization；weighted routed sum + sigmoid-gated shared expert输出；hidden维度保持。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "Model Overview MTP; config.json text_config.mtp_num_hidden_layers",
+      "statement": "model card MTP trained multi-steps；config mtp_num_hidden_layers1；不保证全部服务配置自动speculative decode。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "transformers-qwen3.5-moe-812a950d7037ba93bb624b154030e9068afdce4d",
+      "locator": "GatedDeltaNet / Attention / SparseMoeBlock; configuration cross-check",
+      "statement": "分析：state-cache减少逐tokenKV覆盖范围但full-attention仍保留KV，不消除vision/全部expert存储/通信开销；不独立估算latency。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "qwen3.5-release-20260217-51008f41f22f456a",
+      "locator": "Pretraining / Infrastructure",
+      "statement": "原生early text-vision fusion，视觉/STEM/视频等数据扩大；沿Qwen3-Next hybrid architecture/MTP；heterogeneous vision-language parallelism；native FP8 with BF16 sensitive layers。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "qwen3.5-release-20260217-51008f41f22f456a",
+      "locator": "RL scaling discussion / Infrastructure",
+      "statement": "官方称扩大RL environments，涵盖text/multimodal/multiturn asynchronous disaggregated train-inference，router replay and multi-turn rollout locking；未给足完整训练loss/冻结课程，不默认继承前代SAPO。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Using Qwen3.5 via Chat Completions API, Instruct Mode; Agentic Usage",
+      "statement": "同一checkpoint支持thinking toggle，local chat_template_kwargs.enable_thinking=false；工具需要外部executor；托管API参数路径有区别。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "Model Overview / Processing Ultra-Long Texts / Using via API / Best Practices",
+      "statement": "native262144/extrapolated1010000，Plus default1M独立托管配置；staticYaRN短文本可能退化；thinking temperature.6 top_p.95，nonthinking.7/.8；general output32768/hard benchmark81920建议非全部评测实际设置。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "Vision Language comparison and footnotes",
+      "statement": "Qwen3-VL列未逐项明确checkpoint branch/split/tool budgets；没有可控architecture ablation支撑各单模块因果解释。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "training",
+      "source": "qwen3.5-release-20260217-51008f41f22f456a",
+      "locator": "Pretraining / Infrastructure",
+      "statement": "统一章节加入Qwen3.5 earlyfusion/asyncRL，但明确阶段规模/冻结/目标mask/损失与奖励未充分公开。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "qwen35-benchmarks",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Vision Language table, row MMMU",
+      "statement": "Official table Qwen3-VL-235B-A22B=80.6, Qwen3.5-397B-A17B=85.0; MMMU score higher better, original precision; 原表未展开具体 split / branch; Qwen3.5 post-trained released checkpoint, full per-task decoding/tool protocol not provided.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35-benchmarks",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Vision Language table, row Mathvista (mini)",
+      "statement": "Official table Qwen3-VL-235B-A22B=85.8, Qwen3.5-397B-A17B=90.3; Mathvista (mini) score higher better, original precision; 保留 mini 标签，完整提示与采样未逐项公开; Qwen3.5 post-trained released checkpoint, full per-task decoding/tool protocol not provided.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35-benchmarks",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Vision Language table, row OmniDocBench1.5",
+      "statement": "Official table Qwen3-VL-235B-A22B=84.5, Qwen3.5-397B-A17B=90.8; OmniDocBench1.5 score higher better, original precision; 版本 1.5；与 DocVQA 是不同任务; Qwen3.5 post-trained released checkpoint, full per-task decoding/tool protocol not provided.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35-benchmarks",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Vision Language table, row OCRBench",
+      "statement": "Official table Qwen3-VL-235B-A22B=87.5, Qwen3.5-397B-A17B=93.1; OCRBench score higher better, original precision; 不与前代报告中的 0–1000 格式直接拼接; Qwen3.5 post-trained released checkpoint, full per-task decoding/tool protocol not provided.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35-benchmarks",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Vision Language table, row VideoMME (w sub.)",
+      "statement": "Official table Qwen3-VL-235B-A22B=83.8, Qwen3.5-397B-A17B=87.5; VideoMME (w sub.) score higher better, original precision; 有字幕设置; Qwen3.5 post-trained released checkpoint, full per-task decoding/tool protocol not provided.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35-benchmarks",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Vision Language table, row VideoMME (w/o sub.)",
+      "statement": "Official table Qwen3-VL-235B-A22B=79.0, Qwen3.5-397B-A17B=83.7; VideoMME (w/o sub.) score higher better, original precision; 无字幕设置；不能合并两行; Qwen3.5 post-trained released checkpoint, full per-task decoding/tool protocol not provided.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35-benchmarks",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "README.md Vision Language table, row OSWorld-Verified",
+      "statement": "Official table Qwen3-VL-235B-A22B=38.1, Qwen3.5-397B-A17B=62.2; OSWorld-Verified score higher better, original precision; 交互式 Agent 指标，harness / 工具预算未完整展开; Qwen3.5 post-trained released checkpoint, full per-task decoding/tool protocol not provided.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35-benchmarks",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "Vision Language rows BabyVision / V*; footnotes",
+      "statement": "Qwen3.5 BabyVision52.3 CI-enabled/43.3 noCI；V*95.8 CI-enabled/91.1 noCI；MathVision固定step-by-step+boxed final prompt，本模型与对照提示取值规则不同，缺fulltoolbudget。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen35-benchmarks",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "Vision Language table / footnotes",
+      "statement": "发布模型comparison同时改变参数、数据、pre/posttrain，不提供孤立GatedDeltaNet/DeepStack/earlyfusion因果增益。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "inference",
+      "source": "transformers-qwen3.5-moe-812a950d7037ba93bb624b154030e9068afdce4d",
+      "locator": "GatedDeltaNet cache path / Attention KV update",
+      "statement": "Qwen3.5 hybrid cache需同时考察recurrent state和remainingfullattentionKV；不能把ViT窗口开销改进与语言主干缓存范围混同。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "limitations",
+      "source": "qwen3.5-release-20260217-51008f41f22f456a",
+      "locator": "Before Pretraining / Infrastructure; model-card coverage cross-check",
+      "statement": "新增Qwen3.5知识边界：没有独立报告核实，不补造trainingrecipe/ablation；mixedsource证据不等于同等论文精读覆盖。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "takeaways",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "locator": "Highlights / Model Overview / config.json",
+      "statement": "新增贯穿结论：早期融合和混合计算，与前代接口保留并行；DeepStack未在旗舰默认启用，不是旧机制全数累加。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "qwen35",
+      "source": "2409.12191v2",
+      "locator": "Section 2.1, PDF p4",
+      "statement": "Qwen2-VL patch14 and 2x2 merge produce28px/token; this predecessor fact is distinct from Qwen3.5 flagship patch16 and32px/token.",
+      "kind": "paper-fact"
     }
   ],
   "third_party_figures": {

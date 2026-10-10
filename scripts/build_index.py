@@ -11,7 +11,7 @@ def render_index(records: list, root: Path = ROOT) -> str:
     cards = []
     for r in sorted(records, key=lambda r: (r['added'], r['id']), reverse=True):
         cards.append(f'''<article class="paper-card" data-id="{e(r['id'])}">
-<div class="card-meta"><span>{e(r['category'])}</span><span>{e(r['type'])} / {len(r['sources']):02} papers</span></div>
+<div class="card-meta"><span>{e(r['category'])}</span><span>{e(r['type'])} / {len(r['sources']):02} sources</span></div>
 <h3><a href="{e(r['path'])}">{e(r['title'])}<span aria-hidden="true"> ↗</span></a></h3>
 <p>{e(r['summary'])}</p><div class="tags">{''.join('<span>'+e(t)+'</span>' for t in r['tags'])}</div>
 <div class="card-foot"><span>论文发布 <time datetime="{e(r['published'])}">{e(r['published'])}</time></span><span>收录 {e(r['added'])}</span></div></article>''')

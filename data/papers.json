@@ -1,8 +1,39 @@
 [
   {
+    "id": "opld-2607.28154",
+    "title": "OPLD 精读：把多模态 CoT 蒸馏到学生的潜在推理轨迹",
+    "summary": "同底座特权教师如何沿学生当前路径提供 token 反馈，并以 Enc–Dec 接口和 latent cosine 校准内部轨迹；逐项解读三阶段训练、张量流、消融与功能性证据的边界。",
+    "category": "VLM",
+    "type": "Single",
+    "published": "2026-07-30",
+    "added": "2026-10-10",
+    "path": "examples/VLM/opld-2607.28154.html",
+    "tags": [
+      "OPLD",
+      "潜在推理",
+      "On-policy 蒸馏",
+      "多模态 CoT",
+      "Qwen2.5-VL"
+    ],
+    "sources": [
+      {
+        "id": "2607.28154v1",
+        "title": "OPLD: On-Policy Latent Distillation for Multimodal Reasoning",
+        "authors": "Shoutai Zhu, Tianyang Xu, Bin Sun, Mingyuan Xu, Yu Liu, Qinzhen Guo",
+        "url": "https://arxiv.org/abs/2607.28154v1",
+        "pdf_url": "https://arxiv.org/pdf/2607.28154v1",
+        "version": "v1",
+        "published": "2026-07-30",
+        "sha256": "969774c6fcdfb554d297ce80ff14ac11a642aa9663989b4336be17c95a93aba0",
+        "version_date": "2026-07-30"
+      }
+    ],
+    "evidence": "data/evidence/opld-2607.28154.json"
+  },
+  {
     "id": "qwenvl-series",
-    "title": "Qwen-VL 系列：从视觉摘要到多模态推理",
-    "summary": "四代原始论文精读：动态分辨率、M-RoPE、窗口注意力与 DeepStack 如何改变信息流，以及训练、消融和长视频证据的边界。",
+    "title": "Qwen-VL 系列：从视觉摘要到 Qwen3.5 原生多模态",
+    "summary": "Qwen-VL 到 Qwen3.5 的机制演进：四篇原始报告与固定版本官方资料，比较动态分辨率、时间/位置表示、DeepStack 与混合注意力，并保留训练、工具评测和资料覆盖的边界。",
     "category": "VLM",
     "type": "Series",
     "published": "2025-11-26",
@@ -12,7 +43,10 @@
       "Qwen",
       "视觉语言模型",
       "动态分辨率",
-      "多模态推理"
+      "多模态推理",
+      "Qwen3.5",
+      "Gated DeltaNet",
+      "MoE"
     ],
     "sources": [
       {
@@ -58,39 +92,57 @@
         "url": "https://arxiv.org/abs/2511.21631v2",
         "pdf_url": "https://arxiv.org/pdf/2511.21631v2",
         "sha256": "ee075d08e67de1148d6437c6c1d481f7894183b8793905a2deb5f62664f49380"
-      }
-    ],
-    "evidence": "data/evidence/qwenvl-series.json"
-  },
-  {
-    "id": "opld-2607.28154",
-    "title": "OPLD 精读：把多模态 CoT 蒸馏到学生的潜在推理轨迹",
-    "summary": "同底座特权教师如何沿学生当前路径提供 token 反馈，并以 Enc–Dec 接口和 latent cosine 校准内部轨迹；逐项解读三阶段训练、张量流、消融与功能性证据的边界。",
-    "category": "VLM",
-    "type": "Single",
-    "published": "2026-07-30",
-    "added": "2026-10-10",
-    "path": "examples/VLM/opld-2607.28154.html",
-    "tags": [
-      "OPLD",
-      "潜在推理",
-      "On-policy 蒸馏",
-      "多模态 CoT",
-      "Qwen2.5-VL"
-    ],
-    "sources": [
+      },
       {
-        "id": "2607.28154v1",
-        "title": "OPLD: On-Policy Latent Distillation for Multimodal Reasoning",
-        "authors": "Shoutai Zhu, Tianyang Xu, Bin Sun, Mingyuan Xu, Yu Liu, Qinzhen Guo",
-        "url": "https://arxiv.org/abs/2607.28154v1",
-        "pdf_url": "https://arxiv.org/pdf/2607.28154v1",
-        "version": "v1",
-        "published": "2026-07-30",
-        "sha256": "969774c6fcdfb554d297ce80ff14ac11a642aa9663989b4336be17c95a93aba0",
-        "version_date": "2026-07-30"
+        "id": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+        "title": "Qwen3.5-397B-A17B Official Model Card and Released Configuration",
+        "authors": "Qwen Team",
+        "url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B/blob/8472618112abcbd45acbcdc58436aff4233c23f7/README.md",
+        "version": "8472618112abcbd45acbcdc58436aff4233c23f7",
+        "published": "2026-02-16",
+        "version_date": "2026-04-24",
+        "kind": "model-card",
+        "sha256": "bda4b24e975f65ac677985306ddbad33362e65064637660654c8bb7dea7edf50",
+        "config_url": "https://huggingface.co/Qwen/Qwen3.5-397B-A17B/blob/8472618112abcbd45acbcdc58436aff4233c23f7/config.json",
+        "config_sha256": "3ae7fa89c2f7d1354096418ddaf1331e9e0898a8ca11e804fb6dbaa087efb7da",
+        "preprocessor_sha256": "27225450ac9c6529872ee1924fcb0962ff5634834f817040f444118116f4e516"
+      },
+      {
+        "id": "qwen3.5-release-20260217-51008f41f22f456a",
+        "title": "Qwen3.5: Towards Native Multimodal Agents",
+        "authors": "Qwen Team / Alibaba Cloud",
+        "url": "https://www.alibabacloud.com/blog/602894",
+        "version": "snapshot-2026-10-10-51008f41f22f456a",
+        "published": "2026-02-17",
+        "version_date": "2026-10-10",
+        "kind": "official-release",
+        "sha256": "51008f41f22f456ac3655802277e2751d7d13d1d593770fea8fae65bc14d2242",
+        "original_url": "https://qwen.ai/blog?id=qwen3.5"
+      },
+      {
+        "id": "qwen3.5-release-history-2ea10dc725823bf7c3e21ce8557cbe15245132ae",
+        "title": "Qwen3.5 Official Release History in QwenLM Repository",
+        "authors": "Qwen Team",
+        "url": "https://github.com/QwenLM/Qwen3.8/blob/2ea10dc725823bf7c3e21ce8557cbe15245132ae/README.md",
+        "version": "2ea10dc725823bf7c3e21ce8557cbe15245132ae",
+        "published": "2026-02-16",
+        "version_date": "2026-08-17",
+        "kind": "release-history",
+        "sha256": "a71ec46607f81d6056336fb0a8431a26a1c7d8db6ac568a0c021c36f1ed3c92e"
+      },
+      {
+        "id": "transformers-qwen3.5-moe-812a950d7037ba93bb624b154030e9068afdce4d",
+        "title": "Qwen3.5-MoE Transformers Reference Implementation",
+        "authors": "Hugging Face Transformers contributors",
+        "url": "https://github.com/huggingface/transformers/blob/812a950d7037ba93bb624b154030e9068afdce4d/src/transformers/models/qwen3_5_moe/modeling_qwen3_5_moe.py",
+        "version": "812a950d7037ba93bb624b154030e9068afdce4d",
+        "published": "2026-10-08",
+        "version_date": "2026-10-08",
+        "kind": "implementation",
+        "sha256": "5185df44da25af2756efeef3fb4174e9c242f528a71ff157bcc3dd2ce5c22e71"
       }
     ],
-    "evidence": "data/evidence/opld-2607.28154.json"
+    "evidence": "data/evidence/qwenvl-series.json",
+    "updated": "2026-10-10"
   }
 ]
