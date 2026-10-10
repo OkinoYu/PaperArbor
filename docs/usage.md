@@ -53,7 +53,7 @@ python3 scripts/build_index.py --check
 python3 scripts/validate_site.py --json
 ```
 
-修订两条 publish 命令都加 `--replace`，保留 id/path/evidence/added。publisher 一起更新 article/evidence/catalog/index，使用锁、逐文件原子写与异常回滚，不是 crash-safe 多文件数据库。
+普通修订两条 publish 命令都加 `--replace`，保留 id/path/evidence/added。用户明确要求分类迁移时，再加 `--move`，修改 category/path，并将旧 path 登记在 entry 的 `aliases` 数组；证据路径与收录日期保留。迁移会同步旧网址跳转和文章内关联链接，dry-run 会检查完整临时站点。publisher 一起更新 article/evidence/catalog/index，使用锁、逐文件原子写与异常回滚，不是 crash-safe 多文件数据库。
 
 本仓库已有用户的在线交付偏好，详见 AGENTS.md；外部用户不要照搬为自己的发布授权。`publish_entry.py` 只写本地；远程推送与 hosting 必须遵循当前用户指令。
 

@@ -9,7 +9,7 @@ from pathlib import Path, PurePosixPath
 from urllib.parse import urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-CATEGORIES = ('LLM', 'VLM', 'Multimodal', 'Reasoning', 'Agent', 'RL', 'Others')
+CATEGORIES = ('LLM', 'VLM', 'Multimodal', 'Reasoning', 'Agent', 'RL', 'OPD', 'Others')
 MODES = ('Single', 'Series', 'Digest', 'Radar')
 
 def atomic_write(path: Path, text: str) -> None:
@@ -87,6 +87,18 @@ def validate_records(records: list, root: Path, require_files: bool = True) -> N
             raise ValueError(f'expected {expected}*.html')
         if require_files and not target.is_file():
             raise ValueError(f'missing article: {r["path"]}')
+        aliases = r.get('aliases', [])
+        if not isinstance(aliases, list) or any(not isinstance(a, str) for a in aliases):
+            raise ValueError('aliases must be a path array')
+        for alias in aliases:
+            alias_target = site_path(root, alias)
+            if not any(alias.startswith(f'examples/{c}/') for c in CATEGORIES) or alias_target.suffix != '.html':
+                raise ValueError('alias must be an article HTML path')
+            if alias.casefold() in paths:
+                raise ValueError('duplicate article or alias path')
+            paths.add(alias.casefold())
+            if require_files and not alias_target.is_file():
+                raise ValueError(f'missing redirect: {alias}')
         if 'body' in r:
             body = site_path(root, r['body'])
             if not r['body'].startswith('articles/') or body.suffix != '.html':

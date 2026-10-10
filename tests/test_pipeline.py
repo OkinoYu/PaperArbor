@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
-from common import atomic_write, site_path, validate_records
+from common import CATEGORIES, atomic_write, site_path, validate_records
 from build_index import render_index
 from validate_site import Document, data_image, validate, validate_article
 from render_article import render, prepare_body
@@ -50,6 +50,56 @@ class PipelineTests(unittest.TestCase):
   with self.assertRaises(ValueError):self.go(replace=True)
  def test_intended_revision(self):
   self.go();self.article.write_text(self.article.read_text().replace('Evidence','Revised evidence'));self.assertTrue(self.go(replace=True)['ok']);self.assertIn('Revised',(self.root/self.entry['path']).read_text())
+ def prepare_move(self):
+  self.go();old=self.entry['path'];self.entry.update(category='OPD',path='examples/OPD/test.html',aliases=[old]);return old
+ def test_category_move_keeps_identity_and_updates_navigation(self):
+  self.go();old=self.entry['path'];original_evidence=(self.root/self.entry['evidence']).read_bytes()
+  other=copy.deepcopy(self.entry);other.update(id='related',type='Series',path='examples/VLM/related.html',evidence='data/evidence/related.json')
+  linked=self.root/'drafts/linked.html';linked.write_text(render('<h2 id="method">Related</h2><a href="test.html?view=reader#method">old</a><a href="https://example.org/test.html#method">external</a>','Related','scope','VLM','Series',self.root))
+  publish(self.root,other,linked,self.evidence)
+  self.entry.update(category='OPD',path='examples/OPD/test.html',aliases=[old])
+  self.assertTrue(self.go(replace=True,move=True)['ok'])
+  result=json.loads((self.root/'data/papers.json').read_text());moved=next(r for r in result if r['id']==self.entry['id'])
+  self.assertEqual(moved['added'],'2026-10-10');self.assertEqual(moved['evidence'],self.entry['evidence']);self.assertEqual(original_evidence,(self.root/self.entry['evidence']).read_bytes())
+  alias=Document((self.root/old).read_text(),True);self.assertEqual(alias.redirect_target,'../OPD/test.html')
+  links=Document((self.root/other['path']).read_text(),True).links
+  self.assertIn('../OPD/test.html?view=reader#method',links);self.assertIn('https://example.org/test.html#method',links)
+  self.assertTrue(validate(self.root)['ok']);self.assertEqual(len(result),2)
+ def test_move_requires_explicit_flag_and_old_alias(self):
+  self.prepare_move()
+  with self.assertRaises(ValueError):self.go(replace=True)
+  self.entry['aliases']=[]
+  with self.assertRaises(ValueError):self.go(replace=True,move=True)
+ def test_move_dry_run_changes_nothing(self):
+  self.prepare_move();before={p.relative_to(self.root):p.read_bytes() for p in self.root.rglob('*') if p.is_file()}
+  self.assertTrue(self.go(replace=True,move=True,dry_run=True)['ok'])
+  self.assertEqual(before,{p.relative_to(self.root):p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+ def test_move_refuses_destination_collision(self):
+  self.prepare_move();dest=self.root/self.entry['path'];dest.parent.mkdir();dest.write_text('keep')
+  with self.assertRaises(ValueError):self.go(replace=True,move=True)
+  self.assertEqual(dest.read_text(),'keep')
+ def test_move_rolls_back_redirect_and_new_article(self):
+  import publish_entry
+  old=self.prepare_move();before={p.relative_to(self.root):p.read_bytes() for p in self.root.rglob('*') if p.is_file()};original=publish_entry.atomic_write;failed=False
+  def fail_after_redirect(path,text):
+   nonlocal failed
+   original(path,text)
+   if path==self.root/old and not failed:failed=True;raise OSError('failure after redirect write')
+  with patch.object(publish_entry,'atomic_write',side_effect=fail_after_redirect):
+   with self.assertRaises(OSError):self.go(replace=True,move=True)
+  self.assertEqual(before,{p.relative_to(self.root):p.read_bytes() for p in self.root.rglob('*') if p.is_file()})
+ def test_alias_contract_and_collision(self):
+  for alias in ('../outside.html',self.entry['path'],'examples/Unknown/x.html'):
+   r=copy.deepcopy(self.entry);r['aliases']=[alias]
+   with self.assertRaises(ValueError):validate_records([r],self.root,False)
+  r=copy.deepcopy(self.entry);r['aliases']=['examples/OPD/test.html'];other=copy.deepcopy(r);other.update(id='other',type='Series',category='OPD',path=r['aliases'][0],aliases=[])
+  with self.assertRaises(ValueError):validate_records([r,other],self.root,False)
+ def test_redirect_target_must_match_catalog(self):
+  old=self.prepare_move();self.go(replace=True,move=True);p=self.root/old;p.write_text(p.read_text().replace('../OPD/test.html','../../index.html'))
+  self.assertTrue(any('redirect must target' in e for e in validate(self.root)['errors']))
+ def test_category_count_follows_supported_directions(self):
+  text=render_index([],self.root)
+  self.assertIn('data-category="OPD"',text);self.assertIn(f'<strong>{len(CATEGORIES)}</strong> 个研究方向',text)
  def test_invalid_candidate_leaves_site_unchanged(self):
   self.article.write_text(self.article.read_text().replace('</main>','<img src="https://example.org/x.png" alt="external"></main>'))
   before=(self.root/'index.html').read_bytes()
@@ -108,6 +158,14 @@ class PipelineTests(unittest.TestCase):
   base=self.article.read_text()
   for extra in ('<script src="https://cdn.test/x.js"></script>','<img src=x.png alt="x">','<style>x{background:url(https://a.test/x)}</style>','<source srcset="x.png 1x">'):
    self.assertTrue(Document(base.replace('</main>',extra+'</main>'),True).errors)
+ def test_url_constructor_is_not_css_asset(self):
+  text=self.article.read_text().replace('</body>','<script>const target=new URL("https://example.org");</script></body>')
+  self.assertFalse(Document(text,True).errors)
+ def test_svg_paint_server_cannot_load_remote_asset(self):
+  bad=SVG.replace('<circle','<circle fill="url(https://example.org/paint.svg#x)"')
+  self.assertFalse(data_image('data:image/svg+xml;base64,'+base64.b64encode(bad.encode()).decode()))
+  extra='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1" role="img" aria-labelledby="paint"><title id="paint">Paint</title><rect fill="url(https://example.org/x.svg#x)"/></svg>'
+  self.assertTrue(Document(self.article.read_text().replace('</main>',extra+'</main>'),True).errors)
  def test_invalid_math_svg_duplicate_ids(self):
   extra='<h2 id="method">duplicate</h2><svg viewBox="0 0 1 1" role="img" aria-labelledby="s"><title id="s">bad</title><g></svg><math aria-label="bad"><mfrac><mi>x</mi></math>'
   self.assertTrue(Document(self.article.read_text().replace('</main>',extra+'</main>'),True).errors)

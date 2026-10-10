@@ -33,7 +33,7 @@ Python 3.9+ 负责维护；PDF 提图依赖按需安装。其他项目安装、�
 ## 📖 示例
 
 - [Qwen-VL → Qwen3.5：机制演进](https://okinoyu.github.io/PaperArbor/examples/VLM/QwenVL-series.html)
-- [OPLD：多模态潜在推理蒸馏](https://okinoyu.github.io/PaperArbor/examples/VLM/opld-2607.28154.html)
+- [OPLD：多模态潜在推理蒸馏](https://okinoyu.github.io/PaperArbor/examples/OPD/opld-2607.28154.html)
 
 网站按方向、标签与阅读方式查找；示例的本地修改只有明确发布后才会上线。
 

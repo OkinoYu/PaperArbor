@@ -25,6 +25,8 @@ def contained_svg(raw: bytes) -> bool:
         for key, value in node.attrib.items():
             if key.rsplit('}', 1)[-1] in ('href', 'src') and not value.startswith('#'):
                 return False
+            if any(not m[1].startswith('#') for m in CSS_URL.finditer(value)):
+                return False
         css = (node.text or '') if node.tag.rsplit('}', 1)[-1] == 'style' else ''
         css += node.get('style', '')
         if re.search(r'@import', css, re.I) or any(not m[1].startswith('#') for m in CSS_URL.finditer(css)):
@@ -53,6 +55,7 @@ class Document(HTMLParser):
         self.ids = set(); self.links = []; self.errors = []; self.images = 0
         self.labels = []; self.h1 = 0; self.title = False; self.viewport = False; self.lang = False
         self.evidence_text = None; self.in_evidence = False
+        self.redirect_target = None
         self.standalone = standalone
         self.feed(text)
         for label in self.labels:
@@ -69,9 +72,9 @@ class Document(HTMLParser):
             self.errors.append('unclosed SVG or MathML')
         if re.search(r'\$\$|\\\[|\\\(', text): self.errors.append('unrendered LaTeX delimiter')
         if standalone:
-            if re.search(r'@import\b', text, re.I): self.errors.append('CSS import is not standalone')
-            for match in CSS_URL.finditer(text):
-                self.asset(match.group(1), 'CSS url')
+            for css in re.findall(r'<style\b[^>]*>(.*?)</style>', text, re.I | re.S):
+                if re.search(r'@import\b', css, re.I): self.errors.append('CSS import is not standalone')
+                for match in CSS_URL.finditer(css): self.asset(match.group(1), 'CSS url')
         self.evidence_payload = None
         if self.evidence_text is not None:
             try:
@@ -112,6 +115,7 @@ class Document(HTMLParser):
         if tag == 'a' or tag == 'use':
             value = a.get('href') or a.get('xlink:href')
             if value: self.links.append(value)
+            if tag == 'a' and a.get('data-redirect') == 'article': self.redirect_target = value
         if tag == 'img' and not a.get('alt'): self.errors.append('image needs meaningful alt text') if self.standalone else None
         if tag in ('img','image','source'):
             for attr in ('src','href','xlink:href'):
@@ -129,8 +133,11 @@ class Document(HTMLParser):
             if self.standalone and (values or tag in ('iframe','audio','video','object','embed')):
                 self.errors.append(f'{tag} creates a runtime dependency')
             else: self.links.extend(values)
-        if a.get('style') and self.standalone:
-            for match in CSS_URL.finditer(a['style']): self.asset(match.group(1), 'inline CSS')
+        if self.standalone:
+            for key in ('style', 'fill', 'stroke', 'marker-start', 'marker-mid', 'marker-end', 'filter', 'clip-path', 'mask'):
+                value = a.get(key, '')
+                if key == 'style' and re.search(r'@import\b', value, re.I): self.errors.append('CSS import is not standalone')
+                for match in CSS_URL.finditer(value): self.asset(match.group(1), 'inline CSS/SVG')
     handle_startendtag = handle_starttag
 
 def check_link(value: str, file: Path, root: Path, docs: dict) -> str | None:
@@ -156,7 +163,8 @@ def validate(root: Path = ROOT, check_index: bool = True) -> dict:
     except (ValueError, OSError, KeyError, TypeError) as exc:
         return {'ok': False, 'errors': [f'manifest/index: {exc}'], 'html_files': 0, 'embedded_images': 0}
     files = [root/'index.html'] + sorted((root/'examples').rglob('*.html'))
-    tracked = {r['path'] for r in records}
+    aliases = {alias: r['path'] for r in records for alias in r.get('aliases', [])}
+    tracked = {r['path'] for r in records} | set(aliases)
     for f in files:
         standalone = f != root/'index.html'
         if standalone and f.relative_to(root).as_posix() not in tracked:
@@ -164,6 +172,12 @@ def validate(root: Path = ROOT, check_index: bool = True) -> dict:
         d = Document(f.read_text(encoding='utf-8'), standalone); docs[f.resolve()] = d
         images += d.images
         errors.extend(f'{f.relative_to(root)}: {e}' for e in d.errors)
+        alias = f.relative_to(root).as_posix()
+        if alias in aliases:
+            link = urlsplit(d.redirect_target or '')
+            target = (f.parent / unquote(link.path)).resolve()
+            if not d.redirect_target or link.scheme or link.netloc or target != (root/aliases[alias]).resolve():
+                errors.append(f'{alias}: redirect must target its canonical article')
     for f in files:
         for value in docs[f.resolve()].links:
             err = check_link(value, f, root, docs)

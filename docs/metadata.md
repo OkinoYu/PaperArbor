@@ -56,3 +56,9 @@ source 的可选 `sha256`、`config_sha256` 等 `*sha256` 字段必须是 64 位
 传 entry/evidence 渲染时，HTML 保存 `evidence-data` 安全 JSON 和可展开的静态证据列表。新增 Library 产物的嵌入来源/ledger 与外部清单必须相等；旧产物可按有意修订逐步迁移。Standalone 的 `--article` 检查要求内嵌证据，并拒绝对 catalog 或其他本地文件的链接依赖；不必提供完整站点。
 
 关联阅读从共同规范 source ID（去 arXiv 版本号）或相同 tag 生成，显示关联理由。标签只用于发现，不能证明论文有继承关系。
+
+## 方向与旧地址
+
+支持 LLM、VLM、Multimodal、Reasoning、Agent、RL、OPD、Others。`category` 与 canonical `path` 的目录匹配；首页按钮与方向总数从同一个 CATEGORIES 集合生成。
+
+可选 `aliases` 是旧文章路径数组，例如 `examples/VLM/opld-2607.28154.html`。它们只保留指向当前 canonical path 的跳转，不增加论文记录或计数；与所有 article/alias 路径全局去重。迁移必须由用户明确要求，使用 publisher `--replace --move`，保留原 id/evidence/added，并把旧 canonical path 加入 aliases。publisher 同时生成旧地址页、改写站内文章链接和首页，异常时回滚；校验器验证 alias 的目标，普通修订仍拒绝改路径。

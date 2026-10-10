@@ -27,7 +27,7 @@ Every experimental number, parameter count, formula and chart must have a nearby
 
 Use warm paper, forest green, restrained amber, readable Chinese text and clear section hierarchy. Desktop sticky TOC; mobile collapsible TOC and scrollable wide tables/SVGs. Include source captions, alt text, a skip link, keyboard focus and reduced-motion support. No remote fonts/runtime scripts. MathML with `aria-label` renders important equations offline; follow each with Chinese symbol explanations and a source. Inline SVG requires `viewBox`, `role="img"`, `aria-labelledby` and a `<title>`; arrows show real data flow. No raw LaTeX delimiters, fabricated quantitative graphics or decorative equations.
 
-Choose stable ASCII stems: `<paper-name>-<arxiv-id>.html`, `<family>-series.html`, `<topic>-<date>-digest.html`, `<topic>-<start>-<end>-radar.html`. Legacy first example is `examples/VLM/QwenVL-series.html`. Categories: LLM, VLM, Multimodal, Reasoning, Agent, RL, Others. Source IDs include verified versions; de-duplicate same-mode canonical source sets, IDs and case-insensitive paths. Single and Series may intentionally share a source.
+Choose stable ASCII stems: `<paper-name>-<arxiv-id>.html`, `<family>-series.html`, `<topic>-<date>-digest.html`, `<topic>-<start>-<end>-radar.html`. Legacy first example is `examples/VLM/QwenVL-series.html`. Categories: LLM, VLM, Multimodal, Reasoning, Agent, RL, OPD, Others. Source IDs include verified versions; de-duplicate same-mode canonical source sets, IDs and case-insensitive paths. Single and Series may intentionally share a source.
 
 ## Figures
 
@@ -39,7 +39,7 @@ Prefer load-bearing original figures plus explanatory SVGs. `extract_figure.py -
 2. Author body HTML plus a metadata entry (`docs/metadata.md`) and evidence ledger.
 3. Render into a new staging path and embed local images; never overwrite another article to get a draft.
 4. `publish_entry.py entry.json --html draft.html --evidence evidence.json --dry-run` validates a full temporary site.
-5. Publish with the same command without `--dry-run`. Default refuses existing files/records. Use `--replace` only for an intended revision; retain original added date and paths.
+5. Publish with the same command without `--dry-run`. Default refuses existing files/records. Use `--replace` only for an intended revision; retain original added date and paths. Explicit user-requested category/path moves use `--replace --move` and register the old path in `aliases`; preserve id/evidence/added and verify backward redirects.
 6. Run `build_index.py --check`, `validate_site.py`, and relevant tests. Inspect desktop/mobile and disconnected article rendering when browser tools are available.
 7. Report paths, evidence gaps and checks. No automatic external publication.
 

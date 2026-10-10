@@ -120,11 +120,11 @@
     "id": "opld-2607.28154",
     "title": "OPLD 精读：把教师的图解指导变成学生的内部计算",
     "summary": "从一道形状变换题走通 OPLD：连续向量怎样反馈，教师如何分别提供轨迹参照与学生路径评分；用消融和干预区分收益、实际作用与可解释性边界。",
-    "category": "VLM",
+    "category": "OPD",
     "type": "Single",
     "published": "2026-07-30",
     "added": "2026-10-10",
-    "path": "examples/VLM/opld-2607.28154.html",
+    "path": "examples/OPD/opld-2607.28154.html",
     "tags": [
       "OPLD",
       "潜在推理",
@@ -147,6 +147,9 @@
     ],
     "evidence": "data/evidence/opld-2607.28154.json",
     "updated": "2026-10-10",
-    "body": "articles/opld-2607.28154/body.html"
+    "body": "articles/opld-2607.28154/body.html",
+    "aliases": [
+      "examples/VLM/opld-2607.28154.html"
+    ]
   }
 ]

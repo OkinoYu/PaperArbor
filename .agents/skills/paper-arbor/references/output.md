@@ -21,3 +21,5 @@ Standalone 加 `--standalone`，只生成内部跳转，不带 index/关联文�
 完整 evidence 以安全 JSON 和静态列表同时保存在 HTML。JS 开启时可按章/来源过滤搜索，关闭 JS 时文末 details 内仍有全部 locator 与返回链接。引用链接保留 href，Ctrl/Command 沿原链接跳转；显式 PDF 链接直接打开原文，不拦截为查证窗口。外部 ledger 与嵌入内容必须一致，validator 会拒绝陈旧副本。
 
 表格/SVG/公式建议作者给滚动容器 tabindex、role=region、aria-label；JS 也会增强这些属性。交互必须渐进增强，禁用 JS 时核心信息可读，按钮操作不能删除科学条件。
+
+用户明确要求目录/方向迁移时，entry 登记旧路径 `aliases`，使用 `publish_entry.py --replace --move` 先 dry-run 再发布；保留 id/evidence/added。publisher 生成旧网址跳转并同步文章间链接，普通修订不使用此选项。方向和路径格式以 common.py 与 metadata.md 为准。

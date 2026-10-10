@@ -17,7 +17,7 @@ def render_index(records: list, root: Path = ROOT) -> str:
 <div class="card-foot"><span>论文发布 <time datetime="{e(r['published'])}">{e(r['published'])}</time></span><span>收录 {e(r['added'])}</span></div></article>''')
     payload = json.dumps(records, ensure_ascii=False).replace('<', '\\u003c').replace('>', '\\u003e').replace('&', '\\u0026')
     template = (root / 'templates/index.html').read_text(encoding='utf-8')
-    return template.replace('{{CARDS}}', '\n'.join(cards)).replace('{{DATA}}', payload).replace('{{COUNT}}', str(len(records))).replace('{{CATEGORIES}}', ''.join(f'<button type="button" data-category="{c}" aria-pressed="false">{c}</button>' for c in CATEGORIES))
+    return template.replace('{{CARDS}}', '\n'.join(cards)).replace('{{DATA}}', payload).replace('{{COUNT}}', str(len(records))).replace('{{CATEGORY_COUNT}}', str(len(CATEGORIES))).replace('{{CATEGORIES}}', ''.join(f'<button type="button" data-category="{c}" aria-pressed="false">{c}</button>' for c in CATEGORIES))
 
 def main():
     p = argparse.ArgumentParser(description=__doc__)
