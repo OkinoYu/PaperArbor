@@ -112,7 +112,8 @@ def render(body, title, subtitle, category, mode, root=ROOT, *, entry=None, ledg
     parsed = Headings(body); entries = parsed.entries
     if not any(tag == 'h2' for _, _, tag in entries): raise ValueError('article needs h2 sections')
     reserved = {'article', 'top', 'print', 'progress', 'evidence-heading', 'evidence-notes', 'evidence-data',
-                'evidence-dialog', 'evidence-dialog-title', 'evidence-search', 'evidence-results', 'evidence-count'}
+                'evidence-dialog', 'evidence-dialog-title', 'evidence-search', 'evidence-results', 'evidence-count',
+                'figure-dialog', 'figure-dialog-title'}
     if parsed.ids & reserved or any(i.startswith('evidence-claim-') for i in parsed.ids):
         raise ValueError('body id collides with reader layout')
     if (entry is None) != (ledger is None): raise ValueError('entry and evidence must be supplied together')

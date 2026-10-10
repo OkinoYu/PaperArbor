@@ -65,6 +65,51 @@
     select(buttons[0]); widget.classList.add('enhanced');
   });
 
+  // The article keeps its complete fitted image without JS. The viewer reuses
+  // that embedded source, so enlargement works without a download or network.
+  const figures = [...document.querySelectorAll('main figure img')];
+  if (figures.length && typeof HTMLDialogElement !== 'undefined') {
+    const viewer = document.createElement('dialog'); viewer.id = 'figure-dialog';
+    viewer.setAttribute('aria-labelledby', 'figure-dialog-title');
+    viewer.innerHTML = '<div class="dialog-head"><h2 id="figure-dialog-title">原图细节</h2><button type="button" class="figure-close" aria-label="关闭图像窗口">关闭 ×</button></div><div class="figure-controls"><button type="button" data-size="fit">完整显示</button><button type="button" data-size="actual">原始尺寸</button><span class="source" role="status" aria-live="polite"></span></div><div class="figure-viewport" tabindex="0" role="region" aria-label="放大的原图，可滚动查看"><img alt=""/></div><p class="figure-caption"></p>';
+    document.body.append(viewer);
+    const image = viewer.querySelector('img');
+    const viewport = viewer.querySelector('.figure-viewport');
+    const status = viewer.querySelector('[role="status"]');
+    let original = null, imageOpener = null, mode = 'fit';
+    const resizeImage = () => {
+      if (!original?.naturalWidth) return;
+      const available = Math.max(1, viewport.clientWidth - 16);
+      const width = mode === 'actual' ? original.naturalWidth : Math.min(original.naturalWidth, available);
+      image.style.width = `${width}px`;
+      viewer.querySelectorAll('[data-size]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.size === mode)));
+      status.textContent = `${Math.round(width / original.naturalWidth * 100)}% · ${mode === 'actual' ? '可横向、纵向滚动查看' : '完整图像'}`;
+    };
+    image.addEventListener('load', resizeImage);
+    addEventListener('resize', () => { if (viewer.open) resizeImage(); });
+    viewer.querySelector('.figure-close').addEventListener('click', () => viewer.close());
+    viewer.addEventListener('close', () => imageOpener?.focus({preventScroll:true}));
+    viewer.querySelectorAll('[data-size]').forEach(button => button.addEventListener('click', () => {
+      mode = button.dataset.size; resizeImage(); viewport.scrollTo(0, 0);
+    }));
+    for (const sourceImage of figures) {
+      if (!sourceImage.getAttribute('src')?.startsWith('data:image/')) continue;
+      const actions = document.createElement('div'); actions.className = 'figure-actions';
+      const button = document.createElement('button'); button.type = 'button'; button.textContent = '放大图像';
+      button.setAttribute('aria-haspopup', 'dialog'); button.setAttribute('aria-controls', viewer.id);
+      button.setAttribute('aria-label', '放大图像：' + sourceImage.alt);
+      const hint = document.createElement('span'); hint.textContent = '完整显示 / 原始尺寸';
+      actions.append(button, hint); sourceImage.closest('figure').querySelector('figcaption')?.before(actions);
+      button.addEventListener('click', () => {
+        if (typeof viewer.showModal !== 'function') return;
+        original = sourceImage; imageOpener = button; mode = 'fit';
+        image.src = sourceImage.getAttribute('src'); image.alt = sourceImage.alt;
+        viewer.querySelector('.figure-caption').textContent = sourceImage.closest('figure').querySelector('figcaption')?.textContent || '';
+        viewer.showModal(); resizeImage(); viewport.scrollTo(0, 0); viewport.focus();
+      });
+    }
+  }
+
   const payload = byId('evidence-data');
   if (!payload) return;
   let data;

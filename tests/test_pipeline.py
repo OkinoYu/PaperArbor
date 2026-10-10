@@ -186,6 +186,10 @@ class PipelineTests(unittest.TestCase):
   self.assertFalse(data_image('data:image/png;base64,'+base64.b64encode(b'not png').decode()));self.assertFalse(data_image('data:image/png;base64,@@'))
  def test_renderer_requires_heading_ids(self):
   with self.assertRaises(ValueError):render('<h2>No id</h2>','x','x','VLM','Single',self.root)
+ def test_authored_ids_cannot_shadow_figure_viewer(self):
+  for ident in ('figure-dialog','figure-dialog-title'):
+   with self.subTest(ident=ident),self.assertRaisesRegex(ValueError,'reader layout'):
+    render(f'<h2 id="method">Method</h2><div id="{ident}">Authored content</div>','x','x','VLM','Single',self.root)
  def test_atom_keeps_version_and_dates(self):
   item=parse_atom(ATOM)[0];self.assertEqual(item['id'],'2409.12191v2');self.assertEqual(item['published'],'2024-09-18');self.assertEqual(item['authors'],'A Author');self.assertEqual(item['pdf_url'],'https://arxiv.org/pdf/2409.12191v2')
  def test_arxiv_url_lookup(self):
