@@ -1,0 +1,65 @@
+[
+  {
+    "id": "qwenvl-series",
+    "title": "Qwen-VL 系列：从视觉摘要到多模态推理",
+    "summary": "四代原始论文精读：动态分辨率、M-RoPE、窗口注意力与 DeepStack 如何改变信息流，以及训练、消融和长视频证据的边界。",
+    "category": "VLM",
+    "type": "Series",
+    "published": "2025-11-26",
+    "added": "2026-10-10",
+    "path": "examples/VLM/QwenVL-series.html",
+    "tags": [
+      "Qwen",
+      "视觉语言模型",
+      "动态分辨率",
+      "多模态推理"
+    ],
+    "sources": [
+      {
+        "id": "2308.12966v1",
+        "title": "Qwen-VL: A Frontier Large Vision-Language Model with Versatile Abilities",
+        "authors": "Jinze Bai; Shuai Bai; Shusheng Yang; Shijie Wang; Sinan Tan; Peng Wang; Junyang Lin; Chang Zhou; Jingren Zhou",
+        "published": "2023-08-24",
+        "version": "v1",
+        "version_date": "2023-08-24",
+        "url": "https://arxiv.org/abs/2308.12966v1",
+        "pdf_url": "https://arxiv.org/pdf/2308.12966v1",
+        "sha256": "80ae72f19bce30a625044c9f4020aa95ac314997d8ccbabb6e5ca59462758bfa"
+      },
+      {
+        "id": "2409.12191v2",
+        "title": "Qwen2-VL: Enhancing Vision-Language Model's Perception of the World at Any Resolution",
+        "authors": "Peng Wang; Shuai Bai; Sinan Tan; Shijie Wang; Zhihao Fan; Jinze Bai; Keqin Chen; Xuejing Liu; Jialin Wang; Wenbin Ge; Yang Fan; Kai Dang; Mengfei Du; Xuancheng Ren; Rui Men; Dayiheng Liu; Chang Zhou; Jingren Zhou; Junyang Lin",
+        "published": "2024-09-18",
+        "version": "v2",
+        "version_date": "2024-10-03",
+        "url": "https://arxiv.org/abs/2409.12191v2",
+        "pdf_url": "https://arxiv.org/pdf/2409.12191v2",
+        "sha256": "30bb0f6c9babf910295d6b7cd34b6f54824236f68782664c3c93fbf4803275d0"
+      },
+      {
+        "id": "2502.13923v1",
+        "title": "Qwen2.5-VL Technical Report",
+        "authors": "Shuai Bai; Keqin Chen; Xuejing Liu; Jialin Wang; Wenbin Ge; Sibo Song; Kai Dang; Peng Wang; Shijie Wang; Jun Tang; Humen Zhong; Yuanzhi Zhu; Mingkun Yang; Zhaohai Li; Jianqiang Wan; Pengfei Wang; Wei Ding; Zheren Fu; Yiheng Xu; Jiabo Ye; Xi Zhang; Tianbao Xie; Zesen Cheng; Hang Zhang; Zhibo Yang; Haiyang Xu; Junyang Lin",
+        "published": "2025-02-19",
+        "version": "v1",
+        "version_date": "2025-02-19",
+        "url": "https://arxiv.org/abs/2502.13923v1",
+        "pdf_url": "https://arxiv.org/pdf/2502.13923v1",
+        "sha256": "399a28f6ed79f4ece29cca93993fceb56fc304b1d779e49392aec05aff45aba5"
+      },
+      {
+        "id": "2511.21631v2",
+        "title": "Qwen3-VL Technical Report",
+        "authors": "Shuai Bai; Yuxuan Cai; Ruizhe Chen; Keqin Chen; Xionghui Chen; Zesen Cheng; Lianghao Deng; Wei Ding; Chang Gao; Chunjiang Ge; Wenbin Ge; Zhifang Guo; Qidong Huang; Jie Huang; Fei Huang; Binyuan Hui; Shutong Jiang; Zhaohai Li; Mingsheng Li; Mei Li; Kaixin Li; Zicheng Lin; Junyang Lin; Xuejing Liu; Jiawei Liu; Chenglong Liu; Yang Liu; Dayiheng Liu; Shixuan Liu; Dunjie Lu; Ruilin Luo; Chenxu Lv; Rui Men; Lingchen Meng; Xuancheng Ren; Xingzhang Ren; Sibo Song; Yuchong Sun; Jun Tang; Jianhong Tu; Jianqiang Wan; Peng Wang; Pengfei Wang; Qiuyue Wang; Yuxuan Wang; Tianbao Xie; Yiheng Xu; Haiyang Xu; Jin Xu; Zhibo Yang; Mingkun Yang; Jianxin Yang; An Yang; Bowen Yu; Fei Zhang; Hang Zhang; Xi Zhang; Bo Zheng; Humen Zhong; Jingren Zhou; Fan Zhou; Jing Zhou; Yuanzhi Zhu; Ke Zhu",
+        "published": "2025-11-26",
+        "version": "v2",
+        "version_date": "2025-11-27",
+        "url": "https://arxiv.org/abs/2511.21631v2",
+        "pdf_url": "https://arxiv.org/pdf/2511.21631v2",
+        "sha256": "ee075d08e67de1148d6437c6c1d481f7894183b8793905a2deb5f62664f49380"
+      }
+    ],
+    "evidence": "data/evidence/qwenvl-series.json"
+  }
+]

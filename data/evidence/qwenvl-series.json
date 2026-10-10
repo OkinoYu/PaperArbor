@@ -1,0 +1,372 @@
+{
+  "reviewed": "2026-10-10",
+  "coverage": "Four full versioned PDFs; identity verified from versioned arXiv metadata. All formulas are labeled explanatory derivations. No reproduction of full training or independent benchmark reruns.",
+  "claims": [
+    {
+      "anchor": "intro",
+      "source": "2308.12966v1",
+      "locator": "Versioned arXiv metadata: citation_title, citation_author, citation_date, citation_online_date",
+      "statement": "Timeline uses first submission date; full identity, authors and version date retained in sources.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "intro",
+      "source": "2409.12191v2",
+      "locator": "Versioned arXiv metadata: citation_title, citation_author, citation_date, citation_online_date",
+      "statement": "Timeline uses first submission date; full identity, authors and version date retained in sources.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "intro",
+      "source": "2502.13923v1",
+      "locator": "Versioned arXiv metadata: citation_title, citation_author, citation_date, citation_online_date",
+      "statement": "Timeline uses first submission date; full identity, authors and version date retained in sources.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "intro",
+      "source": "2511.21631v2",
+      "locator": "Versioned arXiv metadata: citation_title, citation_author, citation_date, citation_online_date",
+      "statement": "Timeline uses first submission date; full identity, authors and version date retained in sources.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "2308.12966v1",
+      "locator": "Table 1, PDF p3; Section 3.1 / Table 2, p4–5; Section 3.3, p6",
+      "statement": "ViT 1.9B, adapter 0.08B, LLM 7.7B, total 9.6B; cleaned image-text pairs 1.4B; SFT 350K.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "2409.12191v2",
+      "locator": "Section 2 / Table 1, PDF p3; Section 2.2, p5–6",
+      "statement": "Model release labels 2B/7B/72B, ViT 675M; 600B+800B=1.4T image/text tokens, text-only supervision.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "2502.13923v1",
+      "locator": "Table 1 p4; Table 2 p8; Section 2.3.1 p9",
+      "statement": "3B/7B/72B family; 4.1T tokens; pretraining stages 1.5T/2T/0.6T, lengths 8192/8192/32768; SFT approximately 2M samples.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "2511.21631v2",
+      "locator": "Section 2 p2–3; Table 1 p4; Section 4.1 p9",
+      "statement": "Dense 2B/4B/8B/32B, MoE 30B-A3B/235B-A22B; 67B/~1T/~1T/100B tokens with 8192/8192/32768/262144 sequence lengths.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "2502.13923v1",
+      "locator": "Introduction p2; Section 2.2.1 p5",
+      "statement": "Qwen2.5 report retrospectively states predecessor 1.2T tokens; retain discrepancy with S2 instead of resolving without evidence.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen-vl",
+      "source": "2308.12966v1",
+      "locator": "Sections 2.1–2.2, PDF p3–4",
+      "statement": "OpenCLIP ViT-bigG, patch stride 14, fixed-length 256 learned query cross-attention adapter with 2D absolute positions; box coordinates normalized to [0,1000).",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "adapter-equation",
+      "source": "2308.12966v1",
+      "locator": "Section 2.1, p3",
+      "statement": "Cross-attention standard QK softmax weighted V explanation; projections and positional treatment omitted, not an original numbered equation.",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen-vl",
+      "source": "2308.12966v1",
+      "locator": "Figure 3, PDF p4",
+      "statement": "Three-stage training crop retains frozen/trained modules and data labels.",
+      "kind": "figure"
+    },
+    {
+      "anchor": "qwen-vl",
+      "source": "2308.12966v1",
+      "locator": "Section 3.1 / Table 2, p4–5",
+      "statement": "5B original pairs → 1.4B cleaned; consumed about 1.5B samples/500B image-text tokens; phase 1 224x224, frozen LLM, train vision+adapter.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen-vl",
+      "source": "2308.12966v1",
+      "locator": "Section 3.2 / Table 3, p5–6; Section 3.3, p6–7",
+      "statement": "Seven multitask types, 448x448, packing length 2048, full-model training; SFT 350K, freeze ViT, optimize language+adapter, answer/special-token supervision.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen-vl",
+      "source": "2308.12966v1",
+      "locator": "Table 6, PDF p9",
+      "statement": "Qwen-VL TextVQA 63.8 / DocVQA 65.1; Qwen-VL-Chat 61.5 / 62.6. Chat is not uniformly higher.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen-vl",
+      "source": "2308.12966v1",
+      "locator": "Section 6, PDF p10",
+      "statement": "Speech/video and scale are future directions; fixed-budget bottleneck is editorial analysis, not reported quantitative ablation.",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "qwen2-vl",
+      "source": "2409.12191v2",
+      "locator": "Section 2.1 / Figure 2, PDF p4",
+      "statement": "Dynamic resolution with 2D-RoPE replaces absolute positions; 2x2 spatial merging; original architecture crop.",
+      "kind": "figure"
+    },
+    {
+      "anchor": "qwen2-vl",
+      "source": "2409.12191v2",
+      "locator": "Section 2.1 / Figure 3, p4–5",
+      "statement": "M-RoPE uses temporal/height/width components; text equal IDs, image constant temporal ID, video increasing temporal ID; new segment max ID+1.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen2-vl",
+      "source": "2409.12191v2",
+      "locator": "Section 2.1, p5",
+      "statement": "Video 2 FPS, temporal-depth 2 3D convolution; images treated as two identical frames; training video budget 16384 tokens.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "token-equation",
+      "source": "2409.12191v2",
+      "locator": "Section 2.1, p4",
+      "statement": "14px patch and 2x2 merge imply visual tokens=(Hprime/28)*(Wprime/28); 224x224 → 64 visual + 2 boundary = 66.",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen2-vl",
+      "source": "2409.12191v2",
+      "locator": "Section 2.2, p5–6",
+      "statement": "Three training stages; first ViT, second all, third frozen ViT/instruction-tuned LLM. Combined 1.4T counts text+vision but supervision text only.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen2-vl",
+      "source": "2409.12191v2",
+      "locator": "Table 2, PDF p9",
+      "statement": "Qwen2-VL-72B: MMMU val 64.5, MathVista testmini 70.5, DocVQA test 96.5; Claude3.5/GPT4o MMMU 68.3/69.1.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen2-vl",
+      "source": "2409.12191v2",
+      "locator": "Table 7 / Section 3.3.1, PDF p14",
+      "statement": "Qwen2-VL-7B fixed 3136 visual tokens: InfoVQA 77.27, OCRBench 786; dynamic average 1924: 75.89, 866. Not all-task dominance.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen2-vl",
+      "source": "2409.12191v2",
+      "locator": "Table 8 / Section 3.3.2, PDF p15",
+      "statement": "Qwen2-1.5B + ViT-L pretraining ablation: MathVista 39.2→43.4; NextQA 43.9→46.0; RealWorldQA 54.5→53.7; InfoVQA 50.8→50.3.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen2-vl",
+      "source": "2409.12191v2",
+      "locator": "Section 3.2.7 Visual Agent, PDF p13",
+      "statement": "VLN map information incomplete/unstructured; 3D maps and locations remain a challenge.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen25-vl",
+      "source": "2502.13923v1",
+      "locator": "Figure 1 / Section 2.1, p3–4",
+      "statement": "Original architecture figure shows dynamic FPS, absolute-time alignment, window/full attention. Crop 419490 bytes prioritizes small-label readability.",
+      "kind": "figure"
+    },
+    {
+      "anchor": "qwen25-vl",
+      "source": "2502.13923v1",
+      "locator": "Table 1 / Section 2.1.1, PDF p4",
+      "statement": "ViT 32 layers; full attention indexes {7,15,23,31}; maximum 112x112 pixels/8x8 patches per window; RMSNorm and SwiGLU; from-scratch ViT.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen25-vl",
+      "source": "2502.13923v1",
+      "locator": "Sections 2.1–2.1.3, p3–5",
+      "statement": "Image sides multiples of 28; stride 14; 2x2 concat/two-layer MLP; actual image-size coordinates; dynamic FPS training and absolute-time-aligned MRoPE.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "attention-cost",
+      "source": "2502.13923v1",
+      "locator": "Section 2.1.1, PDF p4",
+      "statement": "Global attention pairing O(N squared), fixed M-patch windows O(N*M); not full network linear complexity or measured latency.",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen25-vl",
+      "source": "2502.13923v1",
+      "locator": "Table 2 / Section 2.2.2, PDF p8",
+      "statement": "Stages 1.5T/2T/0.6T, 8192/8192/32768; progressive data; dynamic LLM packing for GPU load balance.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen25-vl",
+      "source": "2502.13923v1",
+      "locator": "Sections 2.3.1–2.3.4, PDF p9–10",
+      "statement": "SFT approximately 2M entries, 50/50 text versus multimodal sample count; SFT/DPO freeze ViT; DPO image-text and text only; filtering and rejection sampling.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen25-vl",
+      "source": "2502.13923v1",
+      "locator": "Table 3 p11; Table 5 p13",
+      "statement": "72B MMMU val 70.2, MathVista mini 74.8, DocVQA test 96.4, TextVQA val 83.5. No isolated module gain inferred.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen3-vl",
+      "source": "2511.21631v2",
+      "locator": "Figure 1 / Section 2, PDF p3",
+      "statement": "Original architecture crop; SigLIP2-SO-400M default / Large300M for 2B/4B; interpolation plus 2D-RoPE.",
+      "kind": "figure"
+    },
+    {
+      "anchor": "qwen3-vl",
+      "source": "2511.21631v2",
+      "locator": "Section 2.1, p3; Section 2.2, p4",
+      "statement": "Interleaved axis frequency allocation; three ViT levels use specialized mergers added to first three LLM-layer hidden states.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deepstack-equation",
+      "source": "2511.21631v2",
+      "locator": "Section 2.2 / Figure 1, p3–4",
+      "statement": "Hidden-state addition schematic; exact ViT layer indexes and detailed residual execution order not asserted.",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen3-vl",
+      "source": "2511.21631v2",
+      "locator": "Section 2.3, p4",
+      "statement": "Video temporal patches prefixed with textual timestamps; seconds and HMS formats; predecessor absolute-time ID sparsity and data construction issues.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen3-vl",
+      "source": "2511.21631v2",
+      "locator": "Introduction p2; Section 3.1 / Table 1 p4–5",
+      "statement": "Four-stage pretraining (only merger then all), 67B/~1T/~1T/100B, context 8K/8K/32K/256K. Square-root normalized loss is mentioned but no invented precise equation.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen3-vl",
+      "source": "2511.21631v2",
+      "locator": "Sections 4.1–4.3, p9–11",
+      "statement": "Instruct/Thinking formats; SFT 32K→256K; text-only strong-to-weak off-policy and on-policy teacher/student KL distillation.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen3-vl",
+      "source": "2511.21631v2",
+      "locator": "Section 4.4, PDF p11–12",
+      "statement": "Reasoning RL approximately 30K queries, 16 responses, SAPO; General RL uses rule/model rewards, targeted behavior correction.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen3-vl",
+      "source": "2511.21631v2",
+      "locator": "Section 4.5, PDF p12–13",
+      "statement": "Visual-agent training on Qwen2.5-VL-32B then ~120K multiround interactions for Qwen3-VL; answer/feedback/tool-use rewards.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen3-vl",
+      "source": "2511.21631v2",
+      "locator": "Section 5.11, PDF p20",
+      "statement": "Flagship/midsize Instruct text evaluation: temperature0.7 top-p0.8 top-k20 presence1.5 max output32768. Not claimed as universal multimodal protocol.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen3-vl",
+      "source": "2511.21631v2",
+      "locator": "Section 2 p2; Table 2 p15",
+      "statement": "235B total/22B active; Thinking/Instruct MMMU80.6/78.7 MathVista85.8/84.9 DocVQA96.5/97.1; preserve reasoning mode distinction.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "qwen3-vl",
+      "source": "2511.21631v2",
+      "locator": "Table 12 / Section 5.12.2, PDF p24",
+      "statement": "Internal 15B-A2B,200B tokens,no posttraining validation: AVG74.7→76.0; InfoVQA71.9→74.2; DocVQA89.5→91.1; TextVQA80.6→80.5.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "loss-equation",
+      "source": "2308.12966v1",
+      "locator": "Section 3.1 p5; Section 3.3 p6–7",
+      "statement": "Conditional text cross-entropy over supervised positions; not a reconstruction objective or Qwen3 loss normalization.",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "training",
+      "source": "2502.13923v1",
+      "locator": "Sections 2.2–2.3, p5–10",
+      "statement": "Progressive tasks/long context and behavior alignment summarized; replica evaluation suggestions labeled editorial.",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2409.12191v2",
+      "locator": "Table 2 p9 / Tables7–8 p14–15",
+      "statement": "Benchmark table values copied at source precision with model/split/mode; cross-report numbers are not a uniform rerun or causal attribution.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2502.13923v1",
+      "locator": "Table 3 p11 / Table5 p13",
+      "statement": "Benchmark table values copied at source precision with model/split/mode; cross-report numbers are not a uniform rerun or causal attribution.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2511.21631v2",
+      "locator": "Table 2 p15 / Table12 p24",
+      "statement": "Benchmark table values copied at source precision with model/split/mode; cross-report numbers are not a uniform rerun or causal attribution.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2511.21631v2",
+      "locator": "Figure 3 / Section 5.12.3, PDF p25",
+      "statement": "Original needle heatmap; 1FPS, fixed visual token budget; 30min/256K=100% reported; YaRN 1M/~2h=99.5% reported; retrieval scope explicitly limited.",
+      "kind": "figure"
+    },
+    {
+      "anchor": "inference",
+      "source": "2511.21631v2",
+      "locator": "Sections 2 and 4.5, p2–4 and p12–13",
+      "statement": "Deployment pipeline and tool feedback are explanatory synthesis; no fabricated latency/memory numbers.",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "limitations",
+      "source": "2511.21631v2",
+      "locator": "Sections 5.12.2–5.12.3, p24–25",
+      "statement": "Limitations matrix distinguishes reproducibility and evaluation-scope judgments from original experimental facts.",
+      "kind": "editorial-analysis"
+    }
+  ],
+  "third_party_figures": {
+    "license": "arXiv non-exclusive distribution license (not MIT; no separate figure relicensing obtained)",
+    "sources": [
+      "2308.12966v1",
+      "2409.12191v2",
+      "2502.13923v1",
+      "2511.21631v2"
+    ]
+  }
+}

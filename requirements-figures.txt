@@ -1,0 +1,3 @@
+# Optional: only PDF figure extraction and source reading. Website/build/tests need no packages.
+pdfplumber>=0.11.4,<0.12
+Pillow>=10.4,<13
