@@ -1,0 +1,608 @@
+{
+  "reviewed": "2026-10-10",
+  "coverage": "完整AAAI正式PDF9页，用户附件与官方SHA-256一致；作者实现固定到ed55140。覆盖动机、层内机制、初始化、损失、训练、推理、全部深度主表及效率表、负例和实现差异；未独立复跑，未补造组件消融、噪声实验或首次投稿日期。",
+  "claims": [
+    {
+      "anchor": "overview",
+      "source": "aaai-38641-20260314",
+      "locator": "PDF p.1; AAAI DOI landing page",
+      "statement": "标题、五位作者与福州大学署名核实；AAAI 40(19):16066–16074，DOI 10.1609/aaai.v40i19.38641，官方发表日2026-03-14；首次投稿日期未核实。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "aaai-38641-20260314",
+      "locator": "Retrieved official PDF; local SHA-256 comparison",
+      "statement": "用户PDF与官方PDF均9页、763700字节，SHA-256为9615f6a84bc569c72e55b4bbcf06f28aab689f6eddb9e142c3bafd5b8ca7855e，字节完全一致。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "aaai-38641-20260314",
+      "locator": "The Proposed Method, PDF pp.4–6",
+      "statement": "BONE将正则化矩阵分解更新与低维可学习变换结合，用共享label head和分配概率上的跨视图对比损失学习聚类。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "term-view",
+      "source": "aaai-38641-20260314",
+      "locator": "Related Work notation, PDF p.2",
+      "statement": "X^v∈R^(m_v×n)，V个视图共享n个对齐样本，k为簇数，r为表示维度。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "term-cluster",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "utils/MVDataset.py lines 6–18",
+      "statement": "实现由真实标签的不同值个数设置k；训练损失不接收类别标签，但依赖已知簇数。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "motivation",
+      "source": "aaai-38641-20260314",
+      "locator": "Introduction; Related Work, PDF pp.1–4",
+      "statement": "作者针对传统硬一致性/后处理融合、深度自编码器预训练和参数开销提出混合优化与神经网络的框架。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "motivation",
+      "source": "aaai-38641-20260314",
+      "locator": "Eqs.3,7,10, PDF pp.4–5",
+      "statement": "BONE仍具有低秩重构、正则化和样本对应等结构假设；无显式一致性约束不等于无先验。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "insight",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "method/bone.py lines 19–47,55–86; test_cmvsc.py Adam loop",
+      "statement": "持久可训练参数为各视图A0、各层低维Linear和共享label_fc；层内A根据当前输入重算，不是另一个nn.Parameter。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "insight",
+      "source": "aaai-38641-20260314",
+      "locator": "The Proposed Method, PDF p.4",
+      "statement": "优化骨架提供操作层面的可解释性；文章未提供语义可解释性或加入可学习变换后单调收敛的证明。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "original-architecture",
+      "source": "aaai-38641-20260314",
+      "locator": "Figure 2, PDF p.3",
+      "statement": "Figure2完整图区裁切，含(a)多视图提取/分配/对比/融合，(b)优化更新，(c)label head；图像文字音频为示意。",
+      "kind": "figure"
+    },
+    {
+      "anchor": "original-architecture",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "utils/data_util.py get_dataset; utils/MVDataset.py",
+      "statement": "公开实现读取.mat内X1...Xv特征和Y标签，不提供图像文字音频原始编码器。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "layer-flow",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "method/bone.py lines 64–78; paper Eqs.4–6",
+      "statement": "重绘代码数据流：每视图每层正则化投影→r维Linear→更新A，末层Z经共享label_fc→各视图概率平均→argmax。",
+      "kind": "figure"
+    },
+    {
+      "anchor": "basis",
+      "source": "aaai-38641-20260314",
+      "locator": "Eq.3, PDF p.4",
+      "statement": "minΣv(||Xv−AvZv||F²+α||Av||F²+β||Zv||F²)，Av为m_v×r、Zv为r×n；这是骨架来源，最终网络用Eq.10训练。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ridge-equation",
+      "source": "aaai-38641-20260314",
+      "locator": "Eq.4, PDF p.4",
+      "statement": "Zv=(AvᵀAv+βI)^−1AvᵀXv；I∈R^(r×r)。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ridge-encode",
+      "source": "aaai-38641-20260314",
+      "locator": "Eq.4, PDF p.4",
+      "statement": "由矩阵形状推导：逆矩阵为r×r；β>0下精确算术中Gram加正则可逆；固定A子问题最优不等于整体网络最优。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "learned-correction",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "method/bone.py lines 35–53,64–74",
+      "statement": "每视图每层Linear(r,r,bias=True)，权重初始化单位阵、未显式置零偏置；此处无激活，label_fc为Linear(r,k)→ELU→Softmax。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "basis-equation",
+      "source": "aaai-38641-20260314",
+      "locator": "Eq.5, PDF p.4",
+      "statement": "Av=XvZvᵀ(ZvZvᵀ+αI)^−1。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "basis-update",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "method/bone.py lines 64–69",
+      "statement": "代码先对ridge结果施加fc_Z，再以所得Z更新A；更新依赖本批X、Z，下一层表示可受批内其他样本影响。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "initialization",
+      "source": "aaai-38641-20260314",
+      "locator": "Eqs.7–8 and Remark, PDF p.4",
+      "statement": "初始化求minΣv||Xv−Ainitv Zinitv||F²且AinitvᵀAinitv=I；Z=AinitᵀX，SVD(XZᵀ)=UΣVᵀ，Ainit=UVᵀ；作为近似起点，可采样和限制迭代。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "initialization",
+      "source": "aaai-38641-20260314",
+      "locator": "Training Efficiency, PDF p.7",
+      "statement": "YouTubeFace50仅1%样本用于初始化，随后进行对比训练；无预训练指不做自编码器预训练。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "label-head",
+      "source": "aaai-38641-20260314",
+      "locator": "Eq.9, Figure2(c), PDF pp.3,5",
+      "statement": "共享label projection head将Zv∈R^(r×n)变为Pv∈R^(k×n)，原图label head有ELU和Softmax。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "contrastive-equation",
+      "source": "aaai-38641-20260314",
+      "locator": "Eq.10 definition of s, PDF p.5",
+      "statement": "s(i,v,v′)=−log[exp(d(pi^v,pi^v′)/τ)/Σ_(j,u)≠(i,v)exp(d(pi^v,pj^u)/τ)]；v′≠v，余弦相似度；分母包含所有其他候选。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "contrastive",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "utils/cl_loss.py lines 6–54",
+      "statement": "代码拼接当前批次各视图概率，单位归一化，正对mask为相同样本跨视图，对角self mask为0，最终平均所有锚点和正对。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "contrastive",
+      "source": "aaai-38641-20260314",
+      "locator": "Pair definitions, PDF p.5",
+      "statement": "不同样本被视为负对，不保证语义异簇；可能存在假负例张力，本篇未量化。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "entropy-equation",
+      "source": "aaai-38641-20260314",
+      "locator": "Eq.10 L_reg,q, PDF p.5",
+      "statement": "q_c^v=(1/n)Σ_j P_cj^v；Lreg=(1/V)(1/k)ΣvΣc q_c^v log q_c^v。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "entropy",
+      "source": "aaai-38641-20260314",
+      "locator": "Eq.10, PDF p.5",
+      "statement": "负熵正则鼓励簇频率均衡；不保证单个样本确定分配，且真实类别不均衡时该偏好未必合适。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "objective",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "method/bone.py lines 64–86; test_cmvsc.py lines 50–63",
+      "statement": "损失反传至所有注册参数：初始A、各视图各层fc_Z、共享label_fc；矩阵层内操作未detach。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "phase-walk",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "method/bone.py forward; test_cmvsc.py training loop",
+      "statement": "训练和test=True前向保留同一矩阵计算；test只跳过损失。每次前向从anchor_list初始化临时A，跨批次不保存末层基。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "inference",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "method/bone.py lines 64–69",
+      "statement": "L≥2时下一层基取决于本批X和Z，故单样本输出可能随同批样本变化；代码未提供批量无关固定投影。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "fusion-equation",
+      "source": "aaai-38641-20260314",
+      "locator": "Eq.11, PDF p.5; method/bone.py lines 73–81",
+      "statement": "论文Pv加权融合，实际等权γ=1/V；代码平均Pv后argmax。正文将两步合并为说明式。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "training",
+      "source": "aaai-38641-20260314",
+      "locator": "Experimental Setup, PDF p.6",
+      "statement": "L为2到5，r=k×[1,2,3,4,5]，batch=[128,256,512]，网格搜索；α=β=0.1,τ=1,λr=1,E=100,初始化最多100迭代；未报告独立验证集/选参准则。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "test_cmvsc.py; test_cmvsc_large.py; utils/MVDataset.py",
+      "statement": "实现StandardScaler按视图全体数据fit；Adam lr=1e-2；小数据全体一次eval，大数据按batch=5120评测且drop_last=False；训练不读取label构建loss。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "test_cmvsc.py lines 13–23; test_cmvsc_large.py lines 11–15",
+      "statement": "公开配置(batch,r/k,L)：HandWrite(128,4,3),BDGP(512,2,2),MSRC(128,3,5),COIL20(128,1,4),Caltech5V(128,4,3),MNIST-USPS(512,4,2),ALOI(512,2,2),CCV注释(512,3,2),YouTubeFace50(512,1,2)。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "HandWrite, MFLVC: ACC=0.859, NMI=0.864, Purity=0.859, parameters=28M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "HandWrite, CVCL: ACC=0.968, NMI=0.929, Purity=0.968, parameters=27M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "HandWrite, DCMVC: ACC=0.901, NMI=0.822, Purity=0.901, parameters=21M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "HandWrite, BONE: ACC=0.977, NMI=0.944, Purity=0.977, parameters=55K; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "BDGP, MFLVC: ACC=0.990, NMI=0.967, Purity=0.990, parameters=11M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "BDGP, CVCL: ACC=0.990, NMI=0.967, Purity=0.990, parameters=9M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "BDGP, DCMVC: ACC=0.991, NMI=0.971, Purity=0.991, parameters=8M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "BDGP, BONE: ACC=0.992, NMI=0.973, Purity=0.992, parameters=18K; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "MRSC, MFLVC: ACC=0.795, NMI=0.711, Purity=0.795, parameters=19M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "MRSC, CVCL: ACC=0.910, NMI=0.820, Purity=0.910, parameters=11M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "MRSC, DCMVC: ACC=0.586, NMI=0.501, Purity=0.610, parameters=15M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "MRSC, BONE: ACC=0.938, NMI=0.881, Purity=0.938, parameters=31K; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "COIL20, MFLVC: ACC=0.628, NMI=0.733, Purity=0.647, parameters=24M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "COIL20, CVCL: ACC=0.750, NMI=0.816, Purity=0.767, parameters=28M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "COIL20, DCMVC: ACC=0.757, NMI=0.841, Purity=0.782, parameters=21M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "COIL20, BONE: ACC=0.769, NMI=0.844, Purity=0.790, parameters=227K; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "Caltech5V, MFLVC: ACC=0.747, NMI=0.681, Purity=0.747, parameters=26M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "Caltech5V, CVCL: ACC=0.738, NMI=0.641, Purity=0.753, parameters=17M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "Caltech5V, DCMVC: ACC=0.901, NMI=0.832, Purity=0.901, parameters=21M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "Caltech5V, BONE: ACC=0.906, NMI=0.831, Purity=0.906, parameters=116K; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "MNIST-USPS, MFLVC: ACC=0.996, NMI=0.988, Purity=0.996, parameters=10M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "MNIST-USPS, CVCL: ACC=0.997, NMI=0.990, Purity=0.997, parameters=15M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "MNIST-USPS, DCMVC: ACC=0.990, NMI=0.971, Purity=0.990, parameters=8M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "MNIST-USPS, BONE: ACC=0.982, NMI=0.952, Purity=0.982, parameters=69K; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "ALOI, MFLVC: ACC=0.494, NMI=0.778, Purity=0.510, parameters=18M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "ALOI, CVCL: ACC=0.895, NMI=0.932, Purity=0.903, parameters=23M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "ALOI, DCMVC: ACC=0.928, NMI=0.956, Purity=0.932, parameters=14M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "ALOI, BONE: ACC=0.784, NMI=0.856, Purity=0.799, parameters=397K; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "CCV, MFLVC: ACC=0.290, NMI=0.302, Purity=0.330, parameters=27M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "CCV, CVCL: ACC=0.278, NMI=0.275, Purity=0.322, parameters=25M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "CCV, DCMVC: ACC=0.347, NMI=0.335, Purity=0.396, parameters=24M; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "deep-table",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "CCV, BONE: ACC=0.345, NMI=0.304, Purity=0.366, parameters=863K; all metrics higher better; clustering on the benchmark dataset, no held-out split/checkpoint identifier reported.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "main-results",
+      "source": "aaai-38641-20260314",
+      "locator": "Experimental Setup, Table2, PDF p.6",
+      "statement": "ACC/NMI/Purity均越大越好；表格未给重复运行方差、checkpoint或独立held-out split，不将之表述为泛化分类结果。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "traditional-results",
+      "source": "aaai-38641-20260314",
+      "locator": "Table1, PDF p.5",
+      "statement": "HandWrite/BDGP/MRSC/Caltech5V/ALOI/CCV中BONE三指标高于表内传统基线；COIL20 BONE ACC0.769<AWMVC0.772,NMI0.844<SFMC0.893,Purity0.790<RCAGL0.874；MNIST-USPS TLRLF4 0.992/0.977/0.992>BONE0.982/0.952/0.982；N/A是程序错误或超时。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "parameter-equation",
+      "source": "aaai-38641-20260314",
+      "locator": "Parameter Complexity, PDF p.6",
+      "statement": "论文计数N=r(VLr+Σv m_v+k)，r通常为k的数倍。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "parameter-cost",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "method/bone.py lines 35–53",
+      "statement": "代码所有Linear含bias；在论文权重计数上增加VLr+k偏置项。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "parameter-cost",
+      "source": "aaai-38641-20260314",
+      "locator": "Table2, PDF p.6",
+      "statement": "按表格取整后的参数换算，55K/21M≈0.26%(HandWrite),397K/14M≈2.84%(ALOI),863K/24M≈3.60%(CCV)，分母均DCMVC；约1%非全表精确固定比例。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "time-cost",
+      "source": "aaai-38641-20260314",
+      "locator": "Table3, PDF p.6",
+      "statement": "YouTubeFace50 MFLVC: ACC=0.5672, NMI=0.7235, Purity=0.4655, preparation+training=83+3009 seconds, params=20M; BONE preparation=initialization, baselines=pretraining; no held-out split specified.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "time-cost",
+      "source": "aaai-38641-20260314",
+      "locator": "Table3, PDF p.6",
+      "statement": "YouTubeFace50 CVCL: ACC=0.705, NMI=0.8289, Purity=0.7431, preparation+training=582+374 seconds, params=25M; BONE preparation=initialization, baselines=pretraining; no held-out split specified.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "time-cost",
+      "source": "aaai-38641-20260314",
+      "locator": "Table3, PDF p.6",
+      "statement": "YouTubeFace50 DCMVC: ACC=0.7093, NMI=0.8366, Purity=0.7405, preparation+training=424+7498 seconds, params=16M; BONE preparation=initialization, baselines=pretraining; no held-out split specified.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "time-cost",
+      "source": "aaai-38641-20260314",
+      "locator": "Table3, PDF p.6",
+      "statement": "YouTubeFace50 BONE: ACC=0.7001, NMI=0.8426, Purity=0.7544, preparation+training=7+80 seconds, params=156K; BONE preparation=initialization, baselines=pretraining; no held-out split specified.",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "time-cost",
+      "source": "aaai-38641-20260314",
+      "locator": "Experiments, PDF p.6; Training Efficiency, PDF p.7",
+      "statement": "机器Windows11/AMD Ryzen7 7840HS/64GB；YouTubeFace50 126054样本；大规模所有方法最多10batches/epoch、100epochs，BONE1%初始化、其他深度法预训练200epochs。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "time-cost",
+      "source": "aaai-38641-20260314",
+      "locator": "Table3, PDF p.6",
+      "statement": "两段相加总时BONE87s,CVCL956s,DCMVC7922s,MFLVC3092s；这是说明性求和，非单样本推理延迟。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "training-curves",
+      "source": "aaai-38641-20260314",
+      "locator": "Figure3 and caption, PDF p.7",
+      "statement": "完整三面板ACC/NMI/Purity对比训练曲线；基线此前200epochs预训练不计入该横轴。",
+      "kind": "figure"
+    },
+    {
+      "anchor": "ablation-gap",
+      "source": "aaai-38641-20260314",
+      "locator": "Full paper pp.1–9; Tables1–3; Figure3",
+      "statement": "全文无组件去除消融或噪声/错配强度受控实验；主表和曲线不能拆出组件因果或直接证明噪声鲁棒性。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "efficiency",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "method/bone.py lines 64–69; utils/cl_loss.py lines 17–39",
+      "statement": "依据密集运算推导单视图单层主要项含m_v b r和r³、对比显式相似矩阵为Vb×Vb；为解释性量级分析，非实测。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "reproduction",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "method/bone.py lines 64–69; Algorithm1 PDF p.6",
+      "statement": "伪代码行4/5/6列Z→A→高层提取；固定实现ridge→Linear→A，层内顺序有差异。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "reproduction",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "utils/cl_loss.py lines 124–138 vs Eq.10 PDF p.5",
+      "statement": "熵代码仅除V，不除k；同λr下代码正则项比论文公式强k倍（按相同q定义）。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "reproduction",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "method/bone.py lines 21,85–86; utils/cl_loss.py line6",
+      "statement": "temperature存于model但未传给con_inter_view；该函数默认temperature=1，与论文默认一致，改model参数未自动改变loss温度。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "reproduction",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "test_cmvsc_large.py lines 47–55",
+      "statement": "j从0开始且更新后才if j>=10 break；足够batch时每epoch11次更新，与论文最多10batch有差异。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "scientific-limits",
+      "source": "aaai-38641-20260314",
+      "locator": "Method and Experiments, PDF pp.4–7",
+      "statement": "本篇未验证缺失视图/错配/未知k，负熵偏好均衡，未做语义可解释性评价；这些是方法及证据范围的分析边界。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "scientific-limits",
+      "source": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+      "locator": "utils/MVDataset.py standard_data; method/bone.py forward; evaluation scripts",
+      "statement": "公开协议标准化整个输入数据集、前向基更新依赖当前批次；未给独立新样本部署验证。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "takeaways",
+      "source": "aaai-38641-20260314",
+      "locator": "Method, Algorithm1, Tables2–3, PDF pp.4–6",
+      "statement": "one-step指直接得到聚类分配、无需独立后处理聚类，不指无初始化、单层或一次训练迭代。",
+      "kind": "paper-fact"
+    }
+  ]
+}

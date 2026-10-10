@@ -151,5 +151,62 @@
     "aliases": [
       "examples/VLM/opld-2607.28154.html"
     ]
+  },
+  {
+    "id": "bone-aaai26-38641",
+    "title": "BONE 精读：用优化骨架搭出轻量多视图聚类",
+    "summary": "从一批样本走通矩阵分解、低维学习修正与跨视图簇分配；对照论文和固定实现，解释参数与训练效率收益，以及负例、批次依赖和复现差异。",
+    "category": "Multimodal",
+    "type": "Single",
+    "published": "2026-03-14",
+    "added": "2026-10-10",
+    "path": "examples/Multimodal/bone-aaai26-38641.html",
+    "body": "articles/bone-aaai26-38641/body.html",
+    "evidence": "data/evidence/bone-aaai26-38641.json",
+    "tags": [
+      "多视图聚类",
+      "优化引导网络",
+      "矩阵分解",
+      "对比学习",
+      "轻量模型"
+    ],
+    "sources": [
+      {
+        "id": "aaai-38641-20260314",
+        "title": "Bridging Optimization and Neural Networks for Efficient Multi-view Clustering",
+        "authors": "Huilang Xu; Xiang-Xiang Su; Simin Chen; Guang-Yong Chen; Xing Chen",
+        "url": "https://ojs.aaai.org/index.php/AAAI/article/view/38641",
+        "pdf_url": "https://ojs.aaai.org/index.php/AAAI/article/download/38641/42603",
+        "version": "AAAI-26 proceedings PDF, 2026-03-14",
+        "published": "2026-03-14",
+        "version_date": "2026-03-14",
+        "sha256": "9615f6a84bc569c72e55b4bbcf06f28aab689f6eddb9e142c3bafd5b8ca7855e",
+        "doi": "10.1609/aaai.v40i19.38641",
+        "date_note": "Official proceedings publication date; first submission date not verified.",
+        "figure_rights": "Copyright 2026 AAAI, all rights reserved. Figures 2 and 3 reproduced as attributed crops for research commentary; no additional open redistribution grant identified."
+      },
+      {
+        "id": "bone-code-ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+        "title": "BONE official PyTorch implementation",
+        "authors": "NuclearLemon / BONE authors",
+        "url": "https://github.com/NuclearLemon/BONE/tree/ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+        "version": "ed55140ea9da7dd88ffde444179ae5f86f254b1b",
+        "published": "2025-11-13",
+        "version_date": "2025-11-13",
+        "file_hashes": {
+          "method/amv.py": "68f3edcd55e32456a5bcdbcbbc48329f19c5652dee1fc27420e2865f7068e5dc",
+          "method/bone.py": "d13ba6ba91362210f9a614f7353e9de688ff1815f075916b457df6c767a14092",
+          "test_cmvsc.py": "fc836c5a8e053624eee7bcf200a592b3a064a9eec71e719012eb976dd1641d8d",
+          "test_cmvsc_large.py": "01d98f5d6c4eb2274793200b7eb1e8ca4986b75ec04a6ba4031b703827f8f167",
+          "utils/MVDataset.py": "10785c604b2de0ddfee27a31b7705a398047754f137f20ac5770fae0439173b7",
+          "utils/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "utils/cl_loss.py": "ef7255667b5e7e7684983643cf469e4f4ebc4df1576c86f4287b8e8422620ce5",
+          "utils/data_loader.py": "8d26b85f997e69e52afb968209dd0bb75d2805efc7f13025efb3eb1582d3da6e",
+          "utils/data_util.py": "343e638b8126a6f5a9b7dd477cf5360d6b1b3177b376259f97374fac16651213",
+          "utils/method_util.py": "784443485d0cd274fa1f8f73cd7fa356f310fc6c587fef509696d4126361c350",
+          "utils/seed_util.py": "152549bfaa9fde85b17066fffe6cac83dee12439ffc641e8d67056d95ae4a90a"
+        }
+      }
+    ]
   }
 ]
