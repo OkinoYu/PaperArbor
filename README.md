@@ -7,7 +7,7 @@
 
 PaperArbor 是由 Codex 驱动的中文论文精读与可视化知识库。输入论文 PDF、arXiv URL 或论文名称，通过原生 `$paper-arbor` Skill 核实来源、拆解方法、生成独立 HTML，并同步维护网站索引。网页使用原生 HTML/CSS/JavaScript，维护工具使用 Python，不需要数据库、Node.js 或后端服务。
 
-目标仓库：[`OkinoYu/PaperArbor`](https://github.com/OkinoYu/PaperArbor)。目标 Pages 地址：[`https://okinoyu.github.io/PaperArbor/`](https://okinoyu.github.io/PaperArbor/)。代码仓库与网站部署独立维护；GitHub Pages 尚未启用。
+公开仓库：[`OkinoYu/PaperArbor`](https://github.com/OkinoYu/PaperArbor)。在线知识库：[`https://okinoyu.github.io/PaperArbor/`](https://okinoyu.github.io/PaperArbor/)。GitHub Pages 已启用，从 `main` 分支根目录发布并强制 HTTPS。
 
 ## 快速开始
 
@@ -112,7 +112,7 @@ python3 scripts/validate_site.py --json
 
 ## GitHub Pages 部署
 
-本地已支持项目子路径，尚未执行下面的远程操作。部署方式参照 [GitHub 官方发布源文档](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)。准备好后将目录作为 `OkinoYu/PaperArbor` 仓库的 `main` 分支内容：
+已于 2026-10-10 完成发布，线上首页、搜索、论文页面及返回首页链接通过浏览器检查。后续提交到 `main` 会触发 Pages 自动更新。以下为当前设置，部署方式参照 [GitHub 官方发布源文档](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)：
 
 1. 在 GitHub 仓库 **Settings → Pages → Build and deployment** 选择 **Deploy from a branch**。
 2. Branch 选择 **main**，Folder 选择 **/ (root)**，保存。
