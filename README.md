@@ -66,4 +66,4 @@ Codex 负责研究与写作，脚本负责处理与校验；静态检查不能�
 
 ## 📄 许可与致谢
 
-原创内容采用 [MIT](LICENSE)；嵌入的论文图与其他第三方材料保留各自版权与来源。工作流参考 [PaperReading-skills](https://github.com/Linchunhui/PaperReading-skills)，README 排版参考 [MMSkills](https://github.com/DeepExperience/MMSkills)。
+原创内容采用 [MIT](LICENSE)；嵌入的论文图与其他第三方材料保留各自版权与来源。工作流参考 [PaperReading-skills](https://github.com/Linchunhui/PaperReading-skills)。
