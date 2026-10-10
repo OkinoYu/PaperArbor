@@ -1,43 +1,38 @@
 ---
 name: paper-arbor
-description: 深度阅读论文 PDF、arXiv URL 或论文名称，生成有来源的中文独立 HTML，并维护 PaperArbor 知识库。用于单篇精读、系列演进、多篇主题综述或按需研究雷达报告。
+description: 核实原始论文并深度拆解方法、训练和实验，生成循证中文离线 HTML。支持单篇精读、系列演进、主题综述、按需研究雷达，以及 PaperArbor 知识库维护。
 ---
 
 # PaperArbor
 
-把论文变成可理解、可复查、可积累的研究知识。此 Skill 在 PaperArbor 仓库内使用；从当前工作目录向上寻找同时包含 `AGENTS.md`、`data/papers.json` 和 `scripts/publish_entry.py` 的根目录，先读 AGENTS.md。用户可显式使用 `$paper-arbor`，也可通过论文精读、系列演进、主题综述、研究动态请求触发。
+把论文变成能复述机制、能核查结论、能长期复用的研究知识。默认中文，保留技术专名。脚本负责确定性处理，研究判断与正文由 agent 完成。
 
-## 选择模式
+## 范围与交付
 
-尊重显式模式。1 篇论文 → **Single**；有继承关系的多篇论文 → **Series**；独立论文围绕一个问题 → **Digest**；给研究方向与日期范围、未给固定论文 → **Radar**。关系不明时说明采用 Digest；无法识别主题或时间范围才询问必要信息。Radar 只执行本次报告，不设置后台或定时任务。
+先读任务工作区 `AGENTS.md`，尊重本次范围与发布授权。寻找含 `scripts/render_article.py` 的 PaperArbor 根目录；当前目录不是项目时，可从本 Skill 实际路径向上查找。安装与路径约定见项目 `docs/usage.md`。从根目录运行脚本，输出到用户工作区或忽略目录。
 
-先读 [研究与证据规范](references/research.md)，然后只读选定模式：[Single](references/single.md)、[Series](references/series.md)、[Digest](references/digest.md)、[Radar](references/radar.md)。排版前读 [输出规范](references/output.md)。元数据格式见仓库 `docs/metadata.md`。
+- **Standalone**：只交付自包含 HTML 与 Evidence JSON，不修改 catalog；渲染加 `--standalone`。
+- **Library**：维护文章、证据、catalog 与生成的 index，先做候选发布检查。本地发布不等于远程部署。
+- 未指定交付方式：在 PaperArbor 项目内采用 Library，在其他工作区采用 Standalone。明确范围优先；安装 Skill 不代表授权发布。
 
-## 输入和输出
+尊重显式模式；一篇 → Single；有继承关系 → Series；独立论文围绕问题 → Digest；方向与日期范围、未给论文 → Radar。关系不明确时按 Digest 并说明。Radar 是一次发现报告。
 
-输入是本地 PDF、arXiv ID/URL、论文名或论文清单；可加模式、主题、分类、日期区间、输出范围。论文名需要消歧与主来源核实；本地 PDF 先核实首页，不以文件名当正式标题。默认中文，保留技术专名。
+## 按任务加载规范
 
-输出：`examples/<Category>/<stem>.html`、`data/evidence/<stem>.json`、更新的 `data/papers.json` 与 `index.html`。正文包含来源、范围、版本与覆盖限制。缓存与图片临时产物放 `work/<stem>/` 或临时目录。除明确修订外，不覆盖已有文章。不要自动推送或发布。
+1. 开始研究读 [research.md](references/research.md)：身份、版本、证据与范围。
+2. 读模式：[Single](references/single.md) / [Series](references/series.md) / [Digest](references/digest.md) / [Radar](references/radar.md)。Single / Series 再读 [mechanisms.md](references/mechanisms.md)。
+3. 排版读 [output.md](references/output.md) 与 [visuals.md](references/visuals.md)：组件、图形取舍、引用交互。
+4. 交付前读 [quality.md](references/quality.md)：科学复核、阅读验收、确定性检查。
 
-## 执行闭环
+元数据格式以项目 `docs/metadata.md` 为准。不要为满足固定字数、图数或章节数而增补无证据内容。
 
-1. 查现有清单与目标路径，避免同模式同来源集合重复。确定输入、模式、范围和分类。
-2. 用浏览器或 `python3 scripts/fetch_sources.py SOURCE -o work/STEM/sources` 获取、核实主论文；来源不可用时记录失败并尝试作者项目/原始 PDF。缓存不是解读。标题歧义不选第一个搜索结果。
-3. 阅读方法、训练、推理、实验、消融、局限，建立证据表。重要数字、公式、图表有原文定位；先写理解与证据再排版。缺少全文时输出标明覆盖不足的报告，不能声称完成精读。
-4. 作者式重新组织中文技术正文 HTML。逐模块交代输入/输出、变换、设计理由、训练信号和推理行为。适配论文类型，未公开部分直接说明。按对应模式规范画内联 SVG，保留必要原始图。
-5. 可选用 `scripts/extract_figure.py` 提取图；看裁切，标注来源。将本地图片嵌到 body，再渲染（或者先渲染后嵌入）：
-   ```sh
-   python3 scripts/render_article.py work/STEM/body.html --title 'TITLE' --subtitle 'SCOPE' --category VLM --type Series -o work/STEM/draft.html
-   python3 scripts/embed_images.py work/STEM/draft.html -o work/STEM/standalone.html
-   ```
-6. 按 `docs/metadata.md` 写 `entry.json` 和 `evidence.json`。每条证据有文章 anchor、版本化 source、statement 和具体 locator；区分原文事实与解释性推导。
-7. 运行可预览的候选检查，再发布本地：
-   ```sh
-   python3 scripts/publish_entry.py work/STEM/entry.json --html work/STEM/standalone.html --evidence work/STEM/evidence.json --dry-run
-   python3 scripts/publish_entry.py work/STEM/entry.json --html work/STEM/standalone.html --evidence work/STEM/evidence.json
-   python3 scripts/build_index.py --check
-   python3 scripts/validate_site.py --json
-   ```
-   初次发布不用 `--replace`。已存在时先核对是重复还是用户要求修订；修订保留 id/path/evidence/added，再使用 `--replace`。
-8. 修复校验错误；能用浏览器时检查桌面/移动、目录、图表、公式与离线阅读。静态校验不证明科学事实正确，做一遍逐项原文复核。
-9. 报告新增/修改路径、来源覆盖、验证结果和未解决限制。若因材料缺失只完成部分报告，明确写出；不把不可获取变成虚构分析。
+## 工作闭环
+
+**核实 → 证据与讲解提纲 → 正文与图形 → 渲染 → 双重验收 → 交付。**
+
+- 查现有来源集合与目标路径。PDF 先核实首页；名称需消歧。用 `fetch_sources.py` 或原始官方来源获取材料，下载与裁切放 `work/<stem>/`。
+- 阅读方法、训练、推理、实验与消融。先写主张—机制—证据关系，再写 HTML。别人的生成分析不是科学来源；已有笔记可帮助定位，承重结论仍核对原文。
+- 为重要数值、公式、图表及设计主张写 Evidence claim，保留版本与 locator。缺全文时缩小范围并标明，不称完整精读。
+- 按真实计算步骤写正文，使用稳定 ASCII anchor。渲染传 `--entry entry.json --evidence evidence.json`，把证据嵌入文件支持断网查证；`embed_images.py` 嵌入已检查的本地图像。
+- Standalone 用 `validate_site.py --article standalone.html --entry entry.json --evidence evidence.json`；Library 先 `publish_entry.py … --dry-run` 再本地发布。修订用 `--replace`，保留 id/path/evidence/added；不覆盖文章试稿。
+- 科学与桌面/手机检查通过后报告文件、覆盖限制与检查结果。远程推送依任务和项目授权；后续“保留本地”优先。

@@ -46,3 +46,13 @@ Evidence ledger:
 `kind` may be `paper-fact`, `explanatory-derivation`, `editorial-analysis` or `figure`. Repeat claims when one section has several important numbers or mechanisms. For a numerical table row preserve checkpoint, task/split, metric, precision, and direction in statement or additional fields. Anchor must exist in HTML. Source ID must match the article's versioned sources. Caption citations remain visible even if this ledger is not downloaded. The ledger enables review; automated existence checks cannot authenticate scientific facts.
 
 For a Radar report with no verified papers, retain an explicit discovery source (`kind: "discovery-feed"`) with the actual HTTPS query URL, stable query/interval ID, publisher in `authors` (e.g. arXiv), retrieval timestamp in `version`, and interval end in `published`. These fields identify the feed, not a fictional paper. Record failed/empty/truncated status in the ledger coverage and visible report.
+
+## 可维护正文与内嵌证据
+
+可选 entry 字段 `updated` 为最后有意修订日期（不得早于 added），`body` 为 `articles/<stem>/body.html` 的作者正文路径。渲染器不改写正文；长期引用请手写 h3/h4 id，自动 h3 id 仅作确定性补全。修订仍保留原 id/path/evidence/added。源码可内嵌已选定图，原始 PDF/裁切中间文件仍在忽略目录。
+
+source 的可选 `sha256`、`config_sha256` 等 `*sha256` 字段必须是 64 位小写十六进制，指对应实际字节，不能以哈希替代版本核实。校验器检查格式，不重新下载原文比对。
+
+传 entry/evidence 渲染时，HTML 保存 `evidence-data` 安全 JSON 和可展开的静态证据列表。新增 Library 产物的嵌入来源/ledger 与外部清单必须相等；旧产物可按有意修订逐步迁移。Standalone 的 `--article` 检查要求内嵌证据，并拒绝对 catalog 或其他本地文件的链接依赖；不必提供完整站点。
+
+关联阅读从共同规范 source ID（去 arXiv 版本号）或相同 tag 生成，显示关联理由。标签只用于发现，不能证明论文有继承关系。

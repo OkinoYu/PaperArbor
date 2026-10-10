@@ -13,6 +13,7 @@ The user reads this project at https://okinoyu.github.io/PaperArbor/ and has req
 - `data/papers.json` is the sole catalog source; `templates/index.html` plus `scripts/build_index.py` produce `index.html`.
 - `assets/style.css`/`app.js` serve the homepage. `article.css`/`article.js` are inlined by `render_article.py`; existing articles change only through intended revisions.
 - Agent authors verified Chinese HTML body, metadata entry and evidence ledger; deterministic scripts fetch, render, publish and validate. Scripts do not automatically perform scientific reasoning.
+- Reusable authored bodies may live in `articles/<stem>/body.html` and be referenced by optional catalog `body`; keep stable authored heading IDs. `render_article.py --entry-id ID` reproduces a candidate; `--standalone` and `validate_site.py --article` support portable delivery without catalog links.
 - `examples/<Category>/*.html` are independently readable files. `data/evidence/*.json` retain claims and source locators. Original paper downloads/crops belong in ignored `work/` or a temporary directory.
 - `.agents/skills/paper-arbor/SKILL.md` is the repository-native Codex skill, called with `$paper-arbor`. Read its selected mode reference when using it. Run commands from the repository root; avoid duplicating scripts inside the skill.
 

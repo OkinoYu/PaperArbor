@@ -11,6 +11,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlsplit
 from common import ROOT, load_records
 from build_index import render_index
+from evidence import validate_evidence
 
 CSS_URL = re.compile(r'url\(\s*[\"\']?(.*?)[\"\']?\s*\)', re.I)
 
@@ -51,6 +52,7 @@ class Document(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.ids = set(); self.links = []; self.errors = []; self.images = 0
         self.labels = []; self.h1 = 0; self.title = False; self.viewport = False; self.lang = False
+        self.evidence_text = None; self.in_evidence = False
         self.standalone = standalone
         self.feed(text)
         for label in self.labels:
@@ -70,6 +72,20 @@ class Document(HTMLParser):
             if re.search(r'@import\b', text, re.I): self.errors.append('CSS import is not standalone')
             for match in CSS_URL.finditer(text):
                 self.asset(match.group(1), 'CSS url')
+        self.evidence_payload = None
+        if self.evidence_text is not None:
+            try:
+                self.evidence_payload = json.loads(self.evidence_text)
+                validate_evidence(self.evidence_payload['ledger'], self.evidence_payload['sources'], self.ids)
+            except (ValueError, KeyError, TypeError) as exc:
+                self.errors.append(f'invalid embedded evidence: {exc}')
+
+    def handle_data(self, data):
+        if self.in_evidence:
+            self.evidence_text += data
+
+    def handle_endtag(self, tag):
+        if tag == 'script': self.in_evidence = False
     def asset(self, value: str, label: str):
         if value.startswith('#'):
             self.links.append(value)
@@ -78,6 +94,9 @@ class Document(HTMLParser):
         else: self.images += 1
     def handle_starttag(self, tag, attrs):
         a = dict(attrs)
+        if tag == 'script' and a.get('id') == 'evidence-data':
+            if a.get('type') != 'application/json': self.errors.append('evidence-data must be JSON')
+            self.in_evidence = True; self.evidence_text = ''
         if 'id' in a:
             if a['id'] in self.ids: self.errors.append(f'duplicate id: {a["id"]}')
             self.ids.add(a['id'])
@@ -162,20 +181,49 @@ def validate(root: Path = ROOT, check_index: bool = True) -> dict:
         try:
             from common import site_path
             ledger = json.loads(site_path(root, r['evidence']).read_text(encoding='utf-8'))
-            source_ids = {s['id'] for s in r['sources']}
-            if not ledger.get('claims'): raise ValueError('empty evidence ledger')
-            for claim in ledger['claims']:
-                if claim.get('source') not in source_ids or not claim.get('locator') or not claim.get('statement'):
-                    raise ValueError('claim needs source, locator, statement')
-                if claim.get('anchor') not in docs[(root/r['path']).resolve()].ids:
-                    raise ValueError(f'missing claim anchor: {claim.get("anchor")}')
+            article = docs[(root/r['path']).resolve()]
+            validate_evidence(ledger, r['sources'], article.ids)
+            if article.evidence_payload is not None and article.evidence_payload != {'sources': r['sources'], 'ledger': ledger}:
+                raise ValueError('embedded evidence differs from catalog/ledger; render again')
         except (OSError, ValueError, KeyError, TypeError) as exc: errors.append(f'{r["id"]}: evidence: {exc}')
     return {'ok': not errors, 'errors': errors, 'html_files': len(files), 'embedded_images': images,
             'external_links': 'not fetched; primary evidence requires editorial review'}
 
+def validate_article(path: Path, entry=None, ledger=None) -> dict:
+    """Portable delivery has no dependency on a catalog or its directory layout."""
+    text = path.read_text(encoding='utf-8'); doc = Document(text, True)
+    errors = list(doc.errors)
+    for link in doc.links:
+        u = urlsplit(link)
+        if u.scheme in ('https', 'http', 'mailto'): continue
+        if not u.path and not u.scheme and not u.netloc:
+            if u.fragment and unquote(u.fragment) not in doc.ids: errors.append(f'broken anchor: {link}')
+        else: errors.append(f'standalone article has a file dependency: {link}')
+    if (entry is None) != (ledger is None): errors.append('entry and evidence must be supplied together')
+    elif entry is not None:
+        try:
+            validate_evidence(ledger, entry['sources'], doc.ids)
+            if doc.evidence_payload != {'sources': entry['sources'], 'ledger': ledger}:
+                raise ValueError('embedded evidence differs from supplied entry/ledger')
+        except (ValueError, KeyError, TypeError) as exc: errors.append(f'evidence: {exc}')
+    elif doc.evidence_payload is None:
+        errors.append('standalone research delivery requires embedded evidence')
+    return {'ok': not errors, 'errors': errors, 'html_files': 1, 'embedded_images': doc.images,
+            'external_links': 'not fetched; primary evidence requires editorial review'}
+
+
 def main():
-    p = argparse.ArgumentParser(description=__doc__); p.add_argument('--root', type=Path, default=ROOT); p.add_argument('--json', action='store_true'); a=p.parse_args()
-    report=validate(a.root)
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--root', type=Path, default=ROOT); p.add_argument('--json', action='store_true')
+    p.add_argument('--article', type=Path); p.add_argument('--entry', type=Path); p.add_argument('--evidence', type=Path)
+    a=p.parse_args()
+    if (a.entry or a.evidence) and not a.article: p.error('--entry/--evidence require --article')
+    try:
+        entry = json.loads(a.entry.read_text()) if a.entry else None
+        ledger = json.loads(a.evidence.read_text()) if a.evidence else None
+        report = validate_article(a.article, entry, ledger) if a.article else validate(a.root)
+    except (OSError, ValueError, KeyError, TypeError) as exc:
+        report = {'ok': False, 'errors': [str(exc)], 'html_files': 0, 'embedded_images': 0}
     print(json.dumps(report, ensure_ascii=False, indent=2) if a.json else ('OK' if report['ok'] else 'FAIL') + f": {report['html_files']} HTML files, {report['embedded_images']} embedded images" + ''.join('\n- '+e for e in report['errors']))
     raise SystemExit(0 if report['ok'] else 1)
 if __name__ == '__main__': main()

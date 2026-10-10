@@ -1,6 +1,6 @@
 interface:
   display_name: "PaperArbor"
-  short_description: "循证中文论文精读、系列演进与主题综述，生成离线网页并维护研究知识库"
-  default_prompt: "使用 $paper-arbor 分析这篇论文，生成有原始来源的中文 HTML 并更新知识库。"
+  short_description: "循证中文论文精读、系列演进与主题综述，生成独立离线网页或维护研究知识库"
+  default_prompt: "使用 $paper-arbor 分析这篇论文，精读这篇论文，拆解机制与实验，生成可离线查证的中文 HTML；按当前任务决定独立交付或知识库维护。"
 policy:
   allow_implicit_invocation: true

@@ -13,8 +13,8 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'scripts'))
 from common import atomic_write, site_path, validate_records
 from build_index import render_index
-from validate_site import Document, data_image, validate
-from render_article import render
+from validate_site import Document, data_image, validate, validate_article
+from render_article import render, prepare_body
 from embed_images import embed
 from fetch_sources import parse_atom, parse_abs, fetch, lookup
 from radar import discover
@@ -160,6 +160,70 @@ class PipelineTests(unittest.TestCase):
   self.assertTrue(result['sources'][0]['possibly_truncated']);self.assertEqual(len(result['candidates']),1)
   with patch('radar.http',return_value=ATOM):result=discover('all:vlm',date(2024,10,1),date(2024,10,30))
   self.assertEqual([],result['candidates'])
+ def evidenced(self, body='<h2 id="method">方法</h2><h3>内部变换</h3><p>Evidence</p>', **kwargs):
+  ledger=json.loads(self.evidence.read_text())
+  return render(body,'测试','scope','VLM','Single',self.root,entry=self.entry,ledger=ledger,**kwargs)
+ def test_portable_evidence_survives_move(self):
+  self.article.write_text(self.evidenced(standalone=True))
+  with tempfile.TemporaryDirectory() as td:
+   moved=Path(td)/'copied.html';shutil.copyfile(self.article,moved)
+   self.assertTrue(validate_article(moved)['ok'])
+   self.assertNotIn('../../',moved.read_text())
+ def test_standalone_requires_embedded_evidence(self):
+  self.assertFalse(validate_article(self.article)['ok'])
+ def test_standalone_rejects_file_link(self):
+  self.article.write_text(self.evidenced(standalone=True).replace('</main>','<a href="other.html">bad</a></main>'))
+  self.assertTrue(any('file dependency' in error for error in validate_article(self.article)['errors']))
+ def test_safe_embedded_claim_and_static_fallback(self):
+  ledger=json.loads(self.evidence.read_text());ledger['claims'][0]['statement']='</script><img src=x> & 机制'
+  self.evidence.write_text(json.dumps(ledger));self.article.write_text(self.evidenced(standalone=True))
+  doc=Document(self.article.read_text(),True)
+  self.assertEqual(doc.evidence_payload['ledger'],ledger);self.assertFalse(doc.errors)
+  self.assertIn('&lt;/script&gt;',self.article.read_text());self.assertIn('返回对应正文',self.article.read_text())
+ def test_stale_embedded_evidence_blocks_publication(self):
+  self.article.write_text(self.evidenced());self.go()
+  before=(self.root/self.entry['path']).read_bytes()
+  ledger=json.loads(self.evidence.read_text());ledger['claims'][0]['statement']='Changed';self.evidence.write_text(json.dumps(ledger))
+  with self.assertRaises(ValueError):self.go(replace=True)
+  self.assertEqual(before,(self.root/self.entry['path']).read_bytes())
+ def test_embedded_sources_cannot_use_unsafe_url(self):
+  self.entry['sources'][0]['url']='javascript:alert(1)'
+  with self.assertRaises(ValueError):self.evidenced(standalone=True)
+ def test_evidence_kind_is_checked(self):
+  ledger=json.loads(self.evidence.read_text());ledger['claims'][0]['kind']='fabricated';self.evidence.write_text(json.dumps(ledger))
+  with self.assertRaises(ValueError):self.evidenced()
+ def test_evidence_and_entry_must_be_paired(self):
+  with self.assertRaises(ValueError):render('<h2 id="method">方法</h2>','x','x','VLM','Single',self.root,entry=self.entry)
+ def test_revision_preserves_added_date(self):
+  self.go();self.entry['added']='2026-10-11'
+  with self.assertRaises(ValueError):self.go(replace=True)
+ def test_heading_ids_stable_and_collision_safe(self):
+  body='<h2 id="method">方法</h2><h3 id="method-part-1">指定</h3><h3>自动</h3>'
+  normalized=prepare_body(body)
+  self.assertIn('id="method-part-2"',normalized);self.assertEqual(normalized,prepare_body(normalized))
+  for extra in ('<p id="method">重复</p>','<p id="evidence-data">冲突</p>','<h1>重复主标题</h1>'):
+   with self.assertRaises(ValueError):self.evidenced(body+extra)
+ def test_related_reading_explains_actual_overlap(self):
+  other=copy.deepcopy(self.entry);other.update(id='related',path='examples/VLM/related.html',title='相关')
+  unrelated=copy.deepcopy(other);unrelated.update(id='unrelated',title='无关',tags=['none']);unrelated['sources'][0]['id']='2308.12966v1'
+  result=self.evidenced(records=[self.entry,other,unrelated])
+  self.assertIn('共同原始来源',result);self.assertIn('../../examples/VLM/related.html',result);self.assertNotIn('无关',result)
+  self.assertNotIn('<aside class="related-reading"',self.evidenced(standalone=True,records=[other]))
+ def test_metadata_checks_updated_hash_and_body(self):
+  for changes in ({'updated':'2026-10-09'},{'updated':'bad'},{'body':'../outside.html'},{'body':'data/body.html'}):
+   entry=copy.deepcopy(self.entry);entry.update(changes)
+   with self.assertRaises(ValueError):validate_records([entry],self.root,False)
+  entry=copy.deepcopy(self.entry);entry['sources'][0]['sha256']='bad'
+  with self.assertRaises(ValueError):validate_records([entry],self.root,False)
+ def test_direct_pdf_links_remain_direct(self):
+  self.entry['sources'][0]['pdf_url']='https://arxiv.org/pdf/2409.12191v2'
+  result=self.evidenced('<h2 id="method">方法</h2><a href="https://arxiv.org/pdf/2409.12191v2#page=4">PDF</a><a href="https://arxiv.org/abs/2409.12191v2">来源</a>')
+  self.assertIn('v2#page=4">PDF',result);self.assertIn('data-source="2409.12191v2">来源',result)
+ def test_authored_body_checked_in_publish_candidate(self):
+  self.entry['body']='articles/test/body.html'
+  with self.assertRaises(ValueError):self.go(dry_run=True)
+  body=self.root/self.entry['body'];body.parent.mkdir(parents=True);body.write_text('<h2 id="method">方法</h2>')
+  self.assertTrue(self.go(dry_run=True)['ok']);self.assertFalse((self.root/self.entry['path']).exists())
  def test_live_repository_is_consistent(self):self.assertTrue(validate(ROOT)['ok'])
 
 if __name__=='__main__':unittest.main()

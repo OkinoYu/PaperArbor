@@ -21,6 +21,8 @@ def publish(root: Path, entry: dict, article: Path, evidence: Path, replace=Fals
         if replace and not previous: raise ValueError('--replace requires an existing id')
         if previous and (entry['path']!=previous['path'] or entry['evidence']!=previous['evidence']):
             raise ValueError('revision must preserve article and evidence paths')
+        if previous and entry['added'] != previous['added']:
+            raise ValueError('revision must preserve original added date')
         dest=site_path(root,entry['path']); evdest=site_path(root,entry['evidence'])
         if not entry['evidence'].startswith('data/evidence/') or evdest.suffix!='.json': raise ValueError('evidence must be data/evidence/*.json')
         if dest==evdest: raise ValueError('HTML and evidence paths collide')
@@ -32,6 +34,8 @@ def publish(root: Path, entry: dict, article: Path, evidence: Path, replace=Fals
             stage=Path(td)
             for name in ('templates','assets','data','examples'):
                 shutil.copytree(root/name,stage/name)
+            if (root/'articles').is_dir():
+                shutil.copytree(root/'articles',stage/'articles')
             atomic_write(stage/entry['path'],text);atomic_write(stage/entry['evidence'],ledger)
             manifest=json.dumps(records,ensure_ascii=False,indent=2)+'\n'
             atomic_write(stage/'data/papers.json',manifest)

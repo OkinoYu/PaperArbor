@@ -1,6 +1,6 @@
 {
   "reviewed": "2026-10-10",
-  "coverage": "Four complete versioned original PDFs unchanged (Qwen-VL, Qwen2-VL, Qwen2.5-VL, Qwen3-VL). Qwen3.5 supplement: full pinned official flagship model card and config/processor files, full official release article, official repository release-history entries, and relevant pinned Transformers model implementation (vision interface, hybrid attention, recurrent/chunk kernels, router/shared experts, cache, positional IDs). No independent standalone Qwen3.5 technical report verified; release article still says upcoming technical report. No training or benchmark reruns; exact training recipe, ablations and complete per-task decoding/tool protocols remain unknown. Repository redirect to Qwen3.8 does not expand this series scope. Catalog published date remains latest actual included paper first submission; Qwen3.5 model release date is recorded separately.",
+  "coverage": "四篇固定版本技术报告的正文、训练、推理、主实验与消融；Qwen3.5 按固定提交的官方模型卡、配置与参考实现核实。未确认独立技术报告，因此其完整训练配方与受控架构消融仍为证据缺口。机制解释和说明式均与原文事实区分。",
   "claims": [
     {
       "anchor": "intro",
@@ -666,6 +666,195 @@
       "locator": "Section 2.1, PDF p4",
       "statement": "Qwen2-VL patch14 and 2x2 merge produce28px/token; this predecessor fact is distinct from Qwen3.5 flagship patch16 and32px/token.",
       "kind": "paper-fact"
+    },
+    {
+      "anchor": "map-v1",
+      "source": "2308.12966v1",
+      "statement": "图像被缩放后编码，学习 query 从视觉特征中取信息，形成固定长度摘要；摘要与问题进入语言模型。 连接器压缩序列，位置感知帮助在压缩时保留空间信息。",
+      "locator": "§2.1–2.2",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "map-v2",
+      "source": "2409.12191v2",
+      "statement": "动态尺寸图像产生可变长度特征；局部 merger 把邻近 patch 变成视觉 token，M-RoPE 给语言侧的视觉位置保留时空坐标。 替换固定全局摘要，保留局部网格结构；输入面积会影响序列长度。",
+      "locator": "§2.1",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "map-v25",
+      "source": "2502.13923v1",
+      "statement": "保留动态网格和 merger；ViT 多数层只计算窗口内关系，少量全局层连通远处；时间 ID 与绝对时间对齐。 窗口影响 ViT 内部计算，时间编码影响视频事件关系，二者不等于减少所有语言 token。",
+      "locator": "§2.1–2.1.3",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "map-v3",
+      "source": "2511.21631v2",
+      "statement": "最终 merger 进入序列；不同深度视觉特征经专用 merger 加到语言层的对应视觉位置。视频另加入文本时间戳。 新增的是跨层特征支路，改变表示内容，而不是把 DeepStack 特征追加为更多序列位置。",
+      "locator": "§2.2–2.3; Table 12",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "map-v35",
+      "source": "qwen3.5-397b-a17b-8472618112abcbd45acbcdc58436aff4233c23f7",
+      "statement": "选定旗舰把最终视觉 token 与文本组成序列；语言主干交替使用递归状态更新和显式注意力，每层配 MoE。 混合的是语言层计算；旗舰不启用前代 DeepStack 中间支路。",
+      "locator": "Model Overview; config.json",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "mechanism-map",
+      "source": "2502.13923v1",
+      "statement": "视觉特征经 merger 对齐语言 embedding 通道，不能等同于先 OCR 后纯文本输入。",
+      "locator": "§2.1, MLP-based Vision-Language Merger",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen-vl-flow",
+      "source": "2308.12966v1",
+      "statement": "输入经 ViT 与位置感知 Cross-attention 压为256连续视觉向量，与文本组合后由语言模型输出文本；图示省略内部投影。",
+      "locator": "§2.1–2.2, PDF pages 3–4",
+      "kind": "figure"
+    },
+    {
+      "anchor": "qwen-vl-step-input",
+      "source": "2308.12966v1",
+      "statement": "这些向量代表图像局部及其上下文，不是已经读出的字符。对报表而言，缩放会先影响小字是否还可辨；后面的压缩再精巧，也不能恢复被预处理抹掉的信息。后一句为输入机制的分析。[S1] §2.1。",
+      "locator": "§2.1–2.2",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen-vl-step-adapter",
+      "source": "2308.12966v1",
+      "statement": "每个 query 对视觉 key 计算匹配，再把对应 value 加权汇总。因此输出的序列长度由 query 个数决定，而不是由图像 patch 个数决定。学习的是“怎样取信息”的参数，测试时仍计算同一连接器；它不是按用户问题临时分配的一组自然语言问题。[S1] §2.1；匹配过程的简化见下面说明式。",
+      "locator": "§2.1–2.2",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen-vl-step-sequence",
+      "source": "2308.12966v1",
+      "statement": "关键连接是通道兼容、序列拼接和边界标记。语言侧看到的是视觉向量与文本 embedding 的混合上下文，随后预测回答文本；这与先 OCR 出报表文字再运行纯文本 Qwen 的路径不同。[S1] §2.1–2.2。",
+      "locator": "§2.1–2.2",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen-vl-step-output",
+      "source": "2308.12966v1",
+      "statement": "坐标字符串由同一个生成接口输出，边界标记把位置与指代内容联系起来。训练的 grounding 样本教模型生成对应格式；真正点击或解析边界框属于应用后处理，不能把生成字符串视为已经完成外部操作。[S1] §2.2；外部执行部分为工程分析。",
+      "locator": "§2.1–2.2",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen2-step-input",
+      "source": "2409.12191v2",
+      "statement": "输出是可变长度视觉特征；“动态”指尺寸与预算可调整，并不是不经 resize 或免费接受任何大图。回到长报表，保留长宽关系有机会减少统一方形缩放带来的细节损失，但具体采样上限仍决定看到多少。[S2] §2.1；后一句为分析。",
+      "locator": "§2.1 / Figure 3",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen2-step-merger",
+      "source": "2409.12191v2",
+      "statement": "Merger 的输入是相邻视觉特征，输出是更短、与语言 embedding 对齐的连续序列。局部压缩保留网格对应关系，空间位置数仍随输入面积变化；不再由一组全局 query 把所有图片压到相同长度。下式只计算静态图像的位置数。[S2] §2.1。",
+      "locator": "§2.1 / Figure 3",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen2-step-position",
+      "source": "2409.12191v2",
+      "statement": "M-RoPE 的三个位置分量作用于旋转位置表示，不是额外预测三个坐标标签。对报表，这让视觉位置的“哪一行、哪一列”有独立编码；它并不替代读取字符、比较数值或寻找表头的任务。[S2] §2.1 / Figure 3；后半为机制解释。",
+      "locator": "§2.1 / Figure 3",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen2-step-video",
+      "source": "2409.12191v2",
+      "statement": "时间分组之后仍有每组的空间 token。增加帧数与提高每帧分辨率都会推高输入预算，因此长视频要一起控制采样、空间网格和总序列长度。视频统一解决表示入口问题，不保证未被采到的瞬时事件能被恢复。[S2] §2.1；预算与遗漏含义为工程分析。",
+      "locator": "§2.1 / Figure 3",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen25-step-window",
+      "source": "2502.13923v1",
+      "statement": "窗口层只让区域内部的 patch 互相计算关系，全局层再允许远处特征交互。对跨列报表，远处关系并没有被永久切断；只是每层都全局配对被改成多数层局部、少数层全局。Merger 后的语言序列预算另算。[S3] §2.1.1 / Table 1。",
+      "locator": "§2.1–2.1.3; §2.2.1 Document Omni-Parsing Data",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen25-step-merger",
+      "source": "2502.13923v1",
+      "statement": "用符号描述，设四个邻近特征各为 d_v 宽，拼接先形成 4d_v 宽，再由 MLP 投到语言宽度 d_l；与此同时位置数减少。这里是 §2.1 的形状解释，不补具体型号尺寸，也不意味着每个拼接位置就是识别出的单个文字。",
+      "locator": "§2.1–2.1.3; §2.2.1 Document Omni-Parsing Data",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen25-step-time",
+      "source": "2502.13923v1",
+      "statement": "同一事件在不同采样率下可能落在不同帧号。把时间 ID 绑定真实时间，使位置间隔能承载事件时间距离；动态 FPS 训练让模型在不同采样下学习这种关系。该表示变化不需要另加一个时间预测 head，但具体输出仍取决于任务训练。[S3] §2.1.2–2.1.3。",
+      "locator": "§2.1–2.1.3; §2.2.1 Document Omni-Parsing Data",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen25-step-output",
+      "source": "2502.13923v1",
+      "statement": "在文档解析数据中，HTML 结构同时表示段落、表格及位置框等信息；模型学习输出结构化文本。输出坐标与文字是一种接口约定，格式正确、坐标映射正确和内容正确要分别验证，不能用问答分数替代解析验证。[S3] §2.2.1, Document Omni-Parsing Data；验证建议为工程分析。",
+      "locator": "§2.1–2.1.3; §2.2.1 Document Omni-Parsing Data",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen3-step-vision",
+      "source": "2511.21631v2",
+      "statement": "初始化提供已有视觉表征，持续训练适应可变输入网格。最终 merger 仍负责入口特征；不要把换视觉检查点本身与 DeepStack 的跨层注入混成一个组件。[S4] §2 / §3.1。",
+      "locator": "§2–2.3 / Figure 1",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen3-step-deepstack",
+      "source": "2511.21631v2",
+      "statement": "每路中间视觉特征先投影到语言 hidden width，再在对应视觉位置相加。若该层状态有 N 个序列位置、每个 d_l 宽，这条支路改变相应位置的内容，而不变成 N 加一串中间 token。说明式省略 mask 与残差实现；DeepStack 的受控验证见后文消融。[S4] §2.2 / Figure 1。",
+      "locator": "§2–2.3 / Figure 1",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen3-step-frequency",
+      "source": "2511.21631v2",
+      "statement": "时间、高度、宽度仍是位置坐标；改变的是它们占哪些旋转频率。频率交错让各轴覆盖高低频，而不是把视觉 token 排成另一种语义顺序。作者针对长视频位置谱不平衡提出这一设计。[S4] §2.1。",
+      "locator": "§2–2.3 / Figure 1",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen3-step-timestamp",
+      "source": "2511.21631v2",
+      "statement": "时间戳先被文本 tokenizer 编码，和帧组视觉 token 一起进入上下文。它把“几秒”提供为可读条件，不是模型事后从帧号算出的测量值；代价是上下文增加。绝对时间信息换了接口，并未消除采样遗漏问题。[S4] §2.3；最后一句为工程分析。",
+      "locator": "§2–2.3 / Figure 1",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen-vl-training-read",
+      "source": "2308.12966v1",
+      "statement": "冻结语言模型不等于语言模型不参与前向计算：目标文本仍经语言模型产生概率，误差信号用于更新允许学习的视觉侧与连接器。到了联合阶段才让语言参数一起适应；SFT 又锁定视觉侧。这是原阶段设置的计算含义，不是新增阶段或新的实验结论。",
+      "locator": "§3.1–3.3 / Figure 3",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen25-training-read",
+      "source": "2502.13923v1",
+      "statement": "SFT 学习示范回答，DPO 再利用回答偏好改变生成倾向；二者的输入、监督对象不同。论文的三阶段过滤先区分领域，再过滤与保留可靠回答，不能把“有 2M 数据”直接当成每类能力都充分覆盖。视觉编码器在后训练中冻结，测试时仍运行它。",
+      "locator": "§2.3.1–2.3.4",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "qwen3-training-read",
+      "source": "2511.21631v2",
+      "statement": "Off-policy 阶段跟随教师回答，on-policy 阶段让学生先生成，再在这些位置用教师反馈校准。改变的是蒸馏训练路径，测试时通常只保留学生。RL 另从任务反馈优化行为，不能把它等同于教师 token 监督。报告没有完整列出本页可复现的所有损失细节。",
+      "locator": "§4.3–4.4",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "deepstack-controlled",
+      "source": "2511.21631v2",
+      "statement": "受控内部15B-A2B/200B tokens/无后训练，AVG74.7→76.0，InfoVQA71.9→74.2，DocVQA89.5→91.1，TextVQA80.6→80.5；图从0起并包含负例。",
+      "locator": "Table 12, PDF page 24",
+      "kind": "figure"
     }
   ],
   "third_party_figures": {

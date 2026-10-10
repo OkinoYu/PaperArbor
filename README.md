@@ -1,57 +1,43 @@
 <div align="center">
   <img src="assets/readme-banner.svg" width="100%" alt="PaperArbor：让论文生长为知识，AI 驱动的中文论文精读与可视化知识库">
-  <p>
-    <a href="https://okinoyu.github.io/PaperArbor/">🌿 在线知识库</a> ·
-    <a href="#-开始精读">🚀 开始精读</a> ·
-    <a href="#-四种阅读方式">🧭 阅读方式</a> ·
-    <a href="#-内容示例">📖 内容示例</a>
-  </p>
+  <p><a href="https://okinoyu.github.io/PaperArbor/">🌿 在线知识库</a> · <a href="#-开始精读">🚀 开始精读</a> · <a href="docs/usage.md">安装与使用</a></p>
 </div>
 
-PaperArbor 把论文变成可理解、可复查、可积累的中文研究知识。输入 PDF、arXiv 链接或论文名称，由 Codex 核实原文、拆解方法、整理实验，再生成带图解、公式与来源定位的独立网页。
-
-**[进入在线知识库 →](https://okinoyu.github.io/PaperArbor/)** 按方向、标签与阅读方式查找文章，新内容同步到这里。
+PaperArbor 把论文变成可理解、可复查、可积累的中文研究知识。用 Codex 核实原文、拆解方法与实验，生成带图解、公式和来源证据的独立网页。
 
 ## ✨ 特点
 
-| 🔬 深入机制 | 🌳 图文并读 |
-| --- | --- |
-| 从输入、数据流与训练信号讲清方法，保留消融、局限与未知项。 | 原论文图、流程图、离线公式与中文符号说明，串起关键步骤。 |
-| **🔗 结论可追溯** | **📚 知识可积累** |
-| 关键数字与结论附原文定位，证据索引区分事实、推导和分析。 | 搜索与分类聚合文章，支持手机阅读、打印和单文件离线阅读。 |
+- **读懂机制**：沿样本解释输入、变换、输出、监督及设计原因，分开训练与推理。
+- **图文并读**：原论文图、解释性 SVG、离线 MathML；桌面/手机导航与跨代对比。
+- **就地查证**：版本与 SHA-256、Evidence JSON、离线搜索证据和返回正文；事实、推导、分析分开。
+- **两种交付**：独立 HTML + 证据清单，或维护可搜索的静态知识库。无需模型 API、数据库或后端。
 
 ## 🚀 开始精读
 
-在本项目根目录打开 Codex，调用仓库自带的 [`paper-arbor` Skill](.agents/skills/paper-arbor/SKILL.md)：
-
-```text
-$paper-arbor Single 精读这篇论文：/path/to/paper.pdf
-$paper-arbor Series 梳理 Qwen-VL 系列的技术演进
-$paper-arbor Digest 比较这些论文的潜在推理方法：……
-$paper-arbor Radar 查找指定日期范围内的多模态推理论文
+```sh
+git clone https://github.com/OkinoYu/PaperArbor.git
+cd PaperArbor
 ```
 
-完成原文核查与站点校验后，将文章、证据和目录一起提交到 `main`，由 GitHub Pages 更新在线知识库。
+在目录内打开 Codex，调用 [`paper-arbor`](.agents/skills/paper-arbor/SKILL.md)：
 
-## 🧭 四种阅读方式
+```text
+$paper-arbor Single 精读 /path/paper.pdf，Standalone，交付离线 HTML 与证据清单
+$paper-arbor Series 梳理 Qwen-VL → Qwen3.5，Library，先保留本地
+$paper-arbor Digest 比较这些论文的方法、假设与评测：……
+$paper-arbor Radar 查找指定方向与日期范围的论文
+```
 
-| 模式 | 适合什么问题 |
-| --- | --- |
-| **Single · 单篇精读** | 一篇论文到底如何工作，证据支持什么？ |
-| **Series · 系列演进** | 一条技术路线继承、替换和改进了什么？ |
-| **Digest · 主题综述** | 不同方法的假设、评测与适用边界有何差别？ |
-| **Radar · 研究雷达** | 指定方向与日期范围内，有哪些值得继续读的论文？ |
+Python 3.9+ 负责维护；PDF 提图依赖按需安装。其他项目安装、完整命令与发布范围见 **[使用指南](docs/usage.md)**。脚本不自动做科学推理，也不自动推送。
 
-覆盖 LLM、VLM、Multimodal、Reasoning、Agent、RL 与 Others；Radar 按需执行。
+## 📖 示例
 
-## 📖 内容示例
+- [Qwen-VL → Qwen3.5：机制演进](https://okinoyu.github.io/PaperArbor/examples/VLM/QwenVL-series.html)
+- [OPLD：多模态潜在推理蒸馏](https://okinoyu.github.io/PaperArbor/examples/VLM/opld-2607.28154.html)
 
-- [OPLD：把多模态 CoT 蒸馏到潜在推理轨迹](https://okinoyu.github.io/PaperArbor/examples/VLM/opld-2607.28154.html)
-- [Qwen-VL 系列：从视觉摘要到 Qwen3.5 原生多模态](https://okinoyu.github.io/PaperArbor/examples/VLM/QwenVL-series.html)
+网站按方向、标签与阅读方式查找；示例的本地修改只有明确发布后才会上线。
 
-## 🛠️ 本地维护
-
-网站使用原生 HTML / CSS / JavaScript；维护脚本使用 Python 3.9+，无需数据库或后端。
+## 🛠️ 验证与维护
 
 ```sh
 python3 -m unittest discover -s tests -v
@@ -60,10 +46,8 @@ python3 scripts/validate_site.py --json
 python3 -m http.server 8000
 ```
 
-本地预览：`http://localhost:8000`。文章位于 `examples/`，目录与证据位于 `data/`；新增内容遵循 [研究与发布规范](AGENTS.md) 和 [元数据格式](docs/metadata.md)。
-
-Codex 负责研究与写作，脚本负责处理与校验；静态检查不能替代原文核实。本次无法获取或论文未公开的信息会明确标注。
+[元数据与证据格式](docs/metadata.md) · [项目约定](AGENTS.md) · [参考对比](docs/reference-study.md)。静态检查不能替代原文复核；未知或未公开的信息明确标记。
 
 ## 📄 许可与致谢
 
-原创内容采用 [MIT](LICENSE)；嵌入的论文图与其他第三方材料保留各自版权与来源。工作流参考 [PaperReading-skills](https://github.com/Linchunhui/PaperReading-skills)。
+原创代码与解读采用 [MIT](LICENSE)，论文图与其他第三方材料保留原版权。工作流设计参考 [PaperReading-skills](https://github.com/Linchunhui/PaperReading-skills)，本项目独立实现证据、知识库与阅读组件。

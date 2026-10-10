@@ -49,22 +49,31 @@ def validate_records(records: list, root: Path, require_files: bool = True) -> N
             raise ValueError('id must be a safe slug')
         if r['category'] not in CATEGORIES or r['type'] not in MODES:
             raise ValueError('unknown category or type')
-        for field in ('published', 'added'):
+        for field in ('published', 'added', *(['updated'] if 'updated' in r else [])):
+            if not isinstance(r[field], str):
+                raise ValueError(f'invalid {field}')
             if not re.fullmatch(r'\d{4}-\d{2}-\d{2}', r[field]):
                 raise ValueError(f'{field} must be YYYY-MM-DD')
             date.fromisoformat(r[field])
+        if 'updated' in r and r['updated'] < r['added']:
+            raise ValueError('updated must not precede added')
         if not isinstance(r['tags'], list) or not r['tags'] or any(not isinstance(t, str) or not t.strip() for t in r['tags']):
             raise ValueError('tags must be a nonempty string array')
         if not isinstance(r['sources'], list) or not r['sources']:
             raise ValueError('at least one primary source is required')
         keys = []
         for source in r['sources']:
+            if not isinstance(source, dict):
+                raise ValueError('source must be an object')
             for field in ('id', 'title', 'authors', 'url', 'version', 'published'):
                 if not isinstance(source.get(field), str) or not source[field].strip():
                     raise ValueError(f'source missing {field}')
             if urlsplit(source['url']).scheme != 'https':
                 raise ValueError('primary sources must use HTTPS')
             date.fromisoformat(source['published'])
+            for field, value in source.items():
+                if field.endswith('sha256') and (not isinstance(value, str) or not re.fullmatch(r'[0-9a-f]{64}', value)):
+                    raise ValueError(f'invalid {field}')
             keys.append(re.sub(r'v\d+$', '', source['id']).casefold())
         if len(set(keys)) != len(keys):
             raise ValueError('duplicate sources within one record')
@@ -78,6 +87,12 @@ def validate_records(records: list, root: Path, require_files: bool = True) -> N
             raise ValueError(f'expected {expected}*.html')
         if require_files and not target.is_file():
             raise ValueError(f'missing article: {r["path"]}')
+        if 'body' in r:
+            body = site_path(root, r['body'])
+            if not r['body'].startswith('articles/') or body.suffix != '.html':
+                raise ValueError('body must be articles/*.html')
+            if require_files and not body.is_file():
+                raise ValueError(f'missing authored body: {r["body"]}')
 
 def load_records(root: Path = ROOT) -> list:
     records = json.loads((root / 'data/papers.json').read_text(encoding='utf-8'))

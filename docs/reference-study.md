@@ -1,11 +1,28 @@
-# Upstream study and independent design
+# 参考对比与本地优化记录
 
-Studied 2026-10-10: [Linchunhui/PaperReading-skills](https://github.com/Linchunhui/PaperReading-skills), shallow commit `45fc93c6092707b08d7d2085894de3560784572a` (downloaded to a temporary directory).
+核查日期：2026-10-10。参考 [Linchunhui/PaperReading-skills](https://github.com/Linchunhui/PaperReading-skills)，固定 commit [`45fc93c6092707b08d7d2085894de3560784572a`](https://github.com/Linchunhui/PaperReading-skills/tree/45fc93c6092707b08d7d2085894de3560784572a)。下载在忽略目录，阅读其设计与产物，并在浏览器中对照示例；未运行其生成或维护脚本。对比基线为 PaperArbor `bdc6aee` 的 QwenVL 页面。
 
-The current README calls the skill PaperStudio. Its README and SKILL route single, series, digest and radar to separate references; `foundation.md` supplies shared provenance, images, formulas and writing guidance. Single expands method explanations and optional insight/Q&A. Series focuses on inheritance, timeline, comparison matrix and per-paper methods. Digest organizes independent work; Radar retains source status and separates discovery from verification. Layout/SVG references offer reusable reading structures.
+## 具体差异
 
-Reviewed `assets/style.css`, `index.html`, all five Python scripts and the QwenVL/LLaVA example structures. The homepage keeps its catalog inside JavaScript. `fetch_content.py` supports HF/arXiv/RSS and date ranges; `fetch_papers.py` is a compatibility entry point. `embed_images.py` handles HTML/SVG/CSS and remote URLs, `validate_html.py` checks filename/base64 rules; `html_to_markdown.py` additionally supports publishing companions. Examples embed original figures and introduce methods with colored chapters and SVG timelines. The QwenVL example loads CDN KaTeX and includes later code-derived material; PaperArbor independently verifies four original reports and uses native MathML.
+| 维度 | 参考项目 / QwenVL 示例 | PaperArbor 基线 | 本次选择 |
+| --- | --- | --- | --- |
+| Skill 分层 | 模式、共享 foundation、SVG/layout；方法有分阶段深度要求 | 模块化但 Single/Series 很短，缺少可操作的深度验收 | 入口路由 + mechanisms / visuals / quality，按任务加载，不按固定字数评分 |
+| 方法讲解 | 出发点、数据、h4 方法步骤、发现；能定位局部机制 | 有真实机制和监督，但早期代际长列表，跨节定位较弱 | 改为运算步骤，增加对象形态、连接原因、训练/测试区分及场景回扣 |
+| 视觉 | 章节色条、原图、时间线、跨代总览 | 已有原图、位置示意、消融与 Qwen3.5 路径，部分图手机只能横滚 | 保留森林绿身份，补跨代同环节选择器与整体输入输出图，文字替代与无 JS 全文 |
+| 引用 | 多为论文节号、外部链接；无逐项公共证据 ledger | 版本、SHA-256、95 claims 与 anchor；查证多在文末 JSON | 内嵌证据索引、按来源/段落查证、搜索、返回正文；外部 JSON 与内嵌一致性检查 |
+| 公式 | 当前示例加载 CDN KaTeX，尽管新版 Skill 要求离线公式 | 原生 MathML，无 CDN | 坚持离线 MathML，补即时符号、变换与边界说明 |
+| Qwen3.5 | 章节标题写 2025.12 / 仅代码，未固定代码 revision | 2026-02-16 模型首发、固定模型卡/代码，旗舰区别于全家族 | 保留核实日期与资料缺口，不把配置视为技术报告 |
+| 数值边界 | 有把 pairs 转“等效 tokens”、跨代数据量解释为效率的段落；示例 fixed1600 与 dynamic1924 的解释亦不对齐 | 样本/数据集/token 分开，横评与受控消融分开 | 不移植这些结论；保留非单调结果与评测分支、预算缺口 |
+| 交付 | 独立 HTML + 微信 Markdown | catalog 维护完善，但 renderer 默认带知识库相对链接 | 真正 Standalone 无 catalog 文件依赖；Library 原流程保留。微信稿不在本次范围 |
 
-Adopted architectural ideas: progressive mode references, standalone reading notes, original figures, visual explanations and evidence locators. Redesigned: repository-native Codex discovery, forest/amber visual identity, metadata-driven build, offline search without fetch, a per-claim evidence ledger, whole-site validation and protected publication. No upstream source code, CSS, assets, templates or generated prose are copied. Therefore no upstream MIT code copyright block is needed in PaperArbor; if a future change imports code, preserve its copyright and license in `third_party/` and cite it in README. Original scientific figures carry their own attribution, independent of project code licensing.
+上述内容差异是对固定文件的检查，不是对参考作者或后续版本的普遍评价。参考示例与当前 Skill 规则可能不完全同步，不能把规则和产物当成同一质量证明。
 
-Scope choices: no WeChat conversion, background scheduler, remote deployment or model API dependency in v0.1. The AI reasoning is performed by Codex through the Skill; scripts only handle deterministic operations.
+## 实施原则
+
+采纳：具体场景、计算步骤、原始承重图导读、相邻代际差异、选择性展开。独立实现：证据组件、导航、CSS/JS、生成与校验脚本、中文正文。没有复制参考代码、模板、SVG 或生成分析；科学信息来自已有固定原始论文/官方资料。第三方论文图继续保留原权利说明，MIT 不对它们重新许可。
+
+QwenVL 案例的事实基底不变，新增教学层必须引用原来源并登记 claims；类比、符号推导与工程判断明确区分。新质量规范也不要求每篇都拥有原文没有的 loss、ablation 或训练细节。
+
+## 验证范围
+
+验证记录见 [verification.md](verification.md)。测试、浏览器表现与来源复核分开报告；不把图数/字数当质量分，不声称已经通过用户读者研究或全面超过所有参考产物。优化验收阶段没有推送或改变 hosting；后续远程发布遵循用户单独授权。

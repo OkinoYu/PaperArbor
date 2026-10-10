@@ -33,7 +33,7 @@
   {
     "id": "qwenvl-series",
     "title": "Qwen-VL 系列：从视觉摘要到 Qwen3.5 原生多模态",
-    "summary": "Qwen-VL 到 Qwen3.5 的机制演进：四篇原始报告与固定版本官方资料，比较动态分辨率、时间/位置表示、DeepStack 与混合注意力，并保留训练、工具评测和资料覆盖的边界。",
+    "summary": "从报表问题走通 Qwen-VL 到 Qwen3.5：按计算步骤解释视觉预算、位置、跨层融合与混合注意力；包含跨代对照、训练与推理边界，以及可离线搜索的逐项证据。",
     "category": "VLM",
     "type": "Series",
     "published": "2025-11-26",
@@ -46,7 +46,8 @@
       "多模态推理",
       "Qwen3.5",
       "Gated DeltaNet",
-      "MoE"
+      "MoE",
+      "Qwen2.5-VL"
     ],
     "sources": [
       {
@@ -143,6 +144,7 @@
       }
     ],
     "evidence": "data/evidence/qwenvl-series.json",
-    "updated": "2026-10-10"
+    "updated": "2026-10-10",
+    "body": "articles/qwenvl-series/body.html"
   }
 ]
