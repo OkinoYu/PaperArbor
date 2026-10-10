@@ -33,6 +33,6 @@ description: 核实原始论文并深度拆解方法、训练和实验，生成�
 - 查现有来源集合与目标路径。PDF 先核实首页；名称需消歧。用 `fetch_sources.py` 或原始官方来源获取材料，下载与裁切放 `work/<stem>/`。
 - 阅读方法、训练、推理、实验与消融。先写主张—机制—证据关系，再写 HTML。别人的生成分析不是科学来源；已有笔记可帮助定位，承重结论仍核对原文。
 - 为重要数值、公式、图表及设计主张写 Evidence claim，保留版本与 locator。缺全文时缩小范围并标明，不称完整精读。
-- 按真实计算步骤写正文，使用稳定 ASCII anchor。渲染传 `--entry entry.json --evidence evidence.json`，把证据嵌入文件支持断网查证；`embed_images.py` 嵌入已检查的本地图像。
+- 按真实计算步骤写正文，使用稳定 ASCII anchor。方法先给整体图和读图路线，再拆局部接口；图文就近、承重图默认可见，按 visuals.md 验收。渲染传 `--entry entry.json --evidence evidence.json`，把证据嵌入文件支持断网查证；`embed_images.py` 嵌入已检查的本地图像。
 - Standalone 用 `validate_site.py --article standalone.html --entry entry.json --evidence evidence.json`；Library 先 `publish_entry.py … --dry-run` 再本地发布。修订用 `--replace`，保留 id/path/evidence/added；不覆盖文章试稿。
 - 科学与桌面/手机检查通过后报告文件、覆盖限制与检查结果。远程推送依任务和项目授权；后续“保留本地”优先。

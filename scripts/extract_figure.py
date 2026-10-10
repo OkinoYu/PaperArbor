@@ -16,7 +16,11 @@ def extract(pdf, page, box, output, width=1600):
             x0,y0,x1,y1=box
             if not 0<=x0<x1<=p.width or not 0<=y0<y1<=p.height:raise ValueError('invalid crop rectangle in PDF points')
             p=p.crop(tuple(box))
-        im=p.to_image(resolution=180).original.convert('RGB')
+        # A small crop at a fixed page DPI throws away fine labels even when
+        # the PDF contains a higher-resolution image. Render toward the output
+        # width, with a DPI ceiling to bound memory on very narrow crops.
+        resolution=min(720, max(180, 72*width/p.width))
+        im=p.to_image(resolution=resolution).original.convert('RGB')
         if im.width>width:
             from PIL import Image
             im.resize((width,round(im.height*width/im.width)),Image.Resampling.LANCZOS).save(output,'PNG',optimize=True)

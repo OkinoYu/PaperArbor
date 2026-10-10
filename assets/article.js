@@ -99,7 +99,7 @@
       button.setAttribute('aria-haspopup', 'dialog'); button.setAttribute('aria-controls', viewer.id);
       button.setAttribute('aria-label', '放大图像：' + sourceImage.alt);
       const hint = document.createElement('span'); hint.textContent = '完整显示 / 原始尺寸';
-      actions.append(button, hint); sourceImage.closest('figure').querySelector('figcaption')?.before(actions);
+      actions.append(button, hint); sourceImage.after(actions);
       button.addEventListener('click', () => {
         if (typeof viewer.showModal !== 'function') return;
         original = sourceImage; imageOpener = button; mode = 'fit';
@@ -159,10 +159,19 @@
   }));
   for (const [anchor, count] of Object.entries(claims.reduce((result, claim) => { result[claim.anchor] = (result[claim.anchor] || 0) + 1; return result; }, {}))) {
     const target = byId(anchor); if (!target) continue;
-    const button = node('button', `查证 · ${count}`, 'evidence-trigger'); button.type = 'button';
+    const button = node('button', `证据 ${count}`, 'evidence-trigger'); button.type = 'button';
     button.setAttribute('aria-haspopup', 'dialog'); button.setAttribute('aria-label', `查看 ${anchor} 对应的 ${count} 条证据`);
     button.addEventListener('click', () => open(anchor, '', button));
-    if (/^H[234]$/.test(target.tagName)) target.after(button); else target.prepend(button);
+    // Evidence is an annotation, never a child of an authored grid, switch,
+    // table or SVG. Adding a grid item would displace the scientific content.
+    if (/^H[234]$/.test(target.tagName)) target.append(button);
+    else if (target.tagName === 'FIGURE' && target.querySelector('figcaption')) target.querySelector('figcaption').append(button);
+    else {
+      const note = node('p', '', 'evidence-note');
+      const content = target.closest('svg, math, table') || target;
+      const layout = content.closest('.term-grid, .generation-switch, .table-wrap, .viz-scroll');
+      note.append(button); (layout || content).after(note);
+    }
   }
   document.querySelectorAll('a[data-source]').forEach(link => {
     link.setAttribute('aria-haspopup', 'dialog'); link.title = '就地查看证据；按住 Ctrl / Command 保留原链接';

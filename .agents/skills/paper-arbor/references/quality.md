@@ -18,7 +18,7 @@
 
 1. 新 staging 渲染、嵌图；Standalone 用 `validate_site.py --article … --entry … --evidence …`，Library 用 publisher dry-run 再本地发布。
 2. Library 运行 unittest、build_index --check、validate_site --json；行为改动添加有意义回归。Skill 可用时跑 quick_validate，核对引用文件。
-3. 桌面/手机检查目录、公式、图、宽表滚动、键盘 focus、证据关闭后 focus、无匹配搜索、代际切换、打印。结束 reset 临时 viewport。
+3. 桌面/手机检查方法整体原图是否在细节前默认可见、案例图是否紧邻所讲问题、证据增强前后卡片数量和排列是否一致；再检查目录、公式、图、宽表滚动、键盘 focus、证据关闭后 focus、无匹配搜索、代际切换、打印。结束 reset 临时 viewport。
 4. 断网/无 JS 仍有公式、图、所有核心面板与静态 locator/返回链接。不能执行离线模式时报告静态检查范围，不冒称浏览器离线验证。
 
 报告检查与缺口；远程更新依授权，本地 publisher 不是推送工具。

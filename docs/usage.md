@@ -82,4 +82,4 @@ python3 scripts/validate_site.py --json
 python3 -m http.server 8000
 ```
 
-浏览器打开 `http://localhost:8000`。验证移动、桌面、键盘、引用、无 JS 和 `/PaperArbor/` 前缀；静态验收不能证明科学事实或 JS 运行无网络请求，仍需来源复核与浏览器检查。质量方法见 [Skill 的验收规范](../.agents/skills/paper-arbor/references/quality.md)。
+浏览器打开 `http://localhost:8000`。维护阅读器时再打开 `/tests/reader_layout.html`，页面应显示 `PASS`；它实际执行共享 JS，验证证据注释不改变卡片/切换布局，以及过滤和焦点恢复。验证移动、桌面、键盘、引用、无 JS 和 `/PaperArbor/` 前缀；静态验收不能证明科学事实或 JS 运行无网络请求，仍需来源复核与浏览器检查。质量方法见 [Skill 的验收规范](../.agents/skills/paper-arbor/references/quality.md)。

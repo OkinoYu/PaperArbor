@@ -656,6 +656,22 @@
       "locator": "Eq.20, PDF p.5; Table 4, p.11; Table 2, p.7",
       "statement": "loss系数控制两项优化相对权重；当前组合有消融支持，不证明通用最优权重。",
       "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "shape-case",
+      "source": "2607.28154v1",
+      "locator": "Figure 8, PDF p.18; Problem Setup p.3; Inference p.12",
+      "statement": "原题图和五步中间图分别裁切并列：题图 crop=(154,159,217,265)，440×740 PNG 29040 bytes；中间图 crop=(154,488,403,672)，1200×886 PNG 68632 bytes。原题图与操作指令学生可见；辅助中间图和 rationale 是教师训练期特权输入，测试学生不接收或生成这些辅助图。",
+      "kind": "figure",
+      "attribution": "Zhu et al., OPLD, arXiv:2607.28154v1 Figure 8",
+      "redistribution": "原论文版权保留；研究解读引用；网站代码 MIT 不覆盖论文原图。"
+    },
+    {
+      "anchor": "architecture",
+      "source": "2607.28154v1",
+      "locator": "Figure 2, PDF p.4; Three-Stage OPLD Training pp.4–5",
+      "statement": "整体原图右侧为教师预热、学生预热、蒸馏，绿色 Deploy Student 指向左侧部署路径；推理仅原图与问题、学生 Enc–Dec latent 回路和答案，不含教师或辅助图。",
+      "kind": "paper-fact"
     }
   ]
 }

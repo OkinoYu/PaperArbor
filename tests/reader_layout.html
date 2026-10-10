@@ -1,0 +1,33 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Reader layout regression</title><link rel="stylesheet" href="../assets/article.css"></head><body>
+<main id="article" style="max-width:800px;margin:20px auto;padding:20px">
+<h2 id="chapter">读者交互布局回归</h2>
+<div class="term-grid" id="cards"><div id="nested-card"><h3>学生输入</h3><p>原始题目。</p></div><div><h3>教师输入</h3><p>题目及辅助指导。</p></div></div>
+<div class="generation-switch" id="switch"><div class="switch-controls"><button data-panel="student">学生</button><button data-panel="teacher">教师</button></div><div class="generation-panel" id="student">学生路径</div><div class="generation-panel" id="teacher">教师路径</div></div>
+<figure id="figure"><div class="viz-scroll"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30" role="img" aria-labelledby="figure-title"><title id="figure-title">测试框架</title><rect width="100" height="30" fill="#eef2e9"/></svg></div><figcaption>原图说明。</figcaption></figure>
+<p><a href="#chapter" data-source="fixture">来源引用</a></p><p id="regression-result" role="status">正在检查…</p>
+</main>
+<script type="application/json" id="evidence-data">{"sources":[{"id":"fixture","title":"Fixture paper","version":"v1","url":"https://example.org/paper"}],"ledger":{"claims":[{"anchor":"chapter","source":"fixture","locator":"Section 1","statement":"Heading evidence","kind":"paper-fact"},{"anchor":"cards","source":"fixture","locator":"Figure 1","statement":"Grid evidence","kind":"paper-fact"},{"anchor":"nested-card","source":"fixture","locator":"Figure 1","statement":"Card evidence","kind":"paper-fact"},{"anchor":"switch","source":"fixture","locator":"Section 2","statement":"Switch evidence","kind":"paper-fact"},{"anchor":"figure","source":"fixture","locator":"Figure 1","statement":"Figure evidence","kind":"figure"}]}}</script>
+<script src="../assets/article.js"></script><script>
+(() => {
+  const failures = [], check = (condition, name) => { if (!condition) failures.push(name); };
+  check(document.querySelector('#cards').children.length === 2, 'Evidence must not add grid items');
+  check(!document.querySelector('#cards .evidence-note'), 'Nested anchors must annotate outside the grid');
+  check(document.querySelector('#switch').children.length === 3, 'Evidence must not enter switch controls/panels');
+  check(document.querySelector('#chapter > .evidence-trigger'), 'Heading evidence remains inline');
+  check(document.querySelector('#figure figcaption > .evidence-trigger'), 'Figure evidence belongs in the caption');
+  check([...document.querySelectorAll('.evidence-trigger')].every(button => button.clientWidth < 100 && button.clientHeight <= 40), 'Evidence buttons must stay compact');
+  const buttons = document.querySelectorAll('[data-panel]'); buttons[1].click();
+  check(document.querySelector('#student').hidden && !document.querySelector('#teacher').hidden, 'Generation switching survives annotation');
+  const opener = document.querySelector('#cards + .evidence-note button'); opener.click();
+  const dialog = document.querySelector('#evidence-dialog');
+  check(dialog.open && document.querySelectorAll('#evidence-results li').length === 1, 'Anchor evidence opens with one matching claim');
+  dialog.querySelector('.dialog-close').click();
+  check(!dialog.open, 'Evidence dialog closes');
+  setTimeout(() => {
+    check(document.activeElement === opener, 'Closing restores keyboard focus');
+    const result = document.querySelector('#regression-result');
+    result.textContent = failures.length ? 'FAIL: ' + failures.join('; ') : 'PASS: layout, switching, filtering and keyboard focus';
+    result.dataset.result = failures.length ? 'fail' : 'pass';
+  }, 0);
+})();
+</script></body></html>
