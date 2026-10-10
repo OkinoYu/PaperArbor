@@ -3,6 +3,10 @@
 PaperArbor is an AI-Powered Visual Research Knowledge Base: **Where Papers Grow into Knowledge.**
 Read this file before editing. Honor explicit user scope; never create a repository, push, or enable hosting without an instruction.
 
+## Delivery preference
+
+The user reads this project at https://okinoyu.github.io/PaperArbor/ and has requested online delivery. For completed paper additions and intended revisions, commit the article, evidence, catalog and generated index together, push to the existing `origin/main` after the required checks, and verify the live Pages result. This standing instruction authorizes those routine updates; it does not authorize creating repositories or changing hosting settings. Honor any later request to keep work local.
+
 ## Architecture
 
 - Native HTML/CSS/JS static site, Python 3.9+ standard-library maintenance. No Node, database or backend required.

@@ -1,0 +1,535 @@
+{
+  "reviewed": "2026-10-10",
+  "coverage": "Complete 22-page arXiv:2607.28154v1 PDF: main paper, data/filtering, implementation, tensor-level method, all experimental/ablation/intervention/reference tables, qualitative case studies. User-provided local PDF and primary versioned PDF have identical SHA-256. No independent training/evaluation rerun; official code/weights not verified. Unknown split/checkpoint revisions, top-k normalization and missing hyperparameters explicitly retained.",
+  "claims": [
+    {
+      "anchor": "overview",
+      "source": "2607.28154v1",
+      "locator": "arXiv abs/2607.28154v1; PDF metadata and p.1",
+      "statement": "正式标题、完整作者、ByteDance、首发及v1日期2026-07-30；PDF共22页；首页作者拼写与元数据存在排版差异。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "2607.28154v1",
+      "locator": "Retrieved local and primary PDF SHA-256",
+      "statement": "用户提供PDF与版本化arXiv PDF均为SHA-256 969774c6fcdfb554d297ce80ff14ac11a642aa9663989b4336be17c95a93aba0。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "overview",
+      "source": "2607.28154v1",
+      "locator": "Method; Additional Method Details, PDF pp.3–5, 11–12",
+      "statement": "OPLD包含输入不对称的同底座教师学生、递归latent推理、教师自身latent目标与使用学生codes的教师评分两条监督路径。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "motivation",
+      "source": "2607.28154v1",
+      "locator": "Introduction / Related Work, PDF pp.1–3; Figure 8, PDF p.18",
+      "statement": "作者将显式视觉轨迹与特征代理监督作为动机，主张用CoT诱导的模型内部轨迹监督latent；图形变换例子依据Figure 8。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "insight",
+      "source": "2607.28154v1",
+      "locator": "Additional Implementation Details, PDF p.10; Table 4, PDF p.11",
+      "statement": "教师学生均初始化于Qwen2.5-VL-7B-Instruct；同底座、同latent结构，不同信息视图；加入适配器后的总参数量未单列。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "insight",
+      "source": "2607.28154v1",
+      "locator": "Discussion, PDF p.12; Table 2, PDF p.7",
+      "statement": "组合可解释为表征与行为校准；缺少cosine-only、教师文字与辅助图单独消融，无法完全拆解两种监督必要性。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "original-overview",
+      "source": "2607.28154v1",
+      "locator": "Figure 2, PDF p.4",
+      "statement": "整体训练与推理原图；crop=(75,50,535,253) PDF points，1150×508 lossless PNG，467417 bytes。",
+      "kind": "figure",
+      "attribution": "Zhu et al., OPLD, arXiv:2607.28154v1 Figure 2",
+      "redistribution": "论文版权保留；arXiv non-exclusive distribution license不等于第三方图像开放再许可；本地研究解读引用，网站代码MIT不覆盖原图。"
+    },
+    {
+      "anchor": "architecture",
+      "source": "2607.28154v1",
+      "locator": "Eqs.6,9–10, PDF p.4; Table 4, PDF p.11",
+      "statement": "递归code=z_k=Enc(h^L_{p_k-1})，embedding=e_k=Dec(z_k)；h/e为H维、z为D维；默认K=8 D=2048。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "architecture",
+      "source": "2607.28154v1",
+      "locator": "Eqs.7–8, PDF p.4; Discussion, PDF pp.11–12",
+      "statement": "原文Enc(h)=LN(W2 GELU(W1 LN(h)))，Dec(z)=W4 GELU(W3 LN(z))；轻量MLP编码解码模块。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "tensor-flow",
+      "source": "2607.28154v1",
+      "locator": "Tensor-level path of the three forward processes, PDF pp.11–12",
+      "statement": "说明图重绘student hidden→student Enc→zS→student Dec→eS；teacher target hidden→teacher Enc→zT→teacher Dec；teacher scoring sg(zS)→teacher Dec→teacher distribution，并旁路teacher Enc。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "distillation",
+      "source": "2607.28154v1",
+      "locator": "Eqs.11–12, PDF pp.4–5",
+      "statement": "将原文Eq.11和12合写为统一answer-only CE说明式；只监督答案token，prompt/latent槽直接标签mask。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "distillation",
+      "source": "2607.28154v1",
+      "locator": "Eqs.13–17, PDF p.5; Additional Method Details, PDF pp.11–12; Algorithm 1, PDF p.15",
+      "statement": "蒸馏三前向：current student greedy rollout；privileged teacher independent latent target；teacher scoring使用sg(student codes)经teacher decoder，不重算teacher encoder、不使用student decoded embeddings；teacher所有目标detach，student包括encoder decoder可训练。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "original-distillation",
+      "source": "2607.28154v1",
+      "locator": "Figure 3, PDF p.6",
+      "statement": "蒸馏阶段原图crop=(78,52,535,228) PDF points，1142×440 lossless PNG，409283 bytes；概览图省略scoring的latent接口，附录用于精确解释。",
+      "kind": "figure",
+      "attribution": "Zhu et al., OPLD, arXiv:2607.28154v1 Figure 3",
+      "redistribution": "论文版权保留；arXiv non-exclusive distribution license不等于第三方图像开放再许可；本地研究解读引用，网站代码MIT不覆盖原图。"
+    },
+    {
+      "anchor": "distillation",
+      "source": "2607.28154v1",
+      "locator": "Eq.15, PDF p.5; Warmup compatibility / Slot-wise alignment, PDF pp.11–12",
+      "statement": "原文cosine loss平均于B K个codes，teacher stop-gradient；共同初始化与结构缓解漂移但不保证坐标等价，槽索引对应递归深度而非严格语义。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "distillation",
+      "source": "2607.28154v1",
+      "locator": "Eqs.16–17, PDF p.5; Algorithm 1, PDF p.15; Tensor-level path, PDF pp.11–12",
+      "statement": "教师pT=p_phi(.|xT,sg(zS),yhat_prefix)，学生pS=p_theta(.|xS,zS,yhat_prefix)，共享学生codes/答案前缀；teacher decoder处理zS，teacher outputs detached。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "distillation",
+      "source": "2607.28154v1",
+      "locator": "Eqs.18–19, PDF p.5; Table 4, PDF p.11",
+      "statement": "原文Eq.19 top-k teacher support上的pT(log pT-log pS)，按student response token长度平均，topk=128；forward KL非reverse KL。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "distillation",
+      "source": "2607.28154v1",
+      "locator": "Eq.19, PDF p.5; Complementary distillation objectives, PDF p.12",
+      "statement": "正文截断概率求和与附录top-k DKL简写无法确认重归一化；复现需核实softmax/gather/renormalize，不能默认完整KL数学性质。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "distillation",
+      "source": "2607.28154v1",
+      "locator": "Eq.20, PDF p.5; Table 4, PDF p.11; Complementary objectives, PDF p.12",
+      "statement": "最终配置L=Ltext+0.05 Llat；warmup CE与distill目标分开；policy gradient/task rewards disabled。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Data Construction / Data Cleaning, PDF p.9",
+      "statement": "Zebra-CoT和Visual-CoT归一schema；GPT-5.4 API过滤直接答案泄漏/完成解法，uncertain KEEP；之后验证格式、图引用与重复ID；精确filter prompt公开。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 3, PDF p.10; Data Statistics, PDF p.9",
+      "statement": "训练集统计，单位samples，最终重复sample IDs=0；样本来源=Zebra-CoT；清洗前（样本）=178,695；清洗后（样本）=129,463",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 3, PDF p.10; Data Statistics, PDF p.9",
+      "statement": "训练集统计，单位samples，最终重复sample IDs=0；样本来源=Visual-CoT；清洗前（样本）=88,257；清洗后（样本）=88,257",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 3, PDF p.10; Data Statistics, PDF p.9",
+      "statement": "训练集统计，单位samples，最终重复sample IDs=0；样本来源=合计；清洗前（样本）=266,952；清洗后（样本）=217,720",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 3, PDF p.10",
+      "statement": "删除49,232 samples（18.4%），Zebra-CoT占最终59.5%、Visual-CoT40.5%；未拆分泄漏/格式各自删除数。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 3, PDF p.10",
+      "statement": "平均student images=0.97，teacher=3.08，auxiliary=2.11；zero-student-image samples=6580 (3.0%)；student/teacher prompt均长147.05/1219.34 characters，非tokens。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 4, PDF p.11; Implementation Details, PDF p.10",
+      "statement": "三阶段训练配置；配置=初始化；教师预热=Qwen2.5-VL-7B-Instruct；学生预热=Qwen2.5-VL-7B-Instruct；OPLD 蒸馏=两份独立预热 checkpoint",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 4, PDF p.11; Implementation Details, PDF p.10",
+      "statement": "三阶段训练配置；配置=可训练参数；教师预热=全参数；学生预热=全参数；OPLD 蒸馏=仅学生（含 Enc / Dec）",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 4, PDF p.11; Implementation Details, PDF p.10",
+      "statement": "三阶段训练配置；配置=损失；教师预热=答案 CE；学生预热=答案 CE；OPLD 蒸馏=top-128 forward KL + 0.05 cosine",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 4, PDF p.11; Implementation Details, PDF p.10",
+      "statement": "三阶段训练配置；配置=学习率；教师预热=语言模型/merger 1×10⁻⁵；视觉 2×10⁻⁶；学生预热=语言模型/merger 1×10⁻⁵；视觉 2×10⁻⁶；OPLD 蒸馏=1×10⁻⁶；视觉单独 LR 未列",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 4, PDF p.11; Implementation Details, PDF p.10",
+      "statement": "三阶段训练配置；配置=Epoch / 全局 batch；教师预热=1 / 16；学生预热=1 / 16；OPLD 蒸馏=1 / 未列",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 4, PDF p.11; Implementation Details, PDF p.10",
+      "statement": "三阶段训练配置；配置=weight decay / schedule / warmup ratio；教师预热=0.1 / cosine / 0.03；学生预热=0.1 / cosine / 0.03；OPLD 蒸馏=未列 / 未列 / 未列",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 4, PDF p.11; Implementation Details, PDF p.10",
+      "statement": "三阶段训练配置；配置=latent slots / dimension；教师预热=8 / 2048；学生预热=8 / 2048；OPLD 蒸馏=8 / 2048",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 4, PDF p.11; Implementation Details, PDF p.10",
+      "statement": "三阶段训练配置；配置=最大生成长度；教师预热=512 tokens；学生预热=512 tokens；OPLD 蒸馏=256 tokens",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 4, PDF p.11; Implementation Details, PDF p.10",
+      "statement": "三阶段训练配置；配置=最大 prompt 长度；教师预热=未列；学生预热=未列；OPLD 蒸馏=8192 tokens",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Table 4, PDF p.11; Implementation Details, PDF p.10",
+      "statement": "三阶段训练配置；配置=精度 / 梯度检查点；教师预热=BF16 / 开启；学生预热=BF16 / 开启；OPLD 蒸馏=BF16 / 开启",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2607.28154v1",
+      "locator": "Experimental Setup, PDF p.5; Additional Implementation Details, PDF p.10",
+      "statement": "warmup per-device batch1/global16，TF32 SDPA Liger non-reentrant checkpointing；image pixel range100352–1317120；正文distill8 NVIDIA B200 GPUs，epoch1 LR1e-6；没有训练GPU时/吞吐/峰值显存/adapter总参数。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "inference",
+      "source": "2607.28154v1",
+      "locator": "Inference, PDF p.12; Recursive Latent Reasoning, PDF p.4",
+      "statement": "测试student-only original image question→K8 recursive codes via student EncDec→answer；去除teacher和privileged inputs，不需显式CoT/auxiliary visual operations；未报告动态停止或test-time scaling。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "inference",
+      "source": "2607.28154v1",
+      "locator": "Recursive Latent Reasoning, PDF p.4; Inference, PDF p.12",
+      "statement": "缺乏cache实现与wall-clock延迟数据，不可把省去外部视觉操作等同量化加速；部署需正确回填embedding与维护递归因果序。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2607.28154v1",
+      "locator": "Experimental Setup, PDF p.5; Implementation Details, PDF p.10; Table 1, PDF p.7",
+      "statement": "LMMS-Eval official task configs greedy，主实验7 benchmarks；所有Table1 scores percentages higher better；未逐行列split/sample size/prompt/checkpoint revision和eval commit；不独立复跑。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2607.28154v1",
+      "locator": "Table 1, PDF p.7",
+      "statement": "Table1作者报告；percent, higher better；LMMS-Eval greedy/official task configs，精确split和revision未逐行列明；列为各任务对应overall/汇总分；模型/方法=Qwen2.5-VL-7B；V⋆=71.20；HR-4K=65.12；HR-8K=58.00；MMStar=59.70；Seed2+=65.31；BLINK=53.60；Hall.=56.57",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2607.28154v1",
+      "locator": "Table 1, PDF p.7",
+      "statement": "Table1作者报告；percent, higher better；LMMS-Eval greedy/official task configs，精确split和revision未逐行列明；列为各任务对应overall/汇总分；模型/方法=Qwen2.5-VL-7B + SFT；V⋆=73.82；HR-4K=68.00；HR-8K=60.75；MMStar=61.36；Seed2+=69.38；BLINK=56.56；Hall.=66.67",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2607.28154v1",
+      "locator": "Table 1, PDF p.7",
+      "statement": "Table1作者报告；percent, higher better；LMMS-Eval greedy/official task configs，精确split和revision未逐行列明；列为各任务对应overall/汇总分；模型/方法=Qwen2.5-VL-7B + 32B OPD；V⋆=73.30；HR-4K=65.25；HR-8K=55.50；MMStar=51.52；Seed2+=67.72；BLINK=39.35；Hall.=38.90",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2607.28154v1",
+      "locator": "Table 1, PDF p.7",
+      "statement": "Table1作者报告；percent, higher better；LMMS-Eval greedy/official task configs，精确split和revision未逐行列明；列为各任务对应overall/汇总分；模型/方法=Monet；V⋆=80.10；HR-4K=67.37；HR-8K=64.37；MMStar=60.33；Seed2+=65.88；BLINK=50.71；Hall.=56.36",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2607.28154v1",
+      "locator": "Table 1, PDF p.7",
+      "statement": "Table1作者报告；percent, higher better；LMMS-Eval greedy/official task configs，精确split和revision未逐行列明；列为各任务对应overall/汇总分；模型/方法=HyLaR；V⋆=83.77；HR-4K=75.00；HR-8K=70.50；MMStar=62.00；Seed2+=70.32；BLINK=57.14；Hall.=63.68",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2607.28154v1",
+      "locator": "Table 1, PDF p.7",
+      "statement": "Table1作者报告；percent, higher better；LMMS-Eval greedy/official task configs，精确split和revision未逐行列明；列为各任务对应overall/汇总分；模型/方法=OPLD（预热后蒸馏学生）；V⋆=85.86；HR-4K=73.75；HR-8K=71.37；MMStar=63.86；Seed2+=70.88；BLINK=58.56；Hall.=65.19",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2607.28154v1",
+      "locator": "Table 1, PDF p.7",
+      "statement": "按同表值相减，OPLD vs Qwen V*=85.86-71.20=14.66pp，HR8K=71.37-58.00=13.37pp；OPLD vs SFT Hall=65.19-66.67=-1.48pp。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2607.28154v1",
+      "locator": "Table 1, PDF p.7",
+      "statement": "例外：HyLaR HR4K overall75.00>OPLD73.75，V*Spatial85.53>81.58；Laser Hall67.72>OPLD65.19；作者表中商用/agent仍有领先，不支持全局SOTA。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2607.28154v1",
+      "locator": "Table 1, PDF p.7",
+      "statement": "Qwen→OPLD HR4K FSP75.75→90.00 FCP54.50→57.50；HR8K FSP63.00→87.75 FCP53.00→55.00；V*Attr73.04→88.70 Spatial68.42→81.58；all percentages higher better official configs greedy，原文未展开FSP/FCP定义。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "experiments",
+      "source": "2607.28154v1",
+      "locator": "Figure 5 / Privileged Teacher Reference, PDF p.14",
+      "statement": "约5K held-out in-domain samples accuracy teacher privileged72.6%, student warmup original29.4%, OPLD original65.4%；作者报告+36.0pp，gap recovery83.3%，remaining7.2pp；greedy official evaluations；完整split protocol未列。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Figure 4, PDF p.6; Table 5, PDF p.13",
+      "statement": "同Qwen2.5-VL-7B学生/相同数据训练策略，四项overall percent higher better，原始输入下评测；策略=基础 Qwen；V⋆=71.20；HR-4K=65.12；HR-8K=58.00；MME-RW-Lite=45.75",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Figure 4, PDF p.6; Table 5, PDF p.13",
+      "statement": "同Qwen2.5-VL-7B学生/相同数据训练策略，四项overall percent higher better，原始输入下评测；策略=SFT；V⋆=73.82；HR-4K=68.00；HR-8K=60.75；MME-RW-Lite=46.33",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Figure 4, PDF p.6; Table 5, PDF p.13",
+      "statement": "同Qwen2.5-VL-7B学生/相同数据训练策略，四项overall percent higher better，原始输入下评测；策略=仅学生预热；V⋆=73.82；HR-4K=66.63；HR-8K=58.00；MME-RW-Lite=48.88",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Figure 4, PDF p.6; Table 5, PDF p.13",
+      "statement": "同Qwen2.5-VL-7B学生/相同数据训练策略，四项overall percent higher better，原始输入下评测；策略=教师预热后移除特权输入；V⋆=73.30；HR-4K=64.75；HR-8K=56.38；MME-RW-Lite=43.98",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Figure 4, PDF p.6; Table 5, PDF p.13",
+      "statement": "同Qwen2.5-VL-7B学生/相同数据训练策略，四项overall percent higher better，原始输入下评测；策略=32B 标准 OPD；V⋆=73.30；HR-4K=65.25；HR-8K=55.50；MME-RW-Lite=32.83",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Figure 4, PDF p.6; Table 5, PDF p.13",
+      "statement": "同Qwen2.5-VL-7B学生/相同数据训练策略，四项overall percent higher better，原始输入下评测；策略=完整 OPLD；V⋆=85.86；HR-4K=73.75；HR-8K=71.37；MME-RW-Lite=53.36",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Effect of Training Strategy, PDF pp.6–7; Table 5, PDF p.13",
+      "statement": "标准OPD同时改变教师规模/初始化/监督等，比较不能隔离某单因子因果；teacher warmup removed privilege是分布迁移检验。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 2, PDF p.7; Table 6, PDF p.13",
+      "statement": "latent slot/architecture/loss消融，同Qwen2.5-VL-7B方案，LMMS-Eval greedy official configs，percent higher better；分组/变体=槽数 K=0；V⋆=75.39；HR-4K=65.50；HR-8K=58.13；MME-RW-Lite=50.44；Avg.=62.36",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 2, PDF p.7; Table 6, PDF p.13",
+      "statement": "latent slot/architecture/loss消融，同Qwen2.5-VL-7B方案，LMMS-Eval greedy official configs，percent higher better；分组/变体=槽数 K=4；V⋆=78.53；HR-4K=72.62；HR-8K=71.75；MME-RW-Lite=51.90；Avg.=68.70",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 2, PDF p.7; Table 6, PDF p.13",
+      "statement": "latent slot/architecture/loss消融，同Qwen2.5-VL-7B方案，LMMS-Eval greedy official configs，percent higher better；分组/变体=槽数 K=8；V⋆=85.86；HR-4K=73.75；HR-8K=71.37；MME-RW-Lite=53.36；Avg.=71.09",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 2, PDF p.7; Table 6, PDF p.13",
+      "statement": "latent slot/architecture/loss消融，同Qwen2.5-VL-7B方案，LMMS-Eval greedy official configs，percent higher better；分组/变体=Raw hidden states；V⋆=78.53；HR-4K=71.50；HR-8K=67.00；MME-RW-Lite=48.41；Avg.=66.36",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 2, PDF p.7; Table 6, PDF p.13",
+      "statement": "latent slot/architecture/loss消融，同Qwen2.5-VL-7B方案，LMMS-Eval greedy official configs，percent higher better；分组/变体=Enc–Dec adapter；V⋆=85.86；HR-4K=73.75；HR-8K=71.37；MME-RW-Lite=53.36；Avg.=71.09",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 2, PDF p.7; Table 6, PDF p.13",
+      "statement": "latent slot/architecture/loss消融，同Qwen2.5-VL-7B方案，LMMS-Eval greedy official configs，percent higher better；分组/变体=Reverse KL + PG + cosine；V⋆=74.87；HR-4K=71.37；HR-8K=67.75；MME-RW-Lite=49.92；Avg.=65.98",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 2, PDF p.7; Table 6, PDF p.13",
+      "statement": "latent slot/architecture/loss消融，同Qwen2.5-VL-7B方案，LMMS-Eval greedy official configs，percent higher better；分组/变体=Top-k forward KL only；V⋆=78.53；HR-4K=63.88；HR-8K=58.63；MME-RW-Lite=48.20；Avg.=62.31",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 2, PDF p.7; Table 6, PDF p.13",
+      "statement": "latent slot/architecture/loss消融，同Qwen2.5-VL-7B方案，LMMS-Eval greedy official configs，percent higher better；分组/变体=Top-k forward KL + cosine；V⋆=85.86；HR-4K=73.75；HR-8K=71.37；MME-RW-Lite=53.36；Avg.=71.09",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Tables 2 / 6, PDF pp.7,13",
+      "statement": "K4 HR8K71.75高于K8 71.37不支持严格单调；EncDec/raw对照未拆解空间/容量/归一化；RevKL+PG与ForwardKL相比同时改变方向和优化，不隔离KL因果。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 7, PDF p.13; Intervention Analysis, PDF p.14",
+      "statement": "同一训练后OPLD checkpoint，same original input/greedy配置，only latents changed，不训练；four overall benchmarks and mean drop in percentage points；推理期状态=原始 latents；V⋆=85.86；HR-4K=73.75；HR-8K=71.37；MME-RW-Lite=53.36；Avg. Drop（百分点）=—",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 7, PDF p.13; Intervention Analysis, PDF p.14",
+      "statement": "同一训练后OPLD checkpoint，same original input/greedy配置，only latents changed，不训练；four overall benchmarks and mean drop in percentage points；推理期状态=加入随机噪声；V⋆=76.96；HR-4K=64.12；HR-8K=57.50；MME-RW-Lite=48.62；Avg. Drop（百分点）=9.29",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 7, PDF p.13; Intervention Analysis, PDF p.14",
+      "statement": "同一训练后OPLD checkpoint，same original input/greedy配置，only latents changed，不训练；four overall benchmarks and mean drop in percentage points；推理期状态=全部置零；V⋆=76.44；HR-4K=59.62；HR-8K=51.37；MME-RW-Lite=48.51；Avg. Drop（百分点）=12.10",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 7, PDF p.13; Intervention Analysis, PDF p.14",
+      "statement": "同一训练后OPLD checkpoint，same original input/greedy配置，only latents changed，不训练；four overall benchmarks and mean drop in percentage points；推理期状态=跨样本交换轨迹；V⋆=65.45；HR-4K=54.63；HR-8K=48.25；MME-RW-Lite=44.61；Avg. Drop（百分点）=17.85",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Table 7, PDF p.13; Intervention Analysis, PDF p.14; Slot-wise alignment, PDF p.12",
+      "statement": "交换轨迹降幅最大支持样本相关信息功能贡献，不证明每槽可解释推理语义或区分感知信息/推理/答案倾向。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "ablations",
+      "source": "2607.28154v1",
+      "locator": "Figure 8, PDF p.18; Case Studies discussion, PDF pp.14–15",
+      "statement": "定性Tetris案例teacher=A incorrect，warmup student=D incorrect，OPLD=C correct；作者用soft distribution与different scoring trajectory解释，不提供实例概率/latent语义。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "limits",
+      "source": "2607.28154v1",
+      "locator": "Discussion, PDF pp.11–12",
+      "statement": "作者承认坐标漂移与槽语义非一一对应；functional utility不建立每维语义；learned latent mapper/OT matching/probing是未来方向。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "limits",
+      "source": "2607.28154v1",
+      "locator": "Tables 1–4, PDF pp.7,10–11; Discussion, PDF p.12; Figures 9/12, PDF pp.19,22",
+      "statement": "分析：额外观测未必由原图可恢复；过滤无审计误差，complete-scene jigsaw案例清洗保留状态未标明；缺cosine-only/input/decoder对照；无CI/multiseed/跨底座实验和内容级去污染保证；代码权重未核实、超参/评测revision/latency缺口。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "takeaways",
+      "source": "2607.28154v1",
+      "locator": "Method, PDF pp.4–5; Tables 2/7, PDF pp.7,13; Discussion, PDF p.12",
+      "statement": "可带走机制为信息不对称教师+student on-policy轨迹+latent interface校准，证据支持功能性贡献但不建立逐槽可解释逻辑。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "takeaways",
+      "source": "2607.28154v1",
+      "locator": "Based on implementation gaps in PDF pp.10–12; Tables 2/7, PDF pp.7,13",
+      "statement": "复现检查列表与追加对照为编辑建议，非作者已执行结果。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "sources",
+      "source": "2607.28154v1",
+      "locator": "PDF metadata / p.1 copyright notice; Figure 2 p.4 / Figure 3 p.6",
+      "statement": "原图作者署名；PDF License=arxiv nonexclusive-distrib/1.0与首页版权声明，MIT代码许可不覆盖paper figures；两张PNG超350KB为保持label legibility。",
+      "kind": "figure"
+    }
+  ]
+}
