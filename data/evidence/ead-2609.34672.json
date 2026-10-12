@@ -1,0 +1,617 @@
+{
+  "reviewed": "2026-10-12",
+  "coverage": "全文18页arXiv:2609.34672v1，含Appendix A.1–A.8；用户PDF与版本化官方下载哈希一致。覆盖诊断、三视图共同支持、公式方向/尺度/stop-gradient、训练/评分细节、主结果、全部主要消融、监督质量与集中度和held-out分析。实验未独立复跑；官方代码/权重、eps/范数保护、逐模块训练配置、主模型测试decode/split/prompt细节未核实。外部大模型行为采用论文引用分数，不能当本篇统一重测。原图权利与研究节选用途单独注明。",
+  "claims": [
+    {
+      "anchor": "overview",
+      "source": "2609.34672v1",
+      "locator": "PDF p.1; arXiv v1 metadata; full PDF pp.1–18",
+      "statement": "标题、四位完整作者、机构及通讯作者已核对；首发/v1日期2026-09-28；全文18页含A.1–A.8；用户及官方下载SHA-256均为88610360043925493add24aba808e9032ec9440ae5ec40f7a4934cb441878c92",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "2609.34672v1",
+      "locator": "§1, §3–4; Figure 3; pp.1–6",
+      "statement": "EAD保留crop-conditioned EMA教师目标，另构建当前学生Original–Mask证据参考，按方向余弦加权逐token蒸馏；不是用证据参考取代教师。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "motivation",
+      "source": "2609.34672v1",
+      "locator": "Figure 1; PDF p.2",
+      "statement": "原图裁切(108,77,504,222) PDF points，1600px lossless PNG，172,732 bytes；保留全部面板、标签、图例与边界，移除周围正文。原图版权归Hu等及相关权利人；arXiv非独占分发许可不是公众开放图许可。",
+      "kind": "figure",
+      "attribution": "Nanxing Hu; Qiwei Yan; Jinchao Zhang; Guoliang Kang",
+      "redistribution_conditions": "Research commentary excerpt; copyright retained by original rightsholders; no additional public figure license verified"
+    },
+    {
+      "anchor": "motivation",
+      "source": "2609.34672v1",
+      "locator": "Figure 1; §1, §3; pp.1–5",
+      "statement": "帐篷颜色问题的原图/crop/mask和token权重是作者原图；模型状态差与crop上下文损失构成两种监督干扰。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "motivation",
+      "source": "2609.34672v1",
+      "locator": "§2, §4, §5.4; pp.3,5–6,8–9",
+      "statement": "EAD继承VisionOPD原图student/crop EMAteacher/on-policy prefix，新增参考及权重；与OPD-V、VAD是不同参考/目标设计。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnosis",
+      "source": "2609.34672v1",
+      "locator": "Figure 2; PDF p.3",
+      "statement": "原图裁切(108,78,504,209) PDF points，1600px lossless PNG，225,394 bytes；保留全部面板、标签、图例与边界，移除周围正文。原图版权归Hu等及相关权利人；arXiv非独占分发许可不是公众开放图许可。",
+      "kind": "figure",
+      "attribution": "Nanxing Hu; Qiwei Yan; Jinchao Zhang; Guoliang Kang",
+      "redistribution_conditions": "Research commentary excerpt; copyright retained by original rightsholders; no additional public figure license verified"
+    },
+    {
+      "anchor": "diagnosis",
+      "source": "2609.34672v1",
+      "locator": "Eq.1–4; pp.4–5",
+      "statement": "Dteacher=JS(sg(p_teacher_crop),p_student_raw)，Dcrop=JS(p_student_raw,p_student_crop)，Dmask=JS(p_student_raw,p_student_mask)；同prefix；时间位置归一化π_t=D_t/ΣD，TV=.5Σ|πA−πB|。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnosis",
+      "source": "2609.34672v1",
+      "locator": "§3.1; Figure2(a); pp.3–4",
+      "statement": "VisionOPD训练Qwen3.5-4B、随机512images诊断；模型状态TV中位数steps0/25/50/65为0/25.3/18.7/15.8%，非准确率。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnosis",
+      "source": "2609.34672v1",
+      "locator": "§3.2–3.3; Figure2(b,c); pp.3,5",
+      "statement": "crop与mask token位置归一化JS的TV中位数steps0/25/50/65=44.2/43.2/42.3/41.8%；颜色案例mask更强调blue而crop在is上可有大值。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnosis",
+      "source": "2609.34672v1",
+      "locator": "§3; A.8; pp.4–5,17–18",
+      "statement": "TV变化不判断真伪，案例不是全token人工相关性标注；因果/可靠性解释须看消融。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "architecture",
+      "source": "2609.34672v1",
+      "locator": "Figure 3; PDF p.4",
+      "statement": "原图裁切(108,77,504,265) PDF points，1600px lossless PNG，177,532 bytes；保留全部面板、标签、图例与边界，移除周围正文。原图版权归Hu等及相关权利人；arXiv非独占分发许可不是公众开放图许可。",
+      "kind": "figure",
+      "attribution": "Nanxing Hu; Qiwei Yan; Jinchao Zhang; Guoliang Kang",
+      "redistribution_conditions": "Research commentary excerpt; copyright retained by original rightsholders; no additional public figure license verified"
+    },
+    {
+      "anchor": "architecture",
+      "source": "2609.34672v1",
+      "locator": "Figure3; §4; pp.4–6",
+      "statement": "整体图三分支：raw student生成prefix，crop EMAteacher提供target，raw/masked current student构造evidence；恢复为预测差解释非图像重建。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "views",
+      "source": "2609.34672v1",
+      "locator": "A.1; p.13",
+      "statement": "使用VisionOPD原图crop pairs；Rminus用GT bbox内部周围meanRGB填充，保留redbox及context；依赖GT区域。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "views",
+      "source": "2609.34672v1",
+      "locator": "A.1; p.13",
+      "statement": "带红框训练视图不是完全无定位提示的rawimage；v1未统一单列测试红框呈现细节。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "prefix",
+      "source": "2609.34672v1",
+      "locator": "§5.1; A.1; pp.6,13",
+      "statement": "原图学生生成y；所有branches同h_t=(x,y<t)；强制首token The且排除loss，后续正常采样；rollout温度未给。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "support",
+      "source": "2609.34672v1",
+      "locator": "§5.1; A.1; pp.6,13",
+      "statement": "当前full-image学生选择top100 support，三分支同indices gather logits/partialsoftmax；Prawstudent,QcropEMAteacher,Mmaskcurrentstudent均共同100词坐标。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "support",
+      "source": "2609.34672v1",
+      "locator": "A.1; p.13",
+      "statement": "共同support必要，独立topk坐标无法直接相减；学生未入选教师重视token会被支持截断。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "two-directions",
+      "source": "2609.34672v1",
+      "locator": "Eq.6–7; pp.5–6",
+      "statement": "corr=Q−P，evid=P−M；共同词表向量方向比较、权重为responseposition标量；evid反向会改变权重符号。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "objective",
+      "source": "2609.34672v1",
+      "locator": "Eq.5; §4.1; p.5",
+      "statement": "JS(p,p+δ)≈1/8Σ_jδ_j²/p_j为局部二阶近似，motivatesδ/sqrt(p)；非实际分布全局等式。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "objective",
+      "source": "2609.34672v1",
+      "locator": "Eq.6; p.5",
+      "statement": "Prawstudent/Qcropteacher/Mmaskstudent缩记：ucorr=(Q−P)/sqrt(max(P,eps))，uevid=(P−M)/same；逐坐标共享尺度；eps值未提供。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "objective",
+      "source": "2609.34672v1",
+      "locator": "Eq.7; p.6",
+      "statement": "w=max(dot(ucorr,uevid)/(norm2corr*norm2evid),0)；非零向量权重0–1，标量每responseposition乘JS，不重构teacherQ；零范数保护未公开。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "objective",
+      "source": "2609.34672v1",
+      "locator": "Eq.6–7; pp.5–6",
+      "statement": "教学余弦.8→w.8、−.2→w0；反写evid使cos翻号；不是实验值。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "objective",
+      "source": "2609.34672v1",
+      "locator": "Eq.8; A.1; pp.6,13",
+      "statement": "B为onpolicyresponses，Ti有效token；loss先回答内按Ti平均再batch回答平均；sg(w)和sg(Q)，梯度仅JS的P路径，不经maskedbranch/weight反传。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "objective",
+      "source": "2609.34672v1",
+      "locator": "Eq.8; p.6",
+      "statement": "没有Σw重新归一化，损失总强度会下降；tokenlevel scalar weight不排除该token支持上所有不对齐词坐标。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "training",
+      "source": "2609.34672v1",
+      "locator": "§5.1; A.1, A.4; pp.6,12–15",
+      "statement": "Qwen3.5-4B/9B，同6.2K examples一个epoch65steps finalcheckpoint；batch96、n8、lr2e-6、warmup10、prompt8192/response1024、EMAupdate.05；optimizer/precision/freeze配置未单列。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2609.34672v1",
+      "locator": "§5.1; A.1; pp.6,13",
+      "statement": "EMA update.05说明式θbar←.95θbar+.05θ；96*8=768 response槽位每步，96*65=6240 question槽位；尾批未知，不等于实际精确token消费。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "training",
+      "source": "2609.34672v1",
+      "locator": "§2; §4.2; Table1; pp.3,6–7",
+      "statement": "teacher/mask分支仅训练，推理只用originalimage trainedstudent；singleforwardpass无额外crop/tools，不消除autoregressive decoding。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "evaluation",
+      "source": "2609.34672v1",
+      "locator": "A.3; pp.13–14",
+      "statement": "新版去掉不受约束大写字母fallback；明确answer/option格式，多个取last；文本唯一option匹配；unresolved textonly Qwen3.5-122B-A10B judge含reference、不含image，temperature0 thinkingoff Yes/No。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "evaluation",
+      "source": "2609.34672v1",
+      "locator": "A.4; p.15; §5.1, A.3; pp.6,13–14",
+      "statement": "trainingrollout unresolved计incorrect，与evaluation fallbackjudge不同；本文主模型测试decodebudget/T/splits/prompt未逐项完整列出。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2609.34672v1",
+      "locator": "Figure3; §4.2; A.1; pp.4,6,13",
+      "statement": "追加maskedstudentforward，权重计算前未知zero，无吞吐/显存/时间表，lossmass不换算算力。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "4B Vanilla；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=82.20,48.76,86.12,79.62,58.81,60.44,69.33；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "4B GRPO；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=86.91,58.93,84.50,79.38,72.49,70.78,75.50；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "4B Vision-OPD；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=87.43,59.76,80.62,80.25,70.77,69.38,74.70；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "4B OPD-V；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=87.43,58.93,83.75,80.12,70.12,68.80,74.86；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "4B VAD；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=91.10,60.71,85.50,81.25,72.75,70.07,76.90；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "4B EAD；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=91.62,60.83,86.38,82.88,72.39,71.10,77.53；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "9B Vanilla；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=89.01,53.49,85.38,81.88,71.83,67.47,74.84；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "9B GRPO；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=89.53,57.51,84.75,81.62,66.47,65.59,74.25；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "9B Vision-OPD；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=89.53,66.04,85.62,82.38,71.11,69.61,77.38；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "9B OPD-V；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=90.05,62.25,82.75,82.62,71.65,70.63,76.66；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "9B VAD；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=91.10,61.42,87.62,84.12,72.32,70.07,77.78；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; §5.1–5.2; pp.6–7",
+      "statement": "9B EAD；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=93.19,62.01,88.62,84.62,72.46,71.07,78.66；同6.2K数据一个epoch finalcheckpoint，同revised evaluation。",
+      "kind": "paper-fact",
+      "metric": "reported benchmark score, higher is better; exact per-benchmark metric/split not fully restated in v1",
+      "checkpoint": "final checkpoint; exact released identifier not provided",
+      "protocol": "single-forward-pass setting, revised answer extractor and unresolved text judge; model decode settings not fully specified"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1, §5.2; pp.7–8",
+      "statement": "EAD−VisionOPD舍入Avg4B2.83/9B1.28分数点，EAD−VAD.63/.88；4BMMEEN EAD72.39<VAD72.75，9BZoom62.01<VisionOPD66.04，9BGRPO74.25<Vanilla74.84。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "§5.1; Table1; pp.6–7",
+      "statement": "外部大模型取VisionOPD已报告分数，未在这里统一重测：Qwen3.5-397B Avg77.44/GPT5.4 72.77/Gemini3.1Pro79.25；与本篇EAD跨来源比较仅背景。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34672v1",
+      "locator": "Table1; A.3; pp.7,13–14",
+      "statement": "重训底座和改评测器存在差异，不与其他论文对应分数拼排名；Params未逐项区分激活总参数。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "sparsity",
+      "source": "2609.34672v1",
+      "locator": "Figure 4; PDF p.9",
+      "statement": "原图裁切(108,78,504,187) PDF points，1600px lossless PNG，172,970 bytes；保留全部面板、标签、图例与边界，移除周围正文。原图版权归Hu等及相关权利人；arXiv非独占分发许可不是公众开放图许可。",
+      "kind": "figure",
+      "attribution": "Nanxing Hu; Qiwei Yan; Jinchao Zhang; Guoliang Kang",
+      "redistribution_conditions": "Research commentary excerpt; copyright retained by original rightsholders; no additional public figure license verified"
+    },
+    {
+      "anchor": "retention",
+      "source": "2609.34672v1",
+      "locator": "A.4, Eq.9; pp.14–15",
+      "statement": "perstep Rs=L_EAD_s/L_dense_s，累计=sumL_EAD/sumL_dense；dense是同EAD trajectories unweighted JS，不是另VisionOPDrunloss。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "retention",
+      "source": "2609.34672v1",
+      "locator": "Eq.8–9; Table7; pp.6,15",
+      "statement": "累计4B5.87%、9B6.15%；lossmass非tokens/samples/meanweight/gradientfraction；无Σw归一化会降低强度。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "concentration",
+      "source": "2609.34672v1",
+      "locator": "A.4, Eq.10; p.15",
+      "statement": "128随机训练questions，step65 student/EMA checkpoints；每response独立排序EADwD与denseD，top10%占比再回答平均。训练accuracy1–65steps，每步96*8；unresolved incorrect，粗线当前和前四步均值。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "concentration",
+      "source": "2609.34672v1",
+      "locator": "Table7; p.15",
+      "statement": "所有值%：4B/9B累计lossretained5.87/6.15；EADtop10%mass95.98/96.81；dense61.10/62.27；EADrolloutaccuracy59.53/64.31；VisionOPD55.06/57.49。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "sparsity",
+      "source": "2609.34672v1",
+      "locator": "§5.3–5.4; A.4; pp.8–9,14–15",
+      "statement": "无等总loss统一缩放、随机稀疏或等梯度预算对照；集中度与rollout增益不唯一证明方向筛选因果，更不等计算节省。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34672v1",
+      "locator": "Table2; §5.4; pp.7–9",
+      "statement": "Cross-state：原图学生−遮挡教师；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=89.53,59.05,85.12,81.38,71.05,69.75,75.98；4B仅替换reference差，其余EAD过程固定。",
+      "kind": "paper-fact",
+      "metric": "original reported benchmark scores ↑",
+      "protocol": "same EAD training/objective; final checkpoint; metric/split caveats as Table1"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34672v1",
+      "locator": "Table2; §5.4; pp.7–9",
+      "statement": "Teacher-side：原图教师−遮挡教师；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=89.01,59.76,85.25,83.62,73.18,71.35,77.03；4B仅替换reference差，其余EAD过程固定。",
+      "kind": "paper-fact",
+      "metric": "original reported benchmark scores ↑",
+      "protocol": "same EAD training/objective; final checkpoint; metric/split caveats as Table1"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34672v1",
+      "locator": "Table2; §5.4; pp.7–9",
+      "statement": "Student-side：原图学生−遮挡学生（EAD）；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=91.62,60.83,86.38,82.88,72.39,71.10,77.53；4B仅替换reference差，其余EAD过程固定。",
+      "kind": "paper-fact",
+      "metric": "original reported benchmark scores ↑",
+      "protocol": "same EAD training/objective; final checkpoint; metric/split caveats as Table1"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34672v1",
+      "locator": "Table3; §5.4; pp.7–9",
+      "statement": "Original–Crop：裁切学生−原图学生；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=88.48,60.00,83.00,80.25,70.61,68.62,75.16；4B仅替换reference差，其余EAD过程固定。",
+      "kind": "paper-fact",
+      "metric": "original reported benchmark scores ↑",
+      "protocol": "same EAD training/objective; final checkpoint; metric/split caveats as Table1"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34672v1",
+      "locator": "Table3; §5.4; pp.7–9",
+      "statement": "Original–Mask：原图学生−遮挡学生（EAD）；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=91.62,60.83,86.38,82.88,72.39,71.10,77.53；4B仅替换reference差，其余EAD过程固定。",
+      "kind": "paper-fact",
+      "metric": "original reported benchmark scores ↑",
+      "protocol": "same EAD training/objective; final checkpoint; metric/split caveats as Table1"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34672v1",
+      "locator": "Table3; §5.4; pp.7–9",
+      "statement": "VAD-style：裁切教师−降采样裁切教师；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=91.62,58.82,86.50,83.00,69.33,68.73,76.33；4B仅替换reference差，其余EAD过程固定。",
+      "kind": "paper-fact",
+      "metric": "original reported benchmark scores ↑",
+      "protocol": "same EAD training/objective; final checkpoint; metric/split caveats as Table1"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34672v1",
+      "locator": "Table2; §5.4; pp.7–8",
+      "statement": "reference同状态优于crossstate，studentAvg77.53>teacher77.03，但teacher某列更高；reference去状态差不取消target EMAteacher。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34672v1",
+      "locator": "Table3; §5.4; pp.8–9",
+      "statement": "OriginalMask六列均高于OriginalCrop；VADstyle用EADobjective非完整VAD；Avg77.53−76.33=1.20，模型/上下文同时不同，非单因素降采样强度。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "weight-ablation",
+      "source": "2609.34672v1",
+      "locator": "Table4; A.6–A.7; pp.8–9,16–17",
+      "statement": "No JS Scaling；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=89.01,59.29,85.12,82.38,72.37,71.29,76.58；4B其他设置固定。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "weight-ablation",
+      "source": "2609.34672v1",
+      "locator": "Table4; A.6–A.7; pp.8–9,16–17",
+      "statement": "Shifted-Cosine；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=90.58,61.18,83.50,81.25,72.22,70.05,76.46；4B其他设置固定。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "weight-ablation",
+      "source": "2609.34672v1",
+      "locator": "Table4; A.6–A.7; pp.8–9,16–17",
+      "statement": "EAD；V*/Zoom/HR4K/HR8K/MMEEN/MMECN/Avg=91.62,60.83,86.38,82.88,72.39,71.10,77.53；4B其他设置固定。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "weight-ablation",
+      "source": "2609.34672v1",
+      "locator": "Eq.7, Eq.13; pp.6,16",
+      "statement": "Shiftedcos=(cos+1)/2同时改变正方向权重：教学c=.2时原.2、新.6；未控制总lossmass，不是仅负token等质量实验。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "generalization",
+      "source": "2609.34672v1",
+      "locator": "A.2; Table5; pp.13–14",
+      "statement": "4B Vanilla；MMVP/CVBench/MMStar/POPE/fourAvg=79.00,86.97,74.00,89.33,82.33；Table1同checkpoint，heldout无追加训练；逐项metric/split未在v1完全重述。",
+      "kind": "paper-fact",
+      "metric": "original reported scores ↑; not all re-labelled accuracy",
+      "protocol": "same Table1 final checkpoints; held-out evaluation"
+    },
+    {
+      "anchor": "generalization",
+      "source": "2609.34672v1",
+      "locator": "A.2; Table5; pp.13–14",
+      "statement": "4B Vision-OPD；MMVP/CVBench/MMStar/POPE/fourAvg=76.67,85.48,70.80,88.99,80.49；Table1同checkpoint，heldout无追加训练；逐项metric/split未在v1完全重述。",
+      "kind": "paper-fact",
+      "metric": "original reported scores ↑; not all re-labelled accuracy",
+      "protocol": "same Table1 final checkpoints; held-out evaluation"
+    },
+    {
+      "anchor": "generalization",
+      "source": "2609.34672v1",
+      "locator": "A.2; Table5; pp.13–14",
+      "statement": "4B VAD；MMVP/CVBench/MMStar/POPE/fourAvg=79.67,87.30,71.80,88.79,81.89；Table1同checkpoint，heldout无追加训练；逐项metric/split未在v1完全重述。",
+      "kind": "paper-fact",
+      "metric": "original reported scores ↑; not all re-labelled accuracy",
+      "protocol": "same Table1 final checkpoints; held-out evaluation"
+    },
+    {
+      "anchor": "generalization",
+      "source": "2609.34672v1",
+      "locator": "A.2; Table5; pp.13–14",
+      "statement": "4B EAD；MMVP/CVBench/MMStar/POPE/fourAvg=80.33,86.95,73.07,87.70,82.01；Table1同checkpoint，heldout无追加训练；逐项metric/split未在v1完全重述。",
+      "kind": "paper-fact",
+      "metric": "original reported scores ↑; not all re-labelled accuracy",
+      "protocol": "same Table1 final checkpoints; held-out evaluation"
+    },
+    {
+      "anchor": "generalization",
+      "source": "2609.34672v1",
+      "locator": "A.2; Table5; pp.13–14",
+      "statement": "9B Vanilla；MMVP/CVBench/MMStar/POPE/fourAvg=82.67,88.41,77.87,89.86,84.70；Table1同checkpoint，heldout无追加训练；逐项metric/split未在v1完全重述。",
+      "kind": "paper-fact",
+      "metric": "original reported scores ↑; not all re-labelled accuracy",
+      "protocol": "same Table1 final checkpoints; held-out evaluation"
+    },
+    {
+      "anchor": "generalization",
+      "source": "2609.34672v1",
+      "locator": "A.2; Table5; pp.13–14",
+      "statement": "9B Vision-OPD；MMVP/CVBench/MMStar/POPE/fourAvg=81.00,86.52,74.33,89.80,82.91；Table1同checkpoint，heldout无追加训练；逐项metric/split未在v1完全重述。",
+      "kind": "paper-fact",
+      "metric": "original reported scores ↑; not all re-labelled accuracy",
+      "protocol": "same Table1 final checkpoints; held-out evaluation"
+    },
+    {
+      "anchor": "generalization",
+      "source": "2609.34672v1",
+      "locator": "A.2; Table5; pp.13–14",
+      "statement": "9B VAD；MMVP/CVBench/MMStar/POPE/fourAvg=85.00,88.82,76.60,89.54,84.99；Table1同checkpoint，heldout无追加训练；逐项metric/split未在v1完全重述。",
+      "kind": "paper-fact",
+      "metric": "original reported scores ↑; not all re-labelled accuracy",
+      "protocol": "same Table1 final checkpoints; held-out evaluation"
+    },
+    {
+      "anchor": "generalization",
+      "source": "2609.34672v1",
+      "locator": "A.2; Table5; pp.13–14",
+      "statement": "9B EAD；MMVP/CVBench/MMStar/POPE/fourAvg=84.33,88.11,76.40,88.73,84.39；Table1同checkpoint，heldout无追加训练；逐项metric/split未在v1完全重述。",
+      "kind": "paper-fact",
+      "metric": "original reported scores ↑; not all re-labelled accuracy",
+      "protocol": "same Table1 final checkpoints; held-out evaluation"
+    },
+    {
+      "anchor": "generalization",
+      "source": "2609.34672v1",
+      "locator": "Table5; A.2; pp.13–14",
+      "statement": "舍入Avg：4BEAD退化.32、VisionOPD1.84；9B.31/1.79；1−.32/1.84=82.6087%、1−.31/1.79=82.6816%退化缓解；9BVAD84.99>EAD84.39。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "generalization",
+      "source": "2609.34672v1",
+      "locator": "Table8–10; pp.15–17",
+      "statement": "teacher side holdout82.04>EAD82.01；teacher Fine77.03/All10 79.03 vsEAD77.53/79.33；noJSscaleholdout81.94 shifted81.84，未证明所有广泛能力优于对照。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "generalization",
+      "source": "2609.34672v1",
+      "locator": "A.3; Table6; p.14",
+      "statement": "公开VisionOPD4B重评Fine75.16/Holdout81.45/All10 77.68；主表重训4B Fine74.70，非同checkpoint。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "limits",
+      "source": "2609.34672v1",
+      "locator": "Eq.6–8; A.1; Table2–4; pp.5–8,13",
+      "statement": "分析边界：GT bbox依赖，meanRGB/红框干预未分离消融，当前学生可能忽略证据；参考是模型干预响应不等纯因果；无等lossmass控制、seed误差/跨模型扩展。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "limits",
+      "source": "2609.34672v1",
+      "locator": "§3–6; A.1–A.8; pp.4–18",
+      "statement": "论文无独立limitations章；代码权重未核实，eps/zero-norm保护、EMA初始化、冻结/优化器/精度/rollout采样、split/prompt/main decode配置不全。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "limits",
+      "source": "2609.34672v1",
+      "locator": "Figure3; Eq.6–9; A.1,A.4; pp.4–6,13–15",
+      "statement": "总结与自测：目标和参考分离，共同studenttop100，方向比幅度更关键，stopgradweight，6%为lossmass不是compute，测试student only。",
+      "kind": "paper-fact"
+    }
+  ]
+}

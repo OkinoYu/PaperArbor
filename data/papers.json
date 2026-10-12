@@ -285,5 +285,40 @@
     ],
     "evidence": "data/evidence/s2vopd-2608.14144.json",
     "body": "articles/s2vopd-2608.14144/body.html"
+  },
+  {
+    "id": "ead-2609.34672",
+    "title": "EAD：用学生的证据响应筛选多模态自蒸馏监督",
+    "summary": "从原图、特权裁切与证据遮挡三条分布走通 EAD：解释共享 top-100、JS 局部缩放、方向余弦与停止梯度，核对六项细粒度结果、泛化代价和“约 6% 监督”的真实口径。",
+    "category": "OPD",
+    "type": "Single",
+    "published": "2026-09-28",
+    "added": "2026-10-12",
+    "path": "examples/OPD/ead-2609.34672.html",
+    "tags": [
+      "视觉语言模型",
+      "在策略蒸馏",
+      "自蒸馏",
+      "证据对齐",
+      "Qwen3.5",
+      "EMA"
+    ],
+    "body": "articles/ead-2609.34672/body.html",
+    "evidence": "data/evidence/ead-2609.34672.json",
+    "sources": [
+      {
+        "id": "2609.34672v1",
+        "title": "Evidence-Aligned Multimodal On-Policy Self-Distillation for Fine-Grained Visual Understanding",
+        "authors": "Nanxing Hu; Qiwei Yan; Jinchao Zhang; Guoliang Kang",
+        "url": "https://arxiv.org/abs/2609.34672v1",
+        "pdf_url": "https://arxiv.org/pdf/2609.34672v1",
+        "version": "v1",
+        "published": "2026-09-28",
+        "version_date": "2026-09-28",
+        "sha256": "88610360043925493add24aba808e9032ec9440ae5ec40f7a4934cb441878c92",
+        "license": "arXiv non-exclusive distribution license",
+        "license_url": "https://arxiv.org/licenses/nonexclusive-distrib/1.0/license.html"
+      }
+    ]
   }
 ]
