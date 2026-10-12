@@ -1,0 +1,405 @@
+{
+  "reviewed": "2026-10-12",
+  "coverage": "完整阅读用户提供的19页arXiv v2 PDF（正文、方法、训练、主表、消融、限制及附录）；身份与日期由arXiv核实；官方固定提交静态核对。未执行训练/评测；代码与论文配方差异、评测样本规模/误差区间缺口已标明。",
+  "claims": [
+    {
+      "anchor": "overview",
+      "source": "2606.02530v2",
+      "locator": "PDF p.1；arXiv submission history",
+      "statement": "标题、完整作者及 arXiv 2606.02530v2；首发 2026-06-01，v2 2026-08-21；本地 PDF 19 页。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "2606.02530v2",
+      "locator": "§3.1–3.4, pp.3–4；§4.1, p.5",
+      "statement": "教师和学生由同一基座初始化；四个 checkpoint 为 Llama-3-8B-Instruct、Llama-3.2-3B-Instruct、Qwen2.5-7B-Instruct、Qwen3-4B-Instruct-2507。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "motivation",
+      "source": "2606.02530v2",
+      "locator": "§1–2, pp.1–2",
+      "statement": "作者以输出分布安全特征稀疏为动机，对比通用数据混合、奖励模型和约束优化；该论证不是参数空间可分性的定理。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "motivation",
+      "source": "2606.02530v2",
+      "locator": "Appendix D.3, p.14",
+      "statement": "Qwen2.5-7B-Instruct 的喷头清洁例：steered teacher 拒绝，student 与 base 回答；原文回答已截短。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "motivation",
+      "source": "2606.02530v2",
+      "locator": "Appendix D.3, PDF p.14",
+      "statement": "裁切 Qwen2.5-7B 喷头清洁完整案例框；省略同页 Qwen3 案例与评判提示。",
+      "kind": "figure"
+    },
+    {
+      "anchor": "motivation",
+      "source": "2606.02530v2",
+      "locator": "§3.2–3.4, pp.3–4；Appendix D, pp.13–15",
+      "statement": "安全 token 在无害教师轨迹上挖掘；学生蒸馏在有害指令上进行；教师的无害拒绝不是部署策略。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "pipeline",
+      "source": "2606.02530v2",
+      "locator": "Figure 2, PDF p.3",
+      "statement": "方法整体原图：activation-steered teacher → contrastive log-probability safety token mining → localized reverse KL on S。",
+      "kind": "figure"
+    },
+    {
+      "anchor": "pipeline",
+      "source": "2606.02530v2",
+      "locator": "§3.2–3.4, pp.3–4",
+      "statement": "挖掘阶段由教师生成，训练阶段由学生生成；S 外没有显式词表逐项 KL 惩罚；原图为概念流程。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "pipeline",
+      "source": "2606.02530v2",
+      "locator": "§3.1–3.4, pp.3–4；官方代码 main.py 与 distil_trainer.py",
+      "statement": "标准方法训练学生并在部署使用学生；激活引导和挖掘是教师侧训练设施。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "teacher",
+      "source": "2606.02530v2",
+      "locator": "§3.1, Eq.(1), p.3",
+      "statement": "h*ℓ=hℓ+d，d∈R^d_model；选定 block 的 forward pre-hook 在所有 token 位置持续注入；正文未列每模型最终层号/向量范数。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "teacher",
+      "source": "safesteer-code-d9f7822d2ade",
+      "locator": "code d9f7822 · distil_trainer.py:810–929；scripts/run_*.sh",
+      "statement": "固定提交先过滤拒绝方向数据，生成候选方向并选择；标准模型脚本固定教师、方向和安全 token。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "teacher",
+      "source": "2606.02530v2",
+      "locator": "§3.1, p.3；§7, p.9",
+      "statement": "激活教师会拒绝有害及无害请求；作者明确依赖基座已有拒绝能力。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "selection",
+      "source": "2606.02530v2",
+      "locator": "§3.3, Eq.(2), p.3",
+      "statement": "在相同教师拒绝轨迹前缀上计算 log[p_t(v)/p_0(v)]，正值表示拒绝方向诱导；不是 raw logit 差。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "selection",
+      "source": "2606.02530v2",
+      "locator": "§3.3, Eqs.(3)–(4), p.4",
+      "statement": "vote(v)=Σ_xΣ_nΣ_j 1[v∈C_j^(x,n)]；最终 S 是总票数 Top-K；投票防极端 Δ 主导是作者设计理由，没有独立投票对均值完整消融表。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "selection",
+      "source": "2606.02530v2",
+      "locator": "Appendix A.1, p.12",
+      "statement": "安全挖掘 N=8、temperature=1.0、K′=200、|S|=50；Qwen H=7，Llama H=5。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "selection",
+      "source": "2606.02530v2",
+      "locator": "Figure 4, PDF p.8",
+      "statement": "Qwen2.5-7B-Instruct：H=1 与 H=7 的安全 token 词云；原图说明字大小反映 probability，未提供可读精确数值。",
+      "kind": "figure"
+    },
+    {
+      "anchor": "selection",
+      "source": "2606.02530v2",
+      "locator": "§5.2, p.8；Figure 4",
+      "statement": "H 增长使词云由开头拒绝语转向安全语义词；词云不提供精确 token 分数或独立鲁棒性证明。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "selection",
+      "source": "safesteer-code-d9f7822d2ade",
+      "locator": "code d9f7822 · utils/select_safe_tokens_via_activation.py:10–82, 132–289",
+      "statement": "实现采样 H−1 个续写并评分 H 个位置；屏蔽特殊 token 与 min_steered_prob 门槛；投票后去除零票与禁选填充项。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "loss",
+      "source": "2606.02530v2",
+      "locator": "§3.4, Eq.(5), p.4",
+      "statement": "学生为有害请求生成 M 条 y；p_s(v)=p_s(v|x,y_<t)，p_t(v)=p_t(v|x,y_<t)，条件相同。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "loss",
+      "source": "2606.02530v2",
+      "locator": "§3.4, Eq.(6), p.4；§5.2, p.8",
+      "statement": "局部损失 Σ_v∈S p_s(v)log[p_s(v)/p_t(v)]；S 切片保持 full-vocab 概率，不再 softmax；有效位置均计算候选集合。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "loss",
+      "source": "2606.02530v2",
+      "locator": "§3.4, Eq.(7), p.4",
+      "statement": "根据 Eq.(7) 展开为 (BM)^−1 Σ_bΣ_m (T^(b,m))^−1Σ_t L_t^(b,m)；有效位置平均后再平均 batch 和 rollout。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "loss",
+      "source": "safesteer-code-d9f7822d2ade",
+      "locator": "code d9f7822 · distil_trainer.py:2035–2206",
+      "statement": "教师 no_grad；模式2 gather 安全 token logps；alpha=1 时 kl_div(teacher_all_logps,all_logps,log_target=True)，按有效位置均值；局部蒸馏不以奖励/优势驱动。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "loss",
+      "source": "2606.02530v2",
+      "locator": "根据 Eq.(6), p.4 与 §5.2, p.8 推导",
+      "statement": "F_S=a KL(q_s||q_t)+a log(a/b)；未归一化子概率切片目标不具有完整 KL 的非负性或零值最优保证；不是论文原编号公式。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "loss",
+      "source": "2606.02530v2",
+      "locator": "根据 Eq.(6), p.4 的 full-vocab softmax 求导",
+      "statement": "S 外 logit w 的梯度为 −p_s(w)(F_S+a)，a=Σ_v∈S p_s(v)，固定教师与前缀；局部求和不保证补集梯度为零。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "training",
+      "source": "2606.02530v2",
+      "locator": "§4.1, p.5；Appendix A.1, p.12",
+      "statement": "方向数据 160 harmful+160 harmless；论文称同160 harmless挖掘；100 PKU unsafe训练指令；N=M=8，K′=200，|S|=50，H=7/5，temperature=1.0，LR Qwen1e−5/Llama1e−6，1 epoch，batch4 prompts，2 H100。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2606.02530v2",
+      "locator": "§3.2, p.3；§4.1, p.5；Appendix A.1, p.12",
+      "statement": "100 指令为 OPD 阶段训练集；前置阶段使用有害与无害指令；N/M 为轨迹数而非指令/token数。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "training",
+      "source": "2606.02530v2",
+      "locator": "§3.2–3.4, pp.3–4；Appendix A.1, p.12",
+      "statement": "π_s 为最终模型；训练教师/安全词表不构成学生推理额外模块；报告硬件但无完整GPU时/吞吐成本比较。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "training",
+      "source": "safesteer-code-d9f7822d2ade",
+      "locator": "code d9f7822 · distil_trainer.py:870–886, 1070–1081；main.py:70–74；utils/main_utils.py:85–90；scripts/run_*.sh",
+      "statement": "公开固定代码每类128train+32val；挖掘使用过滤后harmless_val；per_device_batch=1，CLI num_prompts_per_batch默认32，脚本未覆写；与论文160 harmless挖掘及batch4表述有差异。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "safesteer-code-d9f7822d2ade",
+      "locator": "code d9f7822 · main.py:101；distil_config.py:628–633；distil_trainer.py:2139,2155",
+      "statement": "main.py将CLI renormalize_selected_tokens传给renormalize_safe_tokens字段；loss getattr读取renormalize_selected_tokens，默认False；命名不一致可能阻断重归一化分支，未执行复现。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "protocol",
+      "source": "2606.02530v2",
+      "locator": "§4.1, pp.5–6；Appendix A.2, p.12；Appendix D.1, p.13；Table 12, p.17",
+      "statement": "七安全集ASR，LlamaGuard4-12B除SORRY；MMLU generation accuracy；AlpacaEval温度0.7对Alpaca7B win rate、DeepSeekV4Flash judge；GSM8K Qwen2.5 flexible其余strict；MATH500 math_verify；HumanEval instruct pass@1；主表temp0附录temp1三次均值；805 harmless拒绝测评temp0.7。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "protocol",
+      "source": "2606.02530v2",
+      "locator": "Tables 1–2, pp.4–5；Tables 6–7, pp.13–14；Appendix A.2, p.12",
+      "statement": "原表Avg为列指标平均；一般能力列混合不同任务指标；论文未完整交代所有安全评测子集规模、评测种子和误差区间。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 1, p.4",
+      "statement": "Qwen3-4B-Instruct-2507 temp0，7安全benchmark ASR%宏均值 base 2.87→SafeSteer 0.91（低优）；5通用benchmark Avg base 71.68→71.39（高优）。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 1, p.4",
+      "statement": "Qwen2.5-7B-Instruct temp0，7安全benchmark ASR%宏均值 base 4.59→SafeSteer 1.48（低优）；5通用benchmark Avg base 68.90→69.17（高优）。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 2, p.5",
+      "statement": "Llama-3.2-3B-Instruct temp0，7安全benchmark ASR%宏均值 base 5.26→SafeSteer 4.06（低优）；5通用benchmark Avg base 63.61→62.86（高优）。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 2, p.5",
+      "statement": "Llama-3-8B-Instruct temp0，7安全benchmark ASR%宏均值 base 3.75→SafeSteer 3.54（低优）；5通用benchmark Avg base 63.64→63.18（高优）。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 1, p.4",
+      "statement": "Qwen2.5 temp0 BFPO ASR3.75/Capability69.48，SafeSteer1.48/69.17；不构成全指标Pareto支配。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 2, p.5",
+      "statement": "Llama3.2 MoCAN ASR2.74/Avg57.79，SafeSteer4.06/62.86；Llama3-8B BFPO2.49/63.02，MoCAN3.64/62.65，SafeSteer3.54/63.18；SafeSteer8B ASR第二低。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 6, p.13",
+      "statement": "Qwen3-4B-Instruct-2507 temp1.0三次平均；ASR% Base2.73→SafeSteer0.97；通用Avg Base71.31→71.13，AlpacaEval仍按附录temp0.7特例。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 6, p.13",
+      "statement": "Qwen2.5-7B-Instruct temp1.0三次平均；ASR% Base4.40→SafeSteer2.10；通用Avg Base68.53→67.68，AlpacaEval仍按附录temp0.7特例。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 7, p.14",
+      "statement": "Llama-3.2-3B-Instruct temp1.0三次平均；ASR% Base5.93→SafeSteer4.88；通用Avg Base60.08→55.63，AlpacaEval仍按附录temp0.7特例。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 7, p.14",
+      "statement": "Llama-3-8B-Instruct temp1.0三次平均；ASR% Base4.04→SafeSteer3.91；通用Avg Base60.21→60.05，AlpacaEval仍按附录temp0.7特例。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 7, p.14；Table 6, p.13；Appendix B, p.12",
+      "statement": "Llama3.2 temp1能力60.08→55.63（表值推导差−4.45）；MATH35.40→23.80；HumanEval46.95→40.24；Qwen2.5 SafeSteer67.68/BFPO69.19；附录概括negligible应受限定。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "results",
+      "source": "2606.02530v2",
+      "locator": "Table 2, p.5；Table 6, p.13",
+      "statement": "SORRY ASR% SafeSteer：Llama3.2 temp0 18.86，Llama3-8B temp0 17.09，Qwen2.5 temp1 12.27；低优。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2606.02530v2",
+      "locator": "Table 3, p.6；Appendix C Tables 8–9, pp.15–16",
+      "statement": "教师比较：temp0 Qwen2.5 prompt4.46/steer0.00，Qwen3 prompt0.74/steer0.07 ASR%；这不是最终学生SafeSteer表。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2606.02530v2",
+      "locator": "Table 12, p.17；Appendix D.1–D.5, pp.13–15",
+      "statement": "805 harmless AlpacaEval temp0.7拒绝率%：[base,student,teacher regex,teacher LLM] Qwen3[2.24,3.98,96.27,98.39] Qwen2.5[1.37,2.73,94.91,96.52] Llama3.2[2.11,2.24,100,100] Llama3[1.61,1.24,99.88,100]；base/student主要regex。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2606.02530v2",
+      "locator": "Table 12, p.17；Appendix D, pp.13–15",
+      "statement": "Qwen学生regex拒绝率相较base增加；教师另有LLM judge；不能据单指标证明无误拒绝代价。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2606.02530v2",
+      "locator": "Table 4, p.7；Table 10, p.16",
+      "statement": "temp0 MATH/HumanEval两项均值[full,forward,no-safe] Qwen3[59.03,58.22,58.63] Qwen2.5[53.76,49.45,52.86] Llama3.2[44.92,41.25,41.05] Llama3[45.49,43.59,43.18]；不等同5项通用Avg。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2606.02530v2",
+      "locator": "Tables 4,10–11, pp.7,16–17",
+      "statement": "消融主报告MATH+HumanEval均值；Llama3.2 temp0 HumanEval full53.04，forward/no-safe53.10，MATH full36.80/forward29.40/no-safe29.00；没有完整同配置安全表。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2606.02530v2",
+      "locator": "Table 5, p.8；Table 13, p.18",
+      "statement": "temp0 raw→renorm：[ASR,Capability] Qwen3[0.91→0.72,71.39→70.79] Qwen2.5[1.48→0.21,69.17→66.13] Llama3.2[4.06→4.23,62.86→58.10] Llama3[3.54→3.25,63.18→62.86]。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2606.02530v2",
+      "locator": "§5.2, p.8；Table 5",
+      "statement": "表值推导renorm能力差 Llama3.2−4.76、Qwen2.5−3.04；Llama3.2ASR4.06→4.23更差；logit inflation为作者解释而非表格独立测量。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2606.02530v2",
+      "locator": "§5.2, p.7",
+      "statement": "用π0生成token挖掘轨迹的Llama3-8B变体 JBB ASR1.0→75.0%；S出现格式token，正文未提供完整变体跨模型评测表。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2606.02530v2",
+      "locator": "Figure 3, PDF p.7",
+      "statement": "Llama3.2-3B和Llama3-8B：300 AlpacaEval prompts，最后一层提示末token hidden state的二维PCA；学生与基座投影重叠，教师偏移。",
+      "kind": "figure"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2606.02530v2",
+      "locator": "§5.1, p.7；Figure 3；Appendix E Figure 5, p.17",
+      "statement": "300 AlpacaEval提示末token最后层hidden states的2D PCA是局部表示诊断，不是全表示空间或所有任务不变的证明。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "limits",
+      "source": "2606.02530v2",
+      "locator": "§7, p.9",
+      "statement": "作者限制：依赖已有refusal；实验≤10B；text-only autoregressive LLM；未验证larger models、VLM、DLLM。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "limits",
+      "source": "2606.02530v2",
+      "locator": "Tables 1–7, pp.4–8,13–14；Table 12, p.17；§7, p.9",
+      "statement": "综合结果支持有限checkpoint/协议的权衡改善；温度1 Llama3.2退化、残余SORRY风险与误拒绝限制完全解耦结论；未见完整置信区间、预算匹配与算力成本实验。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "limits",
+      "source": "2606.02530v2",
+      "locator": "§4.1, p.5；Appendix A.1, p.12；固定官方代码核对",
+      "statement": "基线使用全数据或NSPO40%，SafeSteer100；少于1%是作者样本量比较，非同预算实验；运行产物与代码差异本次未执行核验。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "limits",
+      "source": "2606.02530v2",
+      "locator": "arXiv version page license link；Figures 2–4；Appendix D.3",
+      "statement": "图权归原作者/权利人；arXiv non-exclusive分发许可不是公众通用再许可；原图用于注明出处的研究评论，无额外开放图形许可已核实。",
+      "kind": "figure"
+    }
+  ]
+}

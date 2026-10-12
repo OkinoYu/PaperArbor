@@ -209,5 +209,45 @@
     "aliases": [
       "examples/VLM/opld-2607.28154.html"
     ]
+  },
+  {
+    "id": "safesteer-2606.02530",
+    "title": "SafeSteer 精读：局部 On-Policy 蒸馏如何降低安全对齐代价",
+    "summary": "以激活引导教师、投票挖掘安全 token 与未归一化局部 reverse KL 串起训练；核对温度敏感的能力损失、100 条数据口径和论文代码差异。",
+    "category": "OPD",
+    "type": "Single",
+    "published": "2026-06-01",
+    "added": "2026-10-12",
+    "path": "examples/OPD/safesteer-2606.02530.html",
+    "tags": [
+      "On-Policy Distillation",
+      "Safety Alignment",
+      "Activation Steering",
+      "Reverse KL"
+    ],
+    "body": "articles/safesteer-2606.02530/body.html",
+    "evidence": "data/evidence/safesteer-2606.02530.json",
+    "sources": [
+      {
+        "id": "2606.02530v2",
+        "title": "SafeSteer: Localized On-Policy Distillation for Efficient Safety Alignment",
+        "authors": "Hao Li, Jingkun An, Zijun Song, Pengyu Zhu, Rui Li, Hao Wang, Wendi Feng, Yesheng Liu, Lijun Li, Jin-Ge Yao, Lei Sha",
+        "url": "https://arxiv.org/abs/2606.02530v2",
+        "version": "v2",
+        "published": "2026-06-01",
+        "version_date": "2026-08-21",
+        "sha256": "05c6c4cbfbcc8d8139b84d30031f600dd616e935aea6e931557ab6ae1fd94bfb",
+        "project": "https://anjingkun.github.io/SafeSteer/",
+        "code": "https://github.com/Anjingkun/SafeSteer"
+      },
+      {
+        "id": "safesteer-code-d9f7822d2ade",
+        "title": "SafeSteer official implementation (fixed commit)",
+        "authors": "Jingkun An and SafeSteer contributors",
+        "url": "https://github.com/Anjingkun/SafeSteer/tree/d9f7822d2adeddc042a8607817bacd81f877a806",
+        "version": "d9f7822d2adeddc042a8607817bacd81f877a806",
+        "published": "2026-06-02"
+      }
+    ]
   }
 ]
