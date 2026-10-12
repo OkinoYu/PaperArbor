@@ -194,9 +194,9 @@
     {
       "anchor": "training",
       "source": "safesteer-code-d9f7822d2ade",
-      "locator": "code d9f7822 · distil_trainer.py:870–886, 1070–1081；main.py:70–74；utils/main_utils.py:85–90；scripts/run_*.sh",
-      "statement": "公开固定代码每类128train+32val；挖掘使用过滤后harmless_val；per_device_batch=1，CLI num_prompts_per_batch默认32，脚本未覆写；与论文160 harmless挖掘及batch4表述有差异。",
-      "kind": "paper-fact"
+      "locator": "code d9f7822 · distil_trainer.py:870–886,1070–1081,1160–1168；main.py:70–74；utils/main_utils.py:85–90；distil_config.py:649–654",
+      "statement": "固定代码每类128train+32val；挖掘使用过滤后harmless_val，与论文同160 harmless有差异。batch说明性推导：单训练进程per_device_batch1×accumulation32=32轨迹槽位，RepeatSampler每指令8次，对应32÷8=4独立prompts，与论文batch4相容；不能把CLI32直接视为32指令。",
+      "kind": "explanatory-derivation"
     },
     {
       "anchor": "training",
