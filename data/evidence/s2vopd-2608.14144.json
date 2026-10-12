@@ -1,0 +1,512 @@
+{
+  "reviewed": "2026-10-12",
+  "coverage": "完整13页arXiv:2608.14144v1，用户PDF与官方下载SHA-256一致。覆盖方法、增强空间、训练、推理协议、主实验与消融。逐项保留数据支线、评测预算、checkpoint选择和原文冲突；未取得可核查训练代码/权重，未独立复跑。图2基线、JSD端点、跨表默认分数不一致如实记录；split/样本清单/训练实现缺口见正文。",
+  "claims": [
+    {
+      "anchor": "overview",
+      "source": "2608.14144v1",
+      "locator": "PDF p.1; arXiv v1 metadata; full PDF pp.1–13",
+      "statement": "标题、九位作者、首发及v1日期2026-08-14；全文13页，无额外方法附录。用户PDF与官方下载SHA-256均为00c0425b8913ec3aee0f080a34ed380a756e68b97926d3a6662ece68a44c609c",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "2608.14144v1",
+      "locator": "§1, §3.1, §4.3–4.4; pp.1–4,8–9",
+      "statement": "方法使用同规模EMA教师的原图分布监督退化视图学生的在策略轨迹；输入不对称、固定教师和裁切诊断构成本文的主要证据链。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "motivation",
+      "source": "2608.14144v1",
+      "locator": "§1–2, pp.1–3",
+      "statement": "常规OPD依赖强教师，OPSD依赖额外答案、区域或环境信息；本方法以视觉输入不对称替换外部特权信息。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "motivation",
+      "source": "2608.14144v1",
+      "locator": "§3.1, Figure 1, pp.3–4",
+      "statement": "猫的颜色问答仅为依据原图所作的接口教学例子，不是作者展示的生成轨迹。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "motivation",
+      "source": "2608.14144v1",
+      "locator": "§3.1, §4.1, pp.3,6",
+      "statement": "无标签范围限定于后训练目标；仍需图像问题对及已有VLM，干净视图教师并非正确性保证。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "architecture",
+      "source": "2608.14144v1",
+      "locator": "Figure 1; §3.1; PDF pp.3–4",
+      "statement": "原架构图包含原图教师、退化图学生、同一问题与前缀、逐token散度；Same不表示更新后θ与φ完全相等。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "architecture",
+      "source": "2608.14144v1",
+      "locator": "Figure 1; PDF p.4",
+      "statement": "原图crop=(108,48,505,283) PDF points，1600px PNG，618188 bytes；完整保留图中算子与图例，CC BY 4.0；超体积因细字及噪声/照片纹理。",
+      "kind": "figure",
+      "license": "CC BY 4.0"
+    },
+    {
+      "anchor": "views",
+      "source": "2608.14144v1",
+      "locator": "§3.1–3.2, §4.1; pp.3–6",
+      "statement": "输入图像问题对；增强只作用于学生图像；底座Qwen3.5，并未提出新的视觉编码器架构。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "rollouts",
+      "source": "2608.14144v1",
+      "locator": "§3.1, Eq.1; p.3",
+      "statement": "学生从增强图策略采样回答；教师和学生在该回答的同一前缀上比较词概率。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "rollouts",
+      "source": "2608.14144v1",
+      "locator": "§3.1, Eq.1; p.3",
+      "statement": "on-policy指增强图学生的轨迹采样，不消除增强图训练和正常图测试之间的输入差异。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "scoring",
+      "source": "2608.14144v1",
+      "locator": "§3.1, Eq.1–2; pp.3–4",
+      "statement": "两分布在教师top-k共同支持上重归一化；JSD按回答token平均，学生θ被优化、教师φ通过EMA演化，无额外答案奖励/价值目标/参考策略惩罚。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "scoring",
+      "source": "2608.14144v1",
+      "locator": "§3.1, Eq.1–2; pp.3–4",
+      "statement": "回路SVG解释共享前缀与分开视觉条件，省略batch、缓存及采样梯度实现。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "objective",
+      "source": "2608.14144v1",
+      "locator": "Eq.1; PDF p.3",
+      "statement": "原文期望目标缩记P_t/Q_t：样本期望、增强图学生轨迹期望、回答长度归一化逐token散度。默认目标非答案交叉熵。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "objective",
+      "source": "2608.14144v1",
+      "locator": "Eq.2, paragraph below Eq.2; PDF p.4",
+      "statement": "m=αP+(1−α)Q；JSD=αKL(P||m)+(1−α)KL(Q||m)，默认α=.5；两分布限于教师top-k后重新归一化；k未写出。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "objective",
+      "source": "2608.14144v1",
+      "locator": "Eq.1–2; pp.3–4",
+      "statement": "共同支持丢弃尾部概率、不直接改写已经生成的前缀；正文不包含具体采样梯度、重要性权重或token mask实现，不能补为PPO/GRPO。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "objective",
+      "source": "2608.14144v1",
+      "locator": "Eq.2; Table 6; pp.4,10",
+      "statement": "按印刷式2直接代入α=0/1均为零，与Table6的KL端点命名不能直接对应。可能缺归一化或端点分支，但本次没有实现证据。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "augmentation",
+      "source": "2608.14144v1",
+      "locator": "§3.2, Eq.3–6; pp.4–6",
+      "statement": "T由全局p、各算子ρ与强度范围、固定组合順序构成；教师始终原图。默认p=1，降采样s~U(.3,.6)后独立ρ_noise=.5加噪声。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "augmentation",
+      "source": "2608.14144v1",
+      "locator": "Table 1; Eq.6; pp.5–6",
+      "statement": "默认降采样不resize back，视觉token更少；DDPM step200噪声，σ约.11、信号衰减很小。像素域/schedule/processor约束未提供。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "augmentation",
+      "source": "2608.14144v1",
+      "locator": "§3.2, Table 1; pp.4–5",
+      "statement": "四族信息缩减、几何、光度、遮挡；信息缩减可保空间布局，几何可能改变空间问题答案，遮挡删除局部区域。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "augmentation",
+      "source": "2608.14144v1",
+      "locator": "§3.2, §4.3; pp.4–5,8",
+      "statement": "颜色问题可能不满足光度增强语义不变；信息差大小不足以定义可用监督，需区分退化与删除证据。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "training",
+      "source": "2608.14144v1",
+      "locator": "§3.1, §4.1; pp.3,6",
+      "statement": "训练优化学生θ，教师φ为EMA；逐模块冻结状态、LoRA/full tuning、精确初始化及EMA执行时机未给出。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2608.14144v1",
+      "locator": "§3.1, §4.1, Table 5; pp.3,6,10",
+      "statement": "φ←(1−η)φ+ηθ，η=.05，对应decay=.95。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2608.14144v1",
+      "locator": "§4.1; p.6",
+      "statement": "FineVision自然图像域12K问题，130步；Vision-OPD-6K，65步；作者称一个epoch；区域仅用于需要区域的基线，S2VOPD不使用。Qwen3.5-4B及9B为底座。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2608.14144v1",
+      "locator": "§4.1; p.6",
+      "statement": "batch96 prompts、n=8 rollouts/prompt、vLLM、lr2e-6、warmup10 steps、max prompt8192及response1024 tokens。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2608.14144v1",
+      "locator": "§4.1; p.6",
+      "statement": "96×8=768 rollouts/batch；96×65=6240、96×130=12480 prompts slots；与6K/12K约数存在差异，尾批和精确消费未说明。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "training",
+      "source": "2608.14144v1",
+      "locator": "§3.1, §4.1; pp.3,6",
+      "statement": "推理仅需训练后学生；教师评分、EMA、增强与散度是训练组件；具体processor/缓存/停止符及rollout温度未核查。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "training",
+      "source": "2608.14144v1",
+      "locator": "§4.1, §4.3; pp.6–8",
+      "statement": "感知greedy4096 tokens；数学24576 tokens、T=.3、top-p=.95、top-k20、presence penalty1.5；增强分析greedy2048。最终答案提取与near-exact匹配，未解决项用Qwen2.5-72B-Instruct judge。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2608.14144v1",
+      "locator": "§3.2–4.1; p.6",
+      "statement": "学生低分辨率降低rollout与前向成本是定性描述，没有实测时间/显存/硬件开销表；教师前向和8rollouts仍有成本。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "finevision-results",
+      "source": "2608.14144v1",
+      "locator": "Table 2; §4.1–4.2; pp.6–7",
+      "statement": "Qwen3.5-4B（底座）；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/AVG准确率(%)=84.29,47.69,84.38,80.13,63.86,63.70,70.68。S2VOPD使用FineVision12K；感知主协议greedy max4096 tokens。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Table 2; benchmark split/sample counts and external model serving settings not fully specified in v1"
+    },
+    {
+      "anchor": "finevision-results",
+      "source": "2608.14144v1",
+      "locator": "Table 2; §4.1–4.2; pp.6–7",
+      "statement": "S²VOPD-4B（FineVision-12K）；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/AVG准确率(%)=91.48,55.98,86.38,82.00,76.13,72.66,77.44。S2VOPD使用FineVision12K；感知主协议greedy max4096 tokens。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Table 2; benchmark split/sample counts and external model serving settings not fully specified in v1"
+    },
+    {
+      "anchor": "finevision-results",
+      "source": "2608.14144v1",
+      "locator": "Table 2; §4.1–4.2; pp.6–7",
+      "statement": "Vision-OPD-4B；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/AVG准确率(%)=92.15,59.76,84.50,80.38,74.88,70.76,77.07。S2VOPD使用FineVision12K；感知主协议greedy max4096 tokens。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Table 2; benchmark split/sample counts and external model serving settings not fully specified in v1"
+    },
+    {
+      "anchor": "finevision-results",
+      "source": "2608.14144v1",
+      "locator": "Table 2; §4.1–4.2; pp.6–7",
+      "statement": "Qwen3-VL-Instruct-235B；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/AVG准确率(%)=91.10,56.09,86.13,80.38,71.74,69.04,75.75。S2VOPD使用FineVision12K；感知主协议greedy max4096 tokens。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Table 2; benchmark split/sample counts and external model serving settings not fully specified in v1"
+    },
+    {
+      "anchor": "finevision-results",
+      "source": "2608.14144v1",
+      "locator": "Table 2; §4.1–4.2; pp.6–7",
+      "statement": "Qwen3.5-397B；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/AVG准确率(%)=87.96,57.16,89.38,85.50,74.82,69.82,77.44。S2VOPD使用FineVision12K；感知主协议greedy max4096 tokens。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Table 2; benchmark split/sample counts and external model serving settings not fully specified in v1"
+    },
+    {
+      "anchor": "finevision-results",
+      "source": "2608.14144v1",
+      "locator": "Table 2; §4.1–4.2; pp.6–7",
+      "statement": "GPT-5.4；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/AVG准确率(%)=76.96,52.66,84.00,77.88,74.20,70.93,72.77。S2VOPD使用FineVision12K；感知主协议greedy max4096 tokens。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Table 2; benchmark split/sample counts and external model serving settings not fully specified in v1"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "Table 3; §4.1–4.2; pp.6–8",
+      "statement": "4B 底座；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/MathVista/MathVerse/MathVision/九项AVG(%)=84.29,47.69,84.38,80.13,63.86,63.70,75.80,67.56,65.26,70.30。Vision-OPD6K、65 steps；final为蒸馏终点、best为RL13检查点最优。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Perception greedy4096; math max24576,T=.3,p=.95,k=20,presence1.5; exact benchmark subsets not specified in v1"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "Table 3; §4.1–4.2; pp.6–8",
+      "statement": "4B Vision-OPD（final）；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/MathVista/MathVerse/MathVision/九项AVG(%)=91.10,61.42,82.12,80.38,74.38,69.98,79.40,71.68,62.50,74.77。Vision-OPD6K、65 steps；final为蒸馏终点、best为RL13检查点最优。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Perception greedy4096; math max24576,T=.3,p=.95,k=20,presence1.5; exact benchmark subsets not specified in v1"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "Table 3; §4.1–4.2; pp.6–8",
+      "statement": "4B TTRL（best）；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/MathVista/MathVerse/MathVision/九项AVG(%)=85.96,55.62,83.00,81.88,69.85,65.56,80.80,71.68,65.33,73.30。Vision-OPD6K、65 steps；final为蒸馏终点、best为RL13检查点最优。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Perception greedy4096; math max24576,T=.3,p=.95,k=20,presence1.5; exact benchmark subsets not specified in v1"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "Table 3; §4.1–4.2; pp.6–8",
+      "statement": "4B S²VOPD（final）；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/MathVista/MathVerse/MathVision/九项AVG(%)=87.43,57.99,84.88,83.62,72.87,71.29,81.50,73.22,65.13,75.33。Vision-OPD6K、65 steps；final为蒸馏终点、best为RL13检查点最优。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Perception greedy4096; math max24576,T=.3,p=.95,k=20,presence1.5; exact benchmark subsets not specified in v1"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "Table 3; §4.1–4.2; pp.6–8",
+      "statement": "9B 底座；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/MathVista/MathVerse/MathVision/九项AVG(%)=82.72,52.07,85.75,80.63,71.40,67.67,78.80,70.25,66.91,72.91。Vision-OPD6K、65 steps；final为蒸馏终点、best为RL13检查点最优。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Perception greedy4096; math max24576,T=.3,p=.95,k=20,presence1.5; exact benchmark subsets not specified in v1"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "Table 3; §4.1–4.2; pp.6–8",
+      "statement": "9B Vision-OPD（final）；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/MathVista/MathVerse/MathVision/九项AVG(%)=89.01,63.43,86.00,85.12,69.95,68.92,83.00,74.64,68.98,76.56。Vision-OPD6K、65 steps；final为蒸馏终点、best为RL13检查点最优。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Perception greedy4096; math max24576,T=.3,p=.95,k=20,presence1.5; exact benchmark subsets not specified in v1"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "Table 3; §4.1–4.2; pp.6–8",
+      "statement": "9B Intuitor（best）；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/MathVista/MathVerse/MathVision/九项AVG(%)=89.01,56.88,85.75,83.50,72.18,67.91,80.50,75.56,69.57,75.65。Vision-OPD6K、65 steps；final为蒸馏终点、best为RL13检查点最优。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Perception greedy4096; math max24576,T=.3,p=.95,k=20,presence1.5; exact benchmark subsets not specified in v1"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "Table 3; §4.1–4.2; pp.6–8",
+      "statement": "9B S²VOPD（final）；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/MathVista/MathVerse/MathVision/九项AVG(%)=90.58,56.92,85.12,82.50,74.31,72.22,80.80,75.63,69.11,76.35。Vision-OPD6K、65 steps；final为蒸馏终点、best为RL13检查点最优。",
+      "kind": "paper-fact",
+      "metric": "accuracy (%) ↑",
+      "protocol": "Perception greedy4096; math max24576,T=.3,p=.95,k=20,presence1.5; exact benchmark subsets not specified in v1"
+    },
+    {
+      "anchor": "finevision-results",
+      "source": "2608.14144v1",
+      "locator": "Table 2; pp.6–7",
+      "statement": "77.44−70.68=6.76百分点；跨模型主榜不构成模块消融，且Zoom/HR-8K存在落后项，Size未区分激活参数。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "§4.2, Table 3; pp.6–8",
+      "statement": "RL基线从13个每5步保存的checkpoint取最佳，其他方法取final；同数据配置声明不消除checkpoint和ZwZ底座不同的限制。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "Table 3; p.8",
+      "statement": "九项AVG 4B S2VOPD75.33/VisionOPD74.77/TTRL73.30；9B S2VOPD76.35/VisionOPD76.56/Intuitor75.65；9B低于VisionOPD而非数值相等。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "Table 3; p.8",
+      "statement": "据已舍入列值推导4B六感知收益5.6717pp/三数学3.7433pp，9B3.5683pp/3.1933pp；4B MathVision65.26→65.13，9B HR-4K85.75→85.12。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "matched-results",
+      "source": "2608.14144v1",
+      "locator": "Abstract; Table 3; pp.1,8",
+      "statement": "根据Table3四舍五入列值，(76.3466667−70.675)/(76.5633333−70.675)=96.3204%；96%是同数据4B感知收益恢复比例，不是准确率/九项平均/FineVision12K结果。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "diagnostics",
+      "source": "2608.14144v1",
+      "locator": "§4.3; Figure 2; pp.7–9",
+      "statement": "分析greedy2048 tokens，base70.58/noaug65.21；独立族information75.65/photo74.40/geometric74.30/occlusion72.44；原图baseline66.5冲突。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnostics",
+      "source": "2608.14144v1",
+      "locator": "Figure 2; PDF p.9",
+      "statement": "crop=(108,50,505,230) PDF points，1600px lossless PNG，24545 bytes；双面板/图例/基线完整保留，未改写冲突，CC BY 4.0。",
+      "kind": "figure",
+      "license": "CC BY 4.0"
+    },
+    {
+      "anchor": "diagnostics",
+      "source": "2608.14144v1",
+      "locator": "§4.3; Figure 2(b); pp.8–9",
+      "statement": "gap为训练前十步token级JS均值；performance大体在约.014前升后降，不能将此经验值当通用最优阈值。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnostics",
+      "source": "2608.14144v1",
+      "locator": "§4.3; p.8",
+      "statement": "强度弱/中/强平均accuracy(%)：downscale75.25/75.65/75.05(中间s=.3–.6)，blur74.20/75.71/75.07，token drop72.55/73.96/73.72，crop71.53/68.76/67.44；greedy2048，六感知均值。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnostics",
+      "source": "2608.14144v1",
+      "locator": "§4.3; p.8",
+      "statement": "作者解释裁切可能移除question-relevant evidence；无逐样本因果标注，不能认定所有失败原因。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2608.14144v1",
+      "locator": "Table 4; §4.4; p.9",
+      "statement": "S²VOPD（4B）；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/六项AVG(%)=87.43,57.99,84.88,83.62,72.87,71.29,76.35；无增强使视图相同，无EMA固定base teacher；该表未再次单列数据和budget。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2608.14144v1",
+      "locator": "Table 4; §4.4; p.9",
+      "statement": "无增强（仍有 EMA）；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/六项AVG(%)=79.06,50.18,86.50,80.62,62.85,63.90,70.52；无增强使视图相同，无EMA固定base teacher；该表未再次单列数据和budget。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2608.14144v1",
+      "locator": "Table 4; §4.4; p.9",
+      "statement": "无 EMA（教师固定底座）；V*/Zoom/HR-4K/HR-8K/MME-RW/MME-RW-CN/六项AVG(%)=88.48,54.08,86.75,83.25,72.15,70.98,75.95；无增强使视图相同，无EMA固定base teacher；该表未再次单列数据和budget。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2608.14144v1",
+      "locator": "Table 3–4; pp.8–9",
+      "statement": "Table4完整行等于Table3四B六感知列；其AVG76.35不同于Table3九项75.33；消融段未重述数据/budget。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2608.14144v1",
+      "locator": "§4.4; Table 4; p.9",
+      "statement": "fixed teacher75.95 vs full76.35，少.40pp；(75.95−70.68)/(76.35−70.68)=92.9453%收益保留。错误放大解释无单列诊断。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2608.14144v1",
+      "locator": "Table 4; p.9",
+      "statement": "Zoom fixed54.08 vs full57.99，部分其他列反升；没有随机种子重复或置信区间，不能推广EMA不必要。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2608.14144v1",
+      "locator": "Table 5; p.10",
+      "statement": "decay .95/.99/.999：MME-RW72.87/72.53/72.29；CN71.29/71.07/71.56；AVG76.35/75.56/76.00，六感知accuracy%，非单调。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2608.14144v1",
+      "locator": "Table 6; p.10",
+      "statement": "α0 forwardKL/.5JSD/1reverseKL：MME-RW71.92/74.15/72.43；CN69.75/71.34/71.00；AVG74.74/76.05/75.49；本表JSD最优但不同于Table4/5的76.35。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2608.14144v1",
+      "locator": "§4.4; pp.9–10",
+      "statement": "forward偏覆盖/reverse偏集中为作者的解释，无独立概率质量诊断；KL端点实现仍待核实。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "audit",
+      "source": "2608.14144v1",
+      "locator": "Figure 2, §4.3; pp.8–9",
+      "statement": "基线图66.5、文70.58冲突，不能据图基线计算精确收益。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "audit",
+      "source": "2608.14144v1",
+      "locator": "Eq.2; Table6; pp.4,10",
+      "statement": "印刷加权JSD端点直接为零，KL名称可能对应未描述的归一化或分支，未取得代码验证。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "audit",
+      "source": "2608.14144v1",
+      "locator": "Table4–6; pp.9–10",
+      "statement": "默认AVG76.35与JSD76.05及相关列不一致，具体run/variance未说明。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "audit",
+      "source": "2608.14144v1",
+      "locator": "§3.1–4.1; pp.3–6",
+      "statement": "复现缺口：k、训练rollout温度/采样、冻结模块、优化器/精度、数据抽样seed/list、尾批、噪声schedule/像素域、评测splits/sample counts/prompts/judge模板、外部checkpoint不全。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "audit",
+      "source": "2608.14144v1",
+      "locator": "Full PDF pp.1–13; §3–5 pp.3–10",
+      "statement": "无独立limitations章；teacher错误、只测Qwen3.5两规模、无重复误差/选择集说明/视频代理验证为基于全文的分析边界。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "audit",
+      "source": "2608.14144v1",
+      "locator": "§3.2, §4.3–4.4; pp.4–5,8–9",
+      "statement": "作者讨论几何改变空间题答案、裁切删除证据；可答视图和可信底座是编辑归纳的使用条件，无自动筛选机制。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "takeaways",
+      "source": "2608.14144v1",
+      "locator": "§3.1–4.1, §4.3–4.4, Table2–4; pp.3–10",
+      "statement": "总结和自测区分学生前缀/教师答案，蒸馏top-k未知与采样top-k20，FineVision六项77.44/VisionOPD六项76.35/九项75.33；结论为作者报告非独立复跑。",
+      "kind": "paper-fact"
+    }
+  ]
+}

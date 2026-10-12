@@ -249,5 +249,41 @@
         "published": "2026-06-02"
       }
     ]
+  },
+  {
+    "id": "s2vopd-2608.14144",
+    "title": "S²VOPD：从视觉信息差构造自监督在策略蒸馏",
+    "summary": "教师看原图，学生看降采样与噪声图：走通学生轨迹、top-k JSD 与 EMA 更新，区分两套训练数据和评测预算，核查增强语义、受控消融与原文不一致。",
+    "category": "OPD",
+    "type": "Single",
+    "published": "2026-08-14",
+    "added": "2026-10-12",
+    "path": "examples/OPD/s2vopd-2608.14144.html",
+    "tags": [
+      "视觉语言模型",
+      "在策略蒸馏",
+      "自监督学习",
+      "Qwen3.5",
+      "数据增强",
+      "EMA"
+    ],
+    "sources": [
+      {
+        "id": "2608.14144v1",
+        "title": "Self-Supervised Visual On-Policy Distillation",
+        "authors": "Yijiang Li; Yijun Liang; Yunjie Tian; Bingyang Wang; Ke Zhang; Zhenfei Yin; Di Fu; Philip Torr; Nuno Vasconcelos",
+        "url": "https://arxiv.org/abs/2608.14144v1",
+        "pdf_url": "https://arxiv.org/pdf/2608.14144v1",
+        "version": "v1",
+        "published": "2026-08-14",
+        "version_date": "2026-08-14",
+        "sha256": "00c0425b8913ec3aee0f080a34ed380a756e68b97926d3a6662ece68a44c609c",
+        "project_url": "https://williamium3000.github.io/s2vopd/",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/"
+      }
+    ],
+    "evidence": "data/evidence/s2vopd-2608.14144.json",
+    "body": "articles/s2vopd-2608.14144/body.html"
   }
 ]
