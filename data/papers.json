@@ -320,5 +320,50 @@
         "license_url": "https://arxiv.org/licenses/nonexclusive-distrib/1.0/license.html"
       }
     ]
+  },
+  {
+    "id": "scopd-2609.34044",
+    "title": "SCOPD：让推理模型学会利用稀疏视觉上下文",
+    "summary": "固定稀疏视觉表示的 Pass@K 诊断，到完整上下文教师与预算扰动学生的同前缀蒸馏：拆解 forward KL、视觉敏感位置选择、LoRA 配方、归一化结果及实际训练开销。",
+    "category": "OPD",
+    "type": "Single",
+    "published": "2026-09-28",
+    "added": "2026-10-12",
+    "path": "examples/OPD/scopd-2609.34044.html",
+    "body": "articles/scopd-2609.34044/body.html",
+    "evidence": "data/evidence/scopd-2609.34044.json",
+    "tags": [
+      "视觉语言模型",
+      "在策略蒸馏",
+      "自蒸馏",
+      "视觉token压缩",
+      "LoRA",
+      "EMA"
+    ],
+    "sources": [
+      {
+        "id": "2609.34044v1",
+        "title": "SCOPD: Sparse-Context On-Policy Self-Distillation for Efficient Vision-Language Models",
+        "authors": "Ahmadreza Jeddi; Enming Zhang; Jasper Gerigk; Hakki Karaimer; Mozhgan Nasr Azadani; Jiayun Luo; Minh Ngoc Le; Gholamali Aminian; Hugo Buurmeijer; Yongchao Chen; Leonid Sigal; Igor Gilitschenski; Konstantinos G. Derpanis; Marco Pavone; Babak Taati",
+        "url": "https://arxiv.org/abs/2609.34044v1",
+        "pdf_url": "https://arxiv.org/pdf/2609.34044v1",
+        "version": "v1",
+        "published": "2026-09-28",
+        "version_date": "2026-09-28",
+        "sha256": "9ca41ce0d55cefa289c126d735d10be34593348d6e87b4da5cc41cd457b62257",
+        "project_url": "https://armenjeddi.github.io/scopd/",
+        "license": "CC BY 4.0",
+        "license_url": "https://creativecommons.org/licenses/by/4.0/"
+      },
+      {
+        "id": "scopd-project-abdb14b7ba03",
+        "title": "SCOPD Project Page — static website repository",
+        "authors": "SCOPD authors / repository owner Enmingzz",
+        "url": "https://github.com/Enmingzz/scopd/tree/abdb14b7ba03db4e1cd114a444f03dfbe29cfbd7",
+        "version": "abdb14b7ba03db4e1cd114a444f03dfbe29cfbd7",
+        "published": "2026-09-27",
+        "version_date": "2026-09-27"
+      }
+    ]
   }
 ]

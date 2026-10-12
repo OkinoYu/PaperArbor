@@ -1,0 +1,657 @@
+{
+  "reviewed": "2026-10-12",
+  "coverage": "完整25页arXiv:2609.34044v1，含Appendix A–G；用户PDF与版本化官方PDF哈希相同。核实身份、固定稀疏上下文Pass@K及judge、VisionZip保留/合并、同前缀fullteacher/预算student、JSD位置选择与forwardKL、LM LoRA/EMA、数据与主评测、跨预算与剪枝/底座/视频、5%、GT教师及singleL40开销。固定核查作者项目网站仓库，区分网页源码和训练补充代码；未独立训练/评测，公开训练实现/权重与部分执行超参未取得。原始分数、归一化均值、诊断成功率及理论/实测成本分开登记。",
+  "claims": [
+    {
+      "anchor": "overview",
+      "source": "2609.34044v1",
+      "locator": "PDF p.1; arXiv v1 metadata; full PDF pp.1–25",
+      "statement": "标题、15位作者、前两位equal contribution、Preprint under review；首发及v1日期2026-09-28；全文25页含A–G；用户与官方下载SHA-256均为9ca41ce0d55cefa289c126d735d10be34593348d6e87b4da5cc41cd457b62257",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "overview",
+      "source": "2609.34044v1",
+      "locator": "§1, §3; Appendix A; pp.1–6,17–19",
+      "statement": "固定稀疏上下文重复采样诊断，fullcontextteacher监督student sparse ownprefix；SCOPD+按局部预算敏感度选择；诊断Pass64非默认部署。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnostic",
+      "source": "2609.34044v1",
+      "locator": "Figure 1; PDF p.2",
+      "statement": "原图crop=(108,79,504,294) PDF points；157344 bytes lossless PNG；保留完整面板、轴、图例与边界，移除周围正文；CC BY 4.0归原作者，不受网站代码MIT改许可。",
+      "kind": "figure",
+      "attribution": "Jeddi et al.; SCOPD v1",
+      "license": "CC BY 4.0"
+    },
+    {
+      "anchor": "diagnostic",
+      "source": "2609.34044v1",
+      "locator": "Figure1; §3.1; pp.2,4",
+      "statement": "图1天气示意、固定上下文PassK诊断与主实验雷达分属不同统计；原图caption和轴均保留。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnostic",
+      "source": "2609.34044v1",
+      "locator": "Appendix A; p.17",
+      "statement": "500 free-form numeric imagequestions，493distinct images；MMStar160/CVBench64/MMMUPro57/BLINK70/LogicVista33/LCOT116；预选unprunedgreedy成功，选项去除有条件，非官方benchmark。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnostic",
+      "source": "2609.34044v1",
+      "locator": "Appendix A; p.17",
+      "statement": "unadaptedQwen2.5VL7B，VisionZip10%=5%dominant+5%contextual；固定prunedrepresentation；64samples T.7 topp.95 topk50 max1024 no repetition penalty；greedy separately；languageonlyremove image+placeholder。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnostic",
+      "source": "2609.34044v1",
+      "locator": "Appendix A; Figure5; pp.18–19",
+      "statement": "gpt6astra effortmax judge receives originalimage/question/reference/fullresponse，核对决定性视觉观察/操作，拒绝unsupported猜测和criticalerrors，uncertain失败；自动judge非人工。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnostic",
+      "source": "2609.34044v1",
+      "locator": "Eq.10; Appendix A; p.19",
+      "statement": "PassK平均1−C(64−ci,K)/C(64,K)，ci有效sample数；greedy非sampledPass1；VisionZipgreedy53.20/Pass64 79.60/Hit≥4@64 74.20%；language2.80→4.20。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "diagnostic",
+      "source": "2609.34044v1",
+      "locator": "§3.1; Appendix A; pp.4,17–19",
+      "statement": "固定表示排除重新剪枝，但队列选择/原图judge/未恢复题限制强因果解释；不能否认真实信息丢失。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "architecture",
+      "source": "2609.34044v1",
+      "locator": "Figure 2; PDF p.5",
+      "statement": "原图crop=(108,79,504,227) PDF points；79771 bytes lossless PNG；保留完整面板、轴、图例与边界，移除周围正文；CC BY 4.0归原作者，不受网站代码MIT改许可。",
+      "kind": "figure",
+      "attribution": "Jeddi et al.; SCOPD v1",
+      "license": "CC BY 4.0"
+    },
+    {
+      "anchor": "architecture",
+      "source": "2609.34044v1",
+      "locator": "Figure2; Eq.1–9; pp.5–6",
+      "statement": "共享encodedfeatures、fullteacher/bstudent/bplusstudent，同sparsegeneratedprefix；干预无新rollout，JSD生成selectionmask，KL来自teacher。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "pruner",
+      "source": "2609.34044v1",
+      "locator": "Appendix C; pp.20–21",
+      "statement": "VisionZip textagnostic beforeLM：attention dominant保留，keysimilarity nondominantmerge contextual；无CLS用平均received attention；压缩序列进projector/LM；并非丢九成pixels。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "pruner",
+      "source": "2609.34044v1",
+      "locator": "Appendix C; pp.21–22",
+      "statement": "b相对预处理+token cap后视觉长度；traincap1280，imageevalcap4096；满traincap*.1约128说明式，round/分配未知；VisionZip固定视图不依赖question/response。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "prefix",
+      "source": "2609.34044v1",
+      "locator": "Eq.1–4; Appendix C; pp.5,21",
+      "statement": "student y sampled fromx,Zb，p_b当前θ sparse；qEMAθbar fullZ；同prefix，default不消费GTanswer/trace，无另一teacherrollout。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "dense-loss",
+      "source": "2609.34044v1",
+      "locator": "Eq.4; §4.1; Appendix C; pp.5–6,21",
+      "statement": "perresponseTi归一化sumKL(q||p_b)，defaultforwardteacher→student；teacherEMA目标、studentLM LoRA更新；实现vocab截断/temperature/tokenmask未完整给出。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "dense-loss",
+      "source": "2609.34044v1",
+      "locator": "§3.2; §4.1; Appendix C/E; pp.5–7,21–23",
+      "statement": "onpolicy由sparse生成prefix决定，默认非GRPO奖励；teacherfullinput不保证错误prefix每target正确。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "kl-case",
+      "source": "2609.34044v1",
+      "locator": "Figure 6; PDF p.20",
+      "statement": "原图crop=(108,69,504,337) PDF points；163905 bytes lossless PNG；仅保留上半部完整(a)(b)案例与总标题；省略(c)(d)的格式/大小写案例，不改变选中面板内容；CC BY 4.0归原作者，不受网站代码MIT改许可。",
+      "kind": "figure",
+      "attribution": "Jeddi et al.; SCOPD v1",
+      "license": "CC BY 4.0"
+    },
+    {
+      "anchor": "intervention",
+      "source": "2609.34044v1",
+      "locator": "Eq.5–6; §4.1; p.6",
+      "statement": "b10% δ1pp→bplus11%；同encodedfeatures同prefixcurrentstudent、无新rollout但额外LMforward；相对sparse预算增加(11−10)/10=10%。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "intervention",
+      "source": "2609.34044v1",
+      "locator": "Eq.5–6; Appendix C; pp.6,21",
+      "statement": "未要求严格nestedtoken set；VisionZip包含merging，预算变动可能重组特征；非孤立证据纯因果。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "selection",
+      "source": "2609.34044v1",
+      "locator": "Eq.7; p.6",
+      "statement": "m=.5(pb+pbplus)，S=.5KL(pb||m)+.5KL(pbplus||m)；symmetricbounded JSD，教师不在sensitivity公式，最终仍forwardKL。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "selected-loss",
+      "source": "2609.34044v1",
+      "locator": "Eq.8–9; Appendix A; pp.6,17",
+      "statement": "K_i=TopK_time(S,ceilρTi)，ρ.1；Lplus=sum_selectedKL(q||pb)/|Ki|；时间位置TopK非vocabtopk50或imagepruning；不等整体loss减少90%。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "selected-loss",
+      "source": "2609.34044v1",
+      "locator": "Eq.9; Appendix C/G; pp.6,21,24–25",
+      "statement": "selected directloss依赖prefix与sharedLoRA，不等token专属参数/反向算力固定减少90%；inference不需未来selection。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "kl-case",
+      "source": "2609.34044v1",
+      "locator": "Appendix B; Figure6(a,b); pp.19–20",
+      "statement": "Qwen2.5VL7B，student10%/intervened11%/teacherfull；showsdepicts KL.791706 nats/S2.513e-4，roadstreetKL.500254 nats/S9.691e-5；原图词概率和rollout证明措辞分歧案例。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2609.34044v1",
+      "locator": "§4.1; Appendix C; pp.6,20–21",
+      "statement": "Qwen2.5VL7B-Instruct，VisionZiptrain10%；LMdecoder所有attention和FFprojections LoRA r16 α32 dropout0，vision/projectorfrozen；lr2e-5 constant effectivebatch32/4GPUs；EMAdecay.9999；评测mergeLoRA。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2609.34044v1",
+      "locator": "§4.1; Appendix C; pp.6,21",
+      "statement": "EMA说明式θbar←.9999θbar+.0001θ，decay非更新率。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "training",
+      "source": "2609.34044v1",
+      "locator": "Appendix C/E/G; pp.21–25",
+      "statement": "10K LLaVACoT processedOpenMMReasoner，SCOPD only imagequestion无GTtrace/answer；SFT/EPICuseGT且EPICprogressiveschedule；GRPO2500steps每GPU1prompt G4/4GPUs=16responsesstep、约30h；SCOPD后训练4L40约14h。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "training",
+      "source": "2609.34044v1",
+      "locator": "Appendix C; p.21; full PDF",
+      "statement": "训练rollout温度/最大生成长度、精确steps/checkpointID/seed、vocab近似未充分指定，project网页不是训练实现。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "inference",
+      "source": "2609.34044v1",
+      "locator": "Appendix C/G; pp.21–22,24–25",
+      "statement": "inference移除teacher和bplus，学生sameprunedarchitecture；visionencoding仍完整执行，LoRAmerged；imagecap4096，video32uniformframes cap12288，VLMEvalKitgreedy think/answer。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "inference",
+      "source": "2609.34044v1",
+      "locator": "Appendix C; p.22",
+      "statement": "Qwen3.6-27B answerjudge仅语义匹配非tracejudge；diagnostic gpt6astra是不同pipeline；MathVerseVO、MMERWLite、TempCompassMCQ；main maxnewtokens/subsplits未逐项给，不能移用A参数。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; Appendix C; pp.7,21–22",
+      "statement": "Vanilla；evalbudget100/20/10%的Avg13=100.00,93.42,86.37；各benchmark归一到unprunedVanilla再mean；默认训练b10%，EPICschedule例外，主测greedy。",
+      "kind": "paper-fact",
+      "metric": "normalized equal-weight aggregate (%)",
+      "protocol": "Qwen2.5-VL-7B-Instruct, VisionZip, Table1 evaluation, checkpoint identifier not disclosed"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; Appendix C; pp.7,21–22",
+      "statement": "SFT；evalbudget100/20/10%的Avg13=99.17,95.22,88.82；各benchmark归一到unprunedVanilla再mean；默认训练b10%，EPICschedule例外，主测greedy。",
+      "kind": "paper-fact",
+      "metric": "normalized equal-weight aggregate (%)",
+      "protocol": "Qwen2.5-VL-7B-Instruct, VisionZip, Table1 evaluation, checkpoint identifier not disclosed"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; Appendix C; pp.7,21–22",
+      "statement": "EPIC；evalbudget100/20/10%的Avg13=100.30,94.71,86.45；各benchmark归一到unprunedVanilla再mean；默认训练b10%，EPICschedule例外，主测greedy。",
+      "kind": "paper-fact",
+      "metric": "normalized equal-weight aggregate (%)",
+      "protocol": "Qwen2.5-VL-7B-Instruct, VisionZip, Table1 evaluation, checkpoint identifier not disclosed"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; Appendix C; pp.7,21–22",
+      "statement": "GRPO；evalbudget100/20/10%的Avg13=100.84,93.95,85.73；各benchmark归一到unprunedVanilla再mean；默认训练b10%，EPICschedule例外，主测greedy。",
+      "kind": "paper-fact",
+      "metric": "normalized equal-weight aggregate (%)",
+      "protocol": "Qwen2.5-VL-7B-Instruct, VisionZip, Table1 evaluation, checkpoint identifier not disclosed"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; Appendix C; pp.7,21–22",
+      "statement": "SCOPD；evalbudget100/20/10%的Avg13=100.67,96.80,90.49；各benchmark归一到unprunedVanilla再mean；默认训练b10%，EPICschedule例外，主测greedy。",
+      "kind": "paper-fact",
+      "metric": "normalized equal-weight aggregate (%)",
+      "protocol": "Qwen2.5-VL-7B-Instruct, VisionZip, Table1 evaluation, checkpoint identifier not disclosed"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; Appendix C; pp.7,21–22",
+      "statement": "SCOPD+；evalbudget100/20/10%的Avg13=100.02,97.25,92.43；各benchmark归一到unprunedVanilla再mean；默认训练b10%，EPICschedule例外，主测greedy。",
+      "kind": "paper-fact",
+      "metric": "normalized equal-weight aggregate (%)",
+      "protocol": "Qwen2.5-VL-7B-Instruct, VisionZip, Table1 evaluation, checkpoint identifier not disclosed"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; Appendix C; pp.7,21–22",
+      "statement": "Vanilla / 100%；MME/MMStar/MathVista/MathVerseVO/MMMUPro/Hallusion/CVBench/LogicVista/BLINK/VisOnly/HR4K/MMERWLite/RWQA/Avg13=2250.63,64.27,66.70,42.39,46.13,66.25,75.19,47.87,56.39,44.70,66.00,47.63,64.97,100.00；原指标分数(↑)，MME非百分制，Avg最后单独归一化。",
+      "kind": "paper-fact",
+      "checkpoint": "paper post-training models; exact checkpoint id not disclosed",
+      "protocol": "image greedy same reasoning prompt; cap4096 prior to pruning"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; Appendix C; pp.7,21–22",
+      "statement": "Vanilla / 10%；MME/MMStar/MathVista/MathVerseVO/MMMUPro/Hallusion/CVBench/LogicVista/BLINK/VisOnly/HR4K/MMERWLite/RWQA/Avg13=2040.13,54.87,55.30,26.90,41.85,58.57,69.53,37.58,48.97,40.35,62.38,39.19,62.61,86.37；原指标分数(↑)，MME非百分制，Avg最后单独归一化。",
+      "kind": "paper-fact",
+      "checkpoint": "paper post-training models; exact checkpoint id not disclosed",
+      "protocol": "image greedy same reasoning prompt; cap4096 prior to pruning"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; Appendix C; pp.7,21–22",
+      "statement": "SCOPD / 10%；MME/MMStar/MathVista/MathVerseVO/MMMUPro/Hallusion/CVBench/LogicVista/BLINK/VisOnly/HR4K/MMERWLite/RWQA/Avg13=2201.28,58.60,60.60,30.46,42.95,60.46,72.65,34.68,52.81,42.09,63.75,41.84,64.31,90.49；原指标分数(↑)，MME非百分制，Avg最后单独归一化。",
+      "kind": "paper-fact",
+      "checkpoint": "paper post-training models; exact checkpoint id not disclosed",
+      "protocol": "image greedy same reasoning prompt; cap4096 prior to pruning"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; Appendix C; pp.7,21–22",
+      "statement": "SCOPD+ / 10%；MME/MMStar/MathVista/MathVerseVO/MMMUPro/Hallusion/CVBench/LogicVista/BLINK/VisOnly/HR4K/MMERWLite/RWQA/Avg13=2177.06,59.60,60.30,33.38,42.95,60.99,71.96,38.26,53.55,43.65,66.00,43.15,64.31,92.43；原指标分数(↑)，MME非百分制，Avg最后单独归一化。",
+      "kind": "paper-fact",
+      "checkpoint": "paper post-training models; exact checkpoint id not disclosed",
+      "protocol": "image greedy same reasoning prompt; cap4096 prior to pruning"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1 caption; p.7",
+      "statement": "说明式Avg_m=100/m Σ_j score_method_j/score_Vanilla100_j；m13/6/5/8各自subset，非meanrawaccuracy，MME原score不同量纲，可>100。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; §4.2; p.7",
+      "statement": "10% SCOPD90.49−Vanilla86.37=4.12normpoints；plus92.43−90.49=1.94；8improve2tie3lower(MME,MathVista,CVBench)，denseLogic34.68<prunedbase37.58。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; p.7",
+      "statement": "(92.43−86.37)/(100−86.37)=44.4607%损失恢复，92.43是reference保留比例非损失恢复；HR4Kplus66=full66。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "results",
+      "source": "2609.34044v1",
+      "locator": "Table1; §4.2; Appendix C/E; pp.7,21–23",
+      "statement": "full100 SCOPD100.67/plus100.02接近baseline，支持sparseadaptation但不严密排除genericeffect；baselines不同supervision/schedule/cost。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34044v1",
+      "locator": "Table2; §4.3Q1; p.8",
+      "statement": "Dense SCOPD；MME/MMStar/BLINK/VisOnly/MathVista/RWQA/Avg6=2201.28,58.60,52.81,42.09,60.60,64.31,94.44；Qwen2.5VL7B VisionZipb10；selectedρ10%，denseallpositions。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34044v1",
+      "locator": "Table2; §4.3Q1; p.8",
+      "statement": "Random 10%；MME/MMStar/BLINK/VisOnly/MathVista/RWQA/Avg6=2141.89,59.87,52.97,41.74,58.50,63.66,93.56；Qwen2.5VL7B VisionZipb10；selectedρ10%，denseallpositions。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34044v1",
+      "locator": "Table2; §4.3Q1; p.8",
+      "statement": "Top KL 10%；MME/MMStar/BLINK/VisOnly/MathVista/RWQA/Avg6=2174.15,60.13,53.29,42.00,60.20,63.79,94.51；Qwen2.5VL7B VisionZipb10；selectedρ10%，denseallpositions。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34044v1",
+      "locator": "Table2; §4.3Q1; p.8",
+      "statement": "TIP 10%；MME/MMStar/BLINK/VisOnly/MathVista/RWQA/Avg6=2179.75,60.40,53.76,42.26,59.20,62.22,94.21；Qwen2.5VL7B VisionZipb10；selectedρ10%，denseallpositions。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34044v1",
+      "locator": "Table2; §4.3Q1; p.8",
+      "statement": "Bottom Sensitivity 10%；MME/MMStar/BLINK/VisOnly/MathVista/RWQA/Avg6=2035.59,56.27,48.29,40.96,54.90,63.14,89.13；Qwen2.5VL7B VisionZipb10；selectedρ10%，denseallpositions。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34044v1",
+      "locator": "Table2; §4.3Q1; p.8",
+      "statement": "SCOPD+ Top Sensitivity 10%；MME/MMStar/BLINK/VisOnly/MathVista/RWQA/Avg6=2177.06,59.60,53.55,43.65,60.30,64.31,95.25；Qwen2.5VL7B VisionZipb10；selectedρ10%，denseallpositions。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "hyperparameters",
+      "source": "2609.34044v1",
+      "locator": "Figure 3; PDF p.9",
+      "statement": "原图crop=(108,79,504,201) PDF points；27887 bytes lossless PNG；保留完整面板、轴、图例与边界，移除周围正文；CC BY 4.0归原作者，不受网站代码MIT改许可。",
+      "kind": "figure",
+      "attribution": "Jeddi et al.; SCOPD v1",
+      "license": "CC BY 4.0"
+    },
+    {
+      "anchor": "teacher-ablation",
+      "source": "2609.34044v1",
+      "locator": "Table6; §4.3Q6; p.9",
+      "statement": "Default forward KL / EMA；Avg13=92.43；SCOPD+10%budget默认配置，仅改变distillationdivergence或teacherstrategy。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "teacher-ablation",
+      "source": "2609.34044v1",
+      "locator": "Table6; §4.3Q6; p.9",
+      "statement": "Reverse KL / EMA；Avg13=92.39；SCOPD+10%budget默认配置，仅改变distillationdivergence或teacherstrategy。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "teacher-ablation",
+      "source": "2609.34044v1",
+      "locator": "Table6; §4.3Q6; p.9",
+      "statement": "JSD(β=0.5) / EMA；Avg13=91.55；SCOPD+10%budget默认配置，仅改变distillationdivergence或teacherstrategy。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "teacher-ablation",
+      "source": "2609.34044v1",
+      "locator": "Table6; §4.3Q6; p.9",
+      "statement": "Forward KL / fixed initial teacher；Avg13=91.37；SCOPD+10%budget默认配置，仅改变distillationdivergence或teacherstrategy。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "teacher-ablation",
+      "source": "2609.34044v1",
+      "locator": "Table6; §4.3Q6; p.9",
+      "statement": "Forward KL / shared current weights；Avg13=12.35；SCOPD+10%budget默认配置，仅改变distillationdivergence或teacherstrategy。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "ablation",
+      "source": "2609.34044v1",
+      "locator": "Table2; p.8",
+      "statement": "lowest89.13 vs top95.25、random93.56支持selectioncriterion；TIP某列/denseMathVista更高；无seedCI，不读.07小差为稳健定律。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "hyperparameters",
+      "source": "2609.34044v1",
+      "locator": "Figure3; §4.3Q5; pp.8–9",
+      "statement": "图舍入Avg13：rho10/20/40/60/100=92.4/91.0/90.7/90.8/90.5；delta1/2/10pp=92.4/91.0/91.5，default精确92.43在Table1；非rawaccuracy。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "hyperparameters",
+      "source": "2609.34044v1",
+      "locator": "§4.3Q5; Figure3; pp.8–9",
+      "statement": "smallδlocalbottleneck为作者解释；无errorbars，不自动推广最优hyperparams。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "teacher-ablation",
+      "source": "2609.34044v1",
+      "locator": "Eq.7, Table6; pp.6,9",
+      "statement": "sensitivityJSD与finaldistillationKL角色不同；forward92.43/reverse92.39差.04；fixed91.37有效，shared12.35 collapse为本设置非普适规则。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "pruner-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table3; §4.3Q2; p.8",
+      "statement": "VisionZip；Vanilla/SCOPD+Avg6=88.74/95.25；SCOPD+仅VisionZip训练、测试pruner不继续适配；b10%。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "pruner-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table3; §4.3Q2; p.8",
+      "statement": "DivPrune；Vanilla/SCOPD+Avg6=83.47/91.23；SCOPD+仅VisionZip训练、测试pruner不继续适配；b10%。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "pruner-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table3; §4.3Q2; p.8",
+      "statement": "Random；Vanilla/SCOPD+Avg6=82.06/88.85；SCOPD+仅VisionZip训练、测试pruner不继续适配；b10%。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "pruner-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table3; §4.3Q2; p.8",
+      "statement": "FastV；Vanilla/SCOPD+Avg6=81.47/86.03；SCOPD+仅VisionZip训练、测试pruner不继续适配；b10%。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "model-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table4; §4.3Q3; p.8",
+      "statement": "Vanilla / 100% Qwen3VL4B；MME/MMStar/BLINK/VisOnly/MathVista/RWQA/Avg6=2403.47,67.67,65.75,53.74,69.90,73.86,100.00；单独posttrain，final视觉layer索引应用到3中间streams，归一到本底座Vanilla100。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "model-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table4; §4.3Q3; p.8",
+      "statement": "Vanilla / 10% Qwen3VL4B；MME/MMStar/BLINK/VisOnly/MathVista/RWQA/Avg6=1999.68,47.73,51.76,44.26,42.50,56.21,75.29；单独posttrain，final视觉layer索引应用到3中间streams，归一到本底座Vanilla100。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "model-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table4; §4.3Q3; p.8",
+      "statement": "SCOPD / 10% Qwen3VL4B；MME/MMStar/BLINK/VisOnly/MathVista/RWQA/Avg6=2261.94,52.93,54.29,44.87,47.30,61.70,81.60；单独posttrain，final视觉layer索引应用到3中间streams，归一到本底座Vanilla100。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "model-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table4; §4.3Q3; p.8",
+      "statement": "SCOPD+ / 10% Qwen3VL4B；MME/MMStar/BLINK/VisOnly/MathVista/RWQA/Avg6=2278.19,53.87,54.81,44.96,49.10,63.40,82.92；单独posttrain，final视觉layer索引应用到3中间streams，归一到本底座Vanilla100。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "video-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table5; §4.3Q4; Appendix C; pp.8,22",
+      "statement": "Vanilla / 100%；VideoMME/TempCompassMCQ/MVBench/MLVU/VideoTT/Avg5=54.00,69.81,62.98,54.65,36.20,100.00；Qwen2.5VL7B LoRAonlyimageposttrain，video32frames cap12288，greedy，无video专训。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "video-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table5; §4.3Q4; Appendix C; pp.8,22",
+      "statement": "Vanilla / 10%；VideoMME/TempCompassMCQ/MVBench/MLVU/VideoTT/Avg5=49.37,62.41,56.60,51.33,32.50,90.88；Qwen2.5VL7B LoRAonlyimageposttrain，video32frames cap12288，greedy，无video专训。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "video-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table5; §4.3Q4; Appendix C; pp.8,22",
+      "statement": "SCOPD / 10%；VideoMME/TempCompassMCQ/MVBench/MLVU/VideoTT/Avg5=52.78,65.44,59.48,53.17,34.50,95.70；Qwen2.5VL7B LoRAonlyimageposttrain，video32frames cap12288，greedy，无video专训。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "video-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table5; §4.3Q4; Appendix C; pp.8,22",
+      "statement": "SCOPD+ / 10%；VideoMME/TempCompassMCQ/MVBench/MLVU/VideoTT/Avg5=53.15,66.01,59.45,53.31,35.50,96.60；Qwen2.5VL7B LoRAonlyimageposttrain，video32frames cap12288，greedy，无video专训。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "pruner-transfer",
+      "source": "2609.34044v1",
+      "locator": "Table3; p.8",
+      "statement": "换pruners均值增益非everycolumn：RandomVisOnlyvanilla/plus均41.57；FastVinLLM仅一种测试，不涵盖所有dynamicpruners。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "extreme",
+      "source": "2609.34044v1",
+      "locator": "Table7; Appendix D; pp.22–23",
+      "statement": "5%八项normalizedAvg8：Vanilla75.99/SCOPD83.63/plus83.66，非Avg13；plus只比dense.03，不推广强选择优势。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "extreme",
+      "source": "2609.34044v1",
+      "locator": "Table8; Appendix F; pp.23–24",
+      "statement": "SCOPD+GT为denseSCOPD额外teacherGTanswer，非selectedSCOPDplus；studentownrollout不变；Avg13 b10 90.49→92.86/full100 100.67→102.43；改变supervision条件。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "compute",
+      "source": "2609.34044v1",
+      "locator": "Appendix G; Table9; pp.24–25",
+      "statement": "singleNVIDIAL40 batch32 trainingmeasure：SCOPD54.25TFLOPs/sample,17.21s/sample,25.02GiB peakbatch；plus65.84,17.54,25.13；不是inferbaseline speedcomparison。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "length",
+      "source": "2609.34044v1",
+      "locator": "Appendix G; Table9; pp.24–25",
+      "statement": "Vanilla / no prune；500诊断examples平均输出tokens=155.27；非全13benchmark总体长度，decode实验具体cost未在此报告。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "length",
+      "source": "2609.34044v1",
+      "locator": "Appendix G; Table9; pp.24–25",
+      "statement": "VisionZip / 10%；500诊断examples平均输出tokens=143.93；非全13benchmark总体长度，decode实验具体cost未在此报告。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "length",
+      "source": "2609.34044v1",
+      "locator": "Appendix G; Table9; pp.24–25",
+      "statement": "SFT；500诊断examples平均输出tokens=111.25；非全13benchmark总体长度，decode实验具体cost未在此报告。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "length",
+      "source": "2609.34044v1",
+      "locator": "Appendix G; Table9; pp.24–25",
+      "statement": "EPIC；500诊断examples平均输出tokens=123.48；非全13benchmark总体长度，decode实验具体cost未在此报告。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "length",
+      "source": "2609.34044v1",
+      "locator": "Appendix G; Table9; pp.24–25",
+      "statement": "SCOPD；500诊断examples平均输出tokens=153.00；非全13benchmark总体长度，decode实验具体cost未在此报告。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "length",
+      "source": "2609.34044v1",
+      "locator": "Appendix G; Table9; pp.24–25",
+      "statement": "SCOPD+；500诊断examples平均输出tokens=155.70；非全13benchmark总体长度，decode实验具体cost未在此报告。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "compute",
+      "source": "2609.34044v1",
+      "locator": "Table9; pp.24–25",
+      "statement": "由舍入值推导FLOPs(65.84/54.25−1)=21.3641%，time(17.54/17.21−1)=1.9175%，memory(25.13/25.02−1)=.4396%；作者概括21.4/1.9/.4%。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "compute",
+      "source": "2609.34044v1",
+      "locator": "Appendix G; pp.24–25",
+      "statement": "组件计时口径/warmup/repeats/variance/kernel未充分列出，不能跨硬件推广时间增量或拆分因果。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "length",
+      "source": "2609.34044v1",
+      "locator": "Appendix C/G; Table9; pp.21–22,24–25",
+      "statement": "(155.70/143.93−1)*100=8.1776%更长vs同budgetprunedvanilla；无extra inferencebranches不等totaldecodecost严格同值；fullvision/pruner仍有成本。",
+      "kind": "explanatory-derivation"
+    },
+    {
+      "anchor": "limits",
+      "source": "2609.34044v1",
+      "locator": "Limitations and future work; p.10",
+      "statement": "作者限制：VisionZipprimary/fixedbudgets，未来更多dynamic/inLLMpruners/schedules/jointcompress；主要shortformimagevideo，长时程/embodied/agentictask待验证。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "limits",
+      "source": "2609.34044v1",
+      "locator": "Reproducibility statement; p.10",
+      "statement": "作者声称训练code在投稿supplementary，本次未取得；不能用projectwebsite作为trainingimplementation。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "limits",
+      "source": "scopd-project-abdb14b7ba03",
+      "locator": "Fixed project repo tree; README.md; retrieval 2026-10-12",
+      "statement": "项目仓库commitabdb14b7ba03db4e1cd114a444f03dfbe29cfbd7只有静态站点、paper、figures/resultsdata/package_site脚本，无训练code；当前官方armenjeddi页面Code显示Soon；未取得公开weights。",
+      "kind": "paper-fact"
+    },
+    {
+      "anchor": "limits",
+      "source": "2609.34044v1",
+      "locator": "§3–4; Appendix A/C/D/G; pp.4–9,17–25",
+      "statement": "编辑边界：非所有失败皆利用不足，预算干预非纯证据因果，teacher错误、未充分seedCI/等预算/decoder实现/完整部署speed验证；5%残余gap和teachercollapse限制推广。",
+      "kind": "editorial-analysis"
+    },
+    {
+      "anchor": "limits",
+      "source": "2609.34044v1",
+      "locator": "Eq.1–9; Appendix A/C/G; pp.5–6,17–22,24–25",
+      "statement": "总结/自测区分PassK与部署、b视觉与ρ位置与samplingtopk50、sensitivitystudentonly、finalteacherforwardKL、LoRA与inferenceonlysparse。",
+      "kind": "paper-fact"
+    }
+  ]
+}
